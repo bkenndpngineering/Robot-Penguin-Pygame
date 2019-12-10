@@ -16,7 +16,7 @@ pygame.display.set_caption('PENGUIN GAME')
 clock = pygame.time.Clock()
 
 grid = Grid(display, (510, 60), 100)
-grid.addObject(icon_jewel, (0,0))
+grid.addObstacle((1,1))
 
 prog_terminate = False
 while not prog_terminate:
