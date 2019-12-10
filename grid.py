@@ -1,5 +1,5 @@
 import pygame
-from obstacle import Obstacle
+from obstacle import Obstacle, Goal
 
 class Grid():
     def __init__(self, surface, start_coordinates, rect_size, grid_dimensions=[9, 9]):
@@ -9,8 +9,14 @@ class Grid():
         self.surface = surface
         self.grid_dimensions = grid_dimensions
 
+    def addObject(self, object):
+        self.entity_list.append(object)
+
     def addObstacle(self, location):
-        self.entity_list.append(Obstacle(self, location))
+        self.addObject(Obstacle(self, location))
+
+    def addGoal(self, location):
+        self.addObject(Goal(self, location))
 
     def positionToCoordinates(self, position):
         # returns top left corner of rect
