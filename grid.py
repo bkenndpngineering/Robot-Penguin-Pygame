@@ -1,5 +1,5 @@
 import pygame
-from obstacle import Obstacle, Goal, Enemy, Player
+from obstacle import Obstacle, Goal, Enemy, Player, Baby
 import copy
 import random
 
@@ -13,6 +13,12 @@ class Grid():
         self.goal = None
         self.enemy = None
         self.player = None
+        self.baby = None
+
+    def addBaby(self, location):
+        if self.baby == None:  # only add one player
+            self.baby = Baby(self, location)
+            self.addObject(self.baby)
 
     def addPlayer(self, location):
         if self.player == None: # only add one player
@@ -42,6 +48,10 @@ class Grid():
     def isAtEnemy(self, object1):
         if self.enemy != None:
             return self.getCollision(object1, self.enemy)
+
+    def isAtBaby(self, object1):
+        if self.baby != None:
+            return self.getCollision(object1, self.baby)
 
     def getCollision(self, object1, object2):
         if (object1.location == object2.location):
@@ -80,6 +90,9 @@ class Grid():
         # draw objects
         for i in self.entity_list:
             i.draw()
+
+        # draw player again so it is on top at all times
+        self.player.draw()
 
     def getUnusedCoordinates(self):
         # coordinates start at 0, go to 8, in the case of a 9x9 grid

@@ -44,19 +44,34 @@ class Obstacle(Object):
 class Goal(Object):
     def __init__(self, grid, location):
         super().__init__(grid, icon_goal, location)
+        self.collected = False
+
+    def collect(self):
+        self.collected = True
+
+    def draw(self):
+        if not self.collected:
+            super().draw()
+        else:
+            pass
 
 class Player(Object):
     def __init__(self, grid, location):
         super().__init__(grid, icon_player_front, location)
+        self.alive = True
 
     def moveRight(self):
         super().moveRight()
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
-                pass # win the game!
+                self.grid.goal.collect()
             elif self.grid.isAtEnemy(self):
-                pass # lose the game!
+                self.alive = False
+            elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True): # winning game, got to child
+                pass
+            elif self.grid.isAtBaby(self): # if not with goal, acts as barrier
+                self.location[0] -= 1
             else:
                 self.location[0] -= 1
 
@@ -70,9 +85,13 @@ class Player(Object):
         # check if in enemy, end game
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
-                pass  # win the game!
+                self.grid.goal.collect()
             elif self.grid.isAtEnemy(self):
-                pass  # lose the game!
+                self.alive = False
+            elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
+                pass
+            elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
+                self.location[0] += 1
             else:  # obstacle or something
                 self.location[0] += 1
 
@@ -83,9 +102,13 @@ class Player(Object):
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
-                pass  # win the game!
+                self.grid.goal.collect()
             elif self.grid.isAtEnemy(self):
-                pass  # lose the game!
+                self.alive = False
+            elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
+                pass
+            elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
+                self.location[1] += 1
             else:
                 self.location[1] += 1
 
@@ -96,9 +119,13 @@ class Player(Object):
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
-                pass  # win the game!
+                self.grid.goal.collect()
             elif self.grid.isAtEnemy(self):
-                pass  # lose the game!
+                self.alive = False
+            elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
+                pass
+            elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
+                self.location[1] -= 1
             else:
                 self.location[1] -= 1
 
@@ -201,3 +228,7 @@ class Enemy(Object):
                 pass  # do nothing
             else:
                 self.location[1] -= 1
+
+class Baby(Object):
+    def __init__(self, grid, location):
+        super().__init__(grid, icon_jewel, location)

@@ -31,6 +31,7 @@ def run_game(difficulty=1):
     grid.addGoal([8, 8]) # place goal and player at opposite ends
     # player before enemy
     grid.addPlayer([0, 0])
+    grid.addBaby(grid.getUnusedCoordinates()) # randomize baby/jewel
 
     if difficulty > 3 or (difficulty < 0) or (difficulty == 1):
         difficulty = 1 # just in case
@@ -63,11 +64,11 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = False
 
-        if grid.getCollision(grid.player, grid.goal):
+        if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
             prog_terminate = True
             has_won = True
 
-        # character movement
+        # character movement, replace with delta arm client/server commands
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = True
@@ -93,6 +94,8 @@ def run_game(difficulty=1):
     return has_won
 
 if __name__ == '__main__':
+    # get difficulty from surface tablet
+
     if run_game(3) == True:  # wins the game
         end_effect(win_screen)
     else: # looses the game
