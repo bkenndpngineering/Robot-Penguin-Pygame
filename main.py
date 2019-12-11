@@ -22,29 +22,26 @@ grid.addObstacle([1,1])
 grid.addObstacle([6,8])
 grid.addGoal([5,5])
 
-# create player outside of grid b/c need manual control
-player = Player(grid, [0,0])
-grid.addObject(player)
+# player before enemy
+grid.addPlayer([0,0])
+grid.addEnemy([5,6], 3)
 
-# create enemy
-enemy = Enemy(grid, [5,6], player, 3).run()
-grid.addObject(enemy)
 
 prog_terminate = False
 while not prog_terminate:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             prog_terminate = True
-            enemy.stop()
+            grid.enemy.stop()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                player.moveLeft()
+                grid.player.moveLeft()
             if event.key == pygame.K_RIGHT:
-                player.moveRight()
+                grid.player.moveRight()
             if event.key == pygame.K_DOWN:
-                player.moveDown()
+                grid.player.moveDown()
             if event.key == pygame.K_UP:
-                player.moveUp()
+                grid.player.moveUp()
 
 
     # draw background

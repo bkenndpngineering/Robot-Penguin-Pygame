@@ -6,6 +6,7 @@ import random
 
 class Object:
     def __init__(self, grid, image, location):
+        # basic grid object, no collision detection
         self.grid = grid
         self.image = image
         self.location = location # x, y array in units of boxes in grid. specify array not tuple
@@ -50,25 +51,64 @@ class Player(Object):
 
     def moveRight(self):
         super().moveRight()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass # win the game!
+            elif self.grid.isAtEnemy(self):
+                pass # lose the game!
+            else:
+                self.location[0] -= 1
+
         self.image = icon_player_right
 
     def moveLeft(self):
         super().moveLeft()
+
+        # check is in an obstacle, move back
+        # check if in goal, win game
+        # check if in enemy, end game
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # win the game!
+            elif self.grid.isAtEnemy(self):
+                pass  # lose the game!
+            else:  # obstacle or something
+                self.location[0] += 1
+
         self.image = icon_player_left
 
     def moveUp(self):
         super().moveUp()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # win the game!
+            elif self.grid.isAtEnemy(self):
+                pass  # lose the game!
+            else:
+                self.location[1] += 1
+
         self.image = icon_player_up
 
     def moveDown(self):
         super().moveDown()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # win the game!
+            elif self.grid.isAtEnemy(self):
+                pass  # lose the game!
+            else:
+                self.location[1] -= 1
+
         self.image = icon_player_down
 
 class Enemy(Object):
-    def __init__(self, grid, location, player, difficulty):
+    def __init__(self, grid, location, difficulty):
 
         super().__init__(grid, icon_seal, location)
-        self.player = player
+        self.player = self.grid.player
         self.is_dead = False
 
         # enemy AI defaults
@@ -125,3 +165,39 @@ class Enemy(Object):
                     self.moveUp()
                 else:
                     self.moveDown()
+
+    def moveRight(self):
+        super().moveRight()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # do nothing
+            else:
+                self.location[0] -= 1
+
+    def moveLeft(self):
+        super().moveLeft()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # do nothing
+            else:  # obstacle or something, move back
+                self.location[0] += 1
+
+    def moveUp(self):
+        super().moveUp()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # do nothing
+            else:
+                self.location[1] += 1
+
+    def moveDown(self):
+        super().moveDown()
+
+        if self.grid.getAnyCollision(self):
+            if self.grid.isAtGoal(self):
+                pass  # do nothing
+            else:
+                self.location[1] -= 1
