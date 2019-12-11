@@ -1,7 +1,7 @@
 import pygame
 from textures import *
 from grid import Grid
-from obstacle import Player
+from obstacle import Player, Enemy
 
 # 9x9 grid
 # Bgnew.jpg -- background
@@ -26,11 +26,16 @@ grid.addGoal([5,5])
 player = Player(grid, [0,0])
 grid.addObject(player)
 
+# create enemy
+enemy = Enemy(grid, [5,6], player, 3).run()
+grid.addObject(enemy)
+
 prog_terminate = False
 while not prog_terminate:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             prog_terminate = True
+            enemy.stop()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 player.moveLeft()
@@ -40,6 +45,7 @@ while not prog_terminate:
                 player.moveDown()
             if event.key == pygame.K_UP:
                 player.moveUp()
+
 
     # draw background
     display.blit(background, (0,0))
