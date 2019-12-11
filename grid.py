@@ -1,6 +1,7 @@
 import pygame
 from obstacle import Obstacle, Goal, Enemy, Player
 import copy
+import random
 
 class Grid():
     def __init__(self, surface, start_coordinates, rect_size, grid_dimensions=[9, 9]):
@@ -79,3 +80,17 @@ class Grid():
         # draw objects
         for i in self.entity_list:
             i.draw()
+
+    def getUnusedCoordinates(self):
+        # coordinates start at 0, go to 8, in the case of a 9x9 grid
+        taken_coordinates = []
+        for entity in self.entity_list:
+            taken_coordinates.append(entity.location)
+
+        x = random.randint(0, self.grid_dimensions[0]-1)
+        y = random.randint(0, self.grid_dimensions[1]-1)
+        while ([x, y] in taken_coordinates):
+            x = random.randint(0, self.grid_dimensions[0]-1)
+            y = random.randint(0, self.grid_dimensions[1]-1)
+
+        return [x, y]
