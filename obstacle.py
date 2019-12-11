@@ -134,7 +134,7 @@ class Player(Object):
 class Enemy(Object):
     def __init__(self, grid, location, difficulty):
 
-        super().__init__(grid, icon_seal, location)
+        super().__init__(grid, icon_seal_blue, location)
         self.player = self.grid.player
         self.is_dead = False
 

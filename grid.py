@@ -94,16 +94,30 @@ class Grid():
         # draw player again so it is on top at all times
         self.player.draw()
 
-    def getUnusedCoordinates(self):
+    def getUnusedCoordinates(self, border_OK=True):
         # coordinates start at 0, go to 8, in the case of a 9x9 grid
-        taken_coordinates = []
-        for entity in self.entity_list:
-            taken_coordinates.append(entity.location)
+        if border_OK:
+            taken_coordinates = []
+            for entity in self.entity_list:
+                taken_coordinates.append(entity.location)
 
-        x = random.randint(0, self.grid_dimensions[0]-1)
-        y = random.randint(0, self.grid_dimensions[1]-1)
-        while ([x, y] in taken_coordinates):
             x = random.randint(0, self.grid_dimensions[0]-1)
             y = random.randint(0, self.grid_dimensions[1]-1)
+            while ([x, y] in taken_coordinates):
+                x = random.randint(0, self.grid_dimensions[0]-1)
+                y = random.randint(0, self.grid_dimensions[1]-1)
 
-        return [x, y]
+            return [x, y]
+
+        else:
+            taken_coordinates = []
+            for entity in self.entity_list:
+                taken_coordinates.append(entity.location)
+
+            x = random.randint(1, self.grid_dimensions[0] - 2)
+            y = random.randint(1, self.grid_dimensions[1] - 2)
+            while ([x, y] in taken_coordinates):
+                x = random.randint(1, self.grid_dimensions[0] - 2)
+                y = random.randint(1, self.grid_dimensions[1] - 2)
+
+            return [x, y]

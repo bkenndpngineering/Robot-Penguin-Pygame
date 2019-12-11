@@ -39,20 +39,19 @@ def run_game(difficulty=1):
         # between 5 and 10 obstacles
         num_obstacles = random.randint(5, 10) # randint returns including the ends of the range
         for i in range(0, num_obstacles-1):
-            grid.addObstacle(grid.getUnusedCoordinates())
+            grid.addObstacle(grid.getUnusedCoordinates(False)) # do not spawn obstacle on border of grid, blocks goal sometimes
     elif difficulty == 2:
         # medium difficulty
         # between 7 and 13 obstacles
         num_obstacles = random.randint(7, 13)
         for i in range(0, num_obstacles - 1):
-            grid.addObstacle(grid.getUnusedCoordinates())
+            grid.addObstacle(grid.getUnusedCoordinates(False))
     elif difficulty == 3:
         # hardest difficulty
         # between 9 and 15 obstacles
         num_obstacles = random.randint(9, 15)
         for i in range(0, num_obstacles - 1):
-            grid.addObstacle(grid.getUnusedCoordinates())
-        pass
+            grid.addObstacle(grid.getUnusedCoordinates(False))
 
     # enemy after player
     grid.addEnemy(grid.getUnusedCoordinates(), difficulty)
