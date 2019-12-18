@@ -15,3 +15,13 @@ icon_player_up = pygame.image.load("assets/ICON_Player_Up.jpg")
 
 win_screen = pygame.image.load("assets/winner.jpg")
 loose_screen = pygame.image.load("assets/loser.jpg")
+
+left_card = pygame.image.load("assets/CARD_Left.jpg")
+right_card = pygame.image.load("assets/CARD_Right.jpg")
+down_card = pygame.image.load("assets/CARD_Down.jpg")
+up_card = pygame.image.load("assets/CARD_Up.jpg")
+
+pygame.font.init()
+font_bold = pygame.font.Font("assets/Manjari-Bold.otf", 20)
+font_regular = pygame.font.Font("assets/Manjari-Regular.otf", 20)
+font_thin = pygame.font.Font("assets/Manjari-Thin.otf", 20)
