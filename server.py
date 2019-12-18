@@ -1,6 +1,16 @@
 import pygame
 from textures import *
 from button import Button
+import enum
+from dpea_p2p import Server
+
+class PacketType(enum.Enum):
+    INSTRUCTION_1 = ""
+    INSTRUCTION_2 = ""
+    INSTRUCTION_3 = ""
+    INSTRUCTION_4 = ""
+    INSTRUCTION_5 = ""
+    INSTRUCTION_6 = ""
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -10,6 +20,10 @@ pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
 def main():
+    server = Server("127.0.0.1", 9999, PacketType) # IP, port, packet-type
+    server.open_server()
+    server.wait_for_connection()
+
     # resize images
     card_resize_rect = (200, 300)
     left_card_resized = pygame.transform.scale(left_card, card_resize_rect)
@@ -101,11 +115,15 @@ def main():
             button_reset.reset()
 
         if button_send.isPressed():
-            # need atleast four moves to send, make things interesting
             print("send")
             print(instruction_list)
+            # need at least four moves to send, make things interesting
             if not len(instruction_list) >= 4:
-                print("need atleast four!")
+                print("need at least four!")
+            else:
+                print("sending...")
+                # send the instructions list then clear it
+                instruction_list = []
             pygame.time.delay(250)  # simple debouncing
             button_send.reset()
 
@@ -131,6 +149,9 @@ def main():
 
         pygame.display.update()
         clock.tick(60)
+
+    server.close_connection()
+    server.close_server()
 
 if __name__ == "__main__":
     main()

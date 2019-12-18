@@ -1,9 +1,24 @@
-import pygame
 from textures import *
 from grid import Grid
-from obstacle import Player, Enemy
 import math
 import random
+import enum
+from dpea_p2p import Client
+
+class PacketType(enum.Enum):
+    INSTRUCTION_1 = ""
+    INSTRUCTION_2 = ""
+    INSTRUCTION_3 = ""
+    INSTRUCTION_4 = ""
+    INSTRUCTION_5 = ""
+    INSTRUCTION_6 = ""
+
+# TODO
+# get movement
+# remote shutdown
+# client--> server status, allow for next packet
+client = Client("127.0.0.1", 9999, PacketType)
+client.connect()
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -81,7 +96,6 @@ def run_game(difficulty=1):
                 if event.key == pygame.K_UP:
                     grid.player.moveUp()
 
-
         # draw background
         display.blit(background, (0,0))
         grid.draw()
@@ -101,3 +115,4 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
+client.close_connection()
