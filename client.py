@@ -70,7 +70,7 @@ def run_game(difficulty=1):
         instructions = client.getInstructions()
         if not instructions == False:
             print(instructions)
-            client.makeReady()          # would not make it ready until after the arm moves all the pieces
+            #client.makeReady()          # would not make it ready until after the arm moves all the pieces
 
         if grid.getCollision(grid.player, grid.enemy): # player dies
             prog_terminate = True
@@ -93,6 +93,21 @@ def run_game(difficulty=1):
                     grid.player.moveDown()
                 if event.key == pygame.K_UP:
                     grid.player.moveUp()
+
+        # character movement, networked
+        if instructions != False:
+            for instruction in instructions:
+                if instruction == "left":
+                    grid.player.moveLeft()
+                elif instruction == "right":
+                    grid.player.moveRight()
+                elif instruction == "up":
+                    grid.player.moveUp()
+                elif instruction == "down":
+                    grid.player.moveDown()
+
+            client.makeReady()
+
 
         # draw background
         display.blit(background, (0,0))
