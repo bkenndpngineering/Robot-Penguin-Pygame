@@ -11,6 +11,7 @@ class Button():
         self.text_color = text_color
 
         self.pressed = False
+        self.reported_pressed = False
 
     def reset(self):
         self.pressed = False
