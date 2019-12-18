@@ -2,23 +2,12 @@ from textures import *
 from grid import Grid
 import math
 import random
-import enum
-from dpea_p2p import Client
-
-class PacketType(enum.Enum):
-    INSTRUCTION_1 = ""
-    INSTRUCTION_2 = ""
-    INSTRUCTION_3 = ""
-    INSTRUCTION_4 = ""
-    INSTRUCTION_5 = ""
-    INSTRUCTION_6 = ""
+from clientPoll import gameClient
 
 # TODO
 # get movement
 # remote shutdown
 # client--> server status, allow for next packet
-client = Client("127.0.0.1", 9999, PacketType)
-client.connect()
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -26,6 +15,8 @@ SCREEN_HEIGHT = 1080
 display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
+
+client = gameClient().run()
 
 def end_effect(image, delay_time=35):
     image_height = 100
@@ -74,6 +65,13 @@ def run_game(difficulty=1):
     prog_terminate = False
     has_won = False
     while not prog_terminate:
+
+        # test recieve instructions
+        instructions = client.getInstructions()
+        if not instructions == False:
+            print(instructions)
+            client.makeReady()          # would not make it ready until after the arm moves all the pieces
+
         if grid.getCollision(grid.player, grid.enemy): # player dies
             prog_terminate = True
             has_won = False
@@ -115,4 +113,4 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
-client.close_connection()
+client.stop()
