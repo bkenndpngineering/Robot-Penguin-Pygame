@@ -70,30 +70,30 @@ def main():
 
         # check button status
         if button_left_card.isPressed():
-            print("left")
+            print("rotateLeft")
             if len(instruction_list) < 6:
-                instruction_list.append("left")
+                instruction_list.append("rotateLeft")
             pygame.time.delay(250) # simple debouncing
             button_left_card.reset()
 
         if button_right_card.isPressed():
-            print("right")
+            print("rotateRight")
             if len(instruction_list) < 6:
-                instruction_list.append("right")
+                instruction_list.append("rotateRight")
             pygame.time.delay(250)  # simple debouncing
             button_right_card.reset()
 
         if button_down_card.isPressed():
-            print("down")
+            print("backwards")
             if len(instruction_list) < 6:
-                instruction_list.append("down")
+                instruction_list.append("backwards")
             pygame.time.delay(250)  # simple debouncing
             button_down_card.reset()
 
         if button_up_card.isPressed():
-            print("up")
+            print("forwards")
             if len(instruction_list) < 6:
-                instruction_list.append("up")
+                instruction_list.append("forwards")
             pygame.time.delay(250)  # simple debouncing
             button_up_card.reset()
 
@@ -125,16 +125,16 @@ def main():
         coordinate_x = x * SCREEN_WIDTH / 8 + offset_x
         coordinate_y = offset_y * 2 + card_resize_rect[1]
         for instruction in instruction_list:
-            if instruction == "left":
+            if instruction == "rotateLeft":
                 display.blit(left_card_resized, (coordinate_x, coordinate_y))
 
-            elif instruction == "right":
+            elif instruction == "rotateRight":
                 display.blit(right_card_resized, (coordinate_x, coordinate_y))
 
-            elif instruction == "up":
+            elif instruction == "forwards":
                 display.blit(up_card_resized, (coordinate_x, coordinate_y))
 
-            elif instruction == "down":
+            elif instruction == "backwards":
                 display.blit(down_card_resized, (coordinate_x, coordinate_y))
 
             x += 1

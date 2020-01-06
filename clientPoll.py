@@ -29,14 +29,14 @@ class gameServer():
             if self.client_ready:
                 if len(self.instructions_list) != 0:
                     for instruction in self.instructions_list:
-                        if instruction == "left":
-                            self.server.send_packet(PacketType.COMMAND2, b"left")
-                        elif instruction == "right":
-                            self.server.send_packet(PacketType.COMMAND2, b"right")
-                        elif instruction == "up":
-                            self.server.send_packet(PacketType.COMMAND2, b"up")
-                        elif instruction == "down":
-                            self.server.send_packet(PacketType.COMMAND2, b"down")
+                        if instruction == "rotateLeft":
+                            self.server.send_packet(PacketType.COMMAND2, b"rotateLeft")
+                        elif instruction == "rotateRight":
+                            self.server.send_packet(PacketType.COMMAND2, b"rotateLight")
+                        elif instruction == "forwards":
+                            self.server.send_packet(PacketType.COMMAND2, b"forwards")
+                        elif instruction == "backwards":
+                            self.server.send_packet(PacketType.COMMAND2, b"backwards")
                     self.server.send_packet(PacketType.COMMAND2, b"end")
                     self.instructions_list = []
                     self.client_ready = False
@@ -45,7 +45,10 @@ class gameServer():
                 print(packet)
                 if packet == (PacketType.COMMAND1, b"ready"):
                     self.client_ready = True
+                elif packet == (PacketType.Command1, b"shutdown"):
+                    self.stopped = True
 
+        self.server.send_packet(PacketType.COMMAND2, b"shutdown")
         self.server.close_connection()
         self.server.close_server()
 
