@@ -11,6 +11,7 @@ class Object:
         self.image = image
         self.location = location # x, y array in units of boxes in grid. specify array not tuple
 
+
     def getLocation(self):
         return self.location
 
@@ -36,6 +37,50 @@ class Object:
     def draw(self):
         resized_image = pygame.transform.scale(self.image, (self.grid.rect_size, self.grid.rect_size))
         self.grid.surface.blit(resized_image, self.grid.positionToCoordinates(self.location))
+
+    def rotateRight(self):
+        if icon_player_front:
+            self.image = icon_player_right
+        elif icon_player_right:
+            self.image = icon_player_down
+        elif icon_player_down:
+            self.image = icon_player_left
+        elif icon_player_left:
+            self.image = icon_player_front
+
+    def rotateLeft(self):
+        if icon_player_front:
+            self.image = icon_player_left
+        elif icon_player_right:
+            self.image = icon_player_down
+        elif icon_player_down:
+            self.image = icon_player_right
+        elif icon_player_left:
+            self.image = icon_player_front
+
+    def moveForward(self):
+        if icon_player_front:
+            self.moveUp()
+        elif icon_player_right:
+            self.moveRight()
+        elif icon_player_down:
+            self.moveDown()
+        elif icon_player_left:
+            self.moveLeft()
+
+    def moveBackward(self):
+        if icon_player_front:
+            self.moveDown()
+        elif icon_player_right:
+            self.moveLeft()
+        elif icon_player_down:
+            self.moveUp()
+        elif icon_player_left:
+            self.moveRight()
+
+
+
+
 
 class Obstacle(Object):
     def __init__(self, grid, location):
