@@ -38,49 +38,6 @@ class Object:
         resized_image = pygame.transform.scale(self.image, (self.grid.rect_size, self.grid.rect_size))
         self.grid.surface.blit(resized_image, self.grid.positionToCoordinates(self.location))
 
-    def rotateRight(self):
-        if self.image == icon_player_front:
-            self.image = icon_player_right
-        elif self.image == icon_player_right:
-            self.image = icon_player_down
-        elif self.image == icon_player_down:
-            self.image = icon_player_left
-        elif self.image == icon_player_left:
-            self.image = icon_player_front
-
-    def rotateLeft(self):
-        if self.image == icon_player_front:
-            self.image = icon_player_left
-        elif self.image == icon_player_right:
-            self.image = icon_player_down
-        elif self.image == icon_player_down:
-            self.image = icon_player_right
-        elif self.image == icon_player_left:
-            self.image = icon_player_front
-
-    def moveForward(self):
-        if self.image == icon_player_front:
-            self.moveUp()
-        elif self.image == icon_player_right:
-            self.moveRight()
-        elif self.image == icon_player_down:
-            self.moveDown()
-        elif self.image == icon_player_left:
-            self.moveLeft()
-
-    def moveBackward(self):
-        if self.image == icon_player_front:
-            self.moveDown()
-        elif self.image == icon_player_right:
-            self.moveLeft()
-        elif self.image == icon_player_down:
-            self.moveUp()
-        elif self.image == icon_player_left:
-            self.moveRight()
-
-
-
-
 
 class Obstacle(Object):
     def __init__(self, grid, location):
@@ -120,14 +77,13 @@ class Player(Object):
             else:
                 self.location[0] -= 1
 
-        self.image = icon_player_right
-
     def moveLeft(self):
         super().moveLeft()
 
         # check is in an obstacle, move back
         # check if in goal, win game
         # check if in enemy, end game
+
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 self.grid.goal.collect()
@@ -139,8 +95,6 @@ class Player(Object):
                 self.location[0] += 1
             else:  # obstacle or something
                 self.location[0] += 1
-
-        self.image = icon_player_left
 
     def moveUp(self):
         super().moveUp()
@@ -157,8 +111,6 @@ class Player(Object):
             else:
                 self.location[1] += 1
 
-        self.image = icon_player_up
-
     def moveDown(self):
         super().moveDown()
 
@@ -174,7 +126,46 @@ class Player(Object):
             else:
                 self.location[1] -= 1
 
-        self.image = icon_player_down
+    def rotateRight(self):
+        if self.image == icon_player_front:
+            self.image = icon_player_right
+        elif self.image == icon_player_right:
+            self.image = icon_player_down
+        elif self.image == icon_player_down:
+            self.image = icon_player_left
+        elif self.image == icon_player_left:
+            self.image = icon_player_front
+
+    def rotateLeft(self):
+        if self.image == icon_player_front:
+            self.image = icon_player_left
+        elif self.image == icon_player_right:
+            self.image = icon_player_front
+        elif self.image == icon_player_down:
+            self.image = icon_player_right
+        elif self.image == icon_player_left:
+            self.image = icon_player_down
+
+    def moveForward(self):
+        if self.image == icon_player_front:
+            self.moveUp()
+        elif self.image == icon_player_right:
+            self.moveRight()
+        elif self.image == icon_player_down:
+            self.moveDown()
+        elif self.image == icon_player_left:
+            self.moveLeft()
+
+    def moveBackward(self):
+        if self.image == icon_player_front:
+            self.moveDown()
+        elif self.image == icon_player_right:
+            self.moveLeft()
+        elif self.image == icon_player_down:
+            self.moveUp()
+        elif self.image == icon_player_left:
+            self.moveRight()
+
 
 class Enemy(Object):
     def __init__(self, grid, location, difficulty):

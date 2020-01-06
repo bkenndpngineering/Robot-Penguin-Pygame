@@ -32,7 +32,7 @@ class gameServer():
                         if instruction == "rotateLeft":
                             self.server.send_packet(PacketType.COMMAND2, b"rotateLeft")
                         elif instruction == "rotateRight":
-                            self.server.send_packet(PacketType.COMMAND2, b"rotateLight")
+                            self.server.send_packet(PacketType.COMMAND2, b"rotateRight")
                         elif instruction == "forwards":
                             self.server.send_packet(PacketType.COMMAND2, b"forwards")
                         elif instruction == "backwards":
@@ -99,7 +99,7 @@ class gameClient():
                 elif packet == (PacketType.COMMAND2, b"end"):
                     self.ready = False
                     self.instructions_ready = True
-                elif packet == (PacketType.COMMAND2,b"shutdown"):
+                elif packet == (PacketType.COMMAND2, b"shutdown"):
                     self.stopped = True
 
 
