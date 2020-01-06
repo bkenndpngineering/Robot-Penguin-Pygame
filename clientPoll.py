@@ -101,10 +101,15 @@ class gameClient():
                 elif packet == (PacketType.COMMAND2, b"end"):
                     self.ready = False
                     self.instructions_ready = True
+                elif packet == (PacketType.COMMAND2,b"shutdown")
+                    self.stopped = True
+
+
             else:
                 if self.change_ready:
                     self.client.send_packet(PacketType.COMMAND1, b"ready")
                     self.ready = True
 
         # needs to time out or something. waits forever for a packet
+        self.client.send_packet(PacketType.COMMAND1, b"shutdown")
         self.client.close_connection()
