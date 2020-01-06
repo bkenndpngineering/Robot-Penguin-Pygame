@@ -39,43 +39,43 @@ class Object:
         self.grid.surface.blit(resized_image, self.grid.positionToCoordinates(self.location))
 
     def rotateRight(self):
-        if icon_player_front:
+        if self.image == icon_player_front:
             self.image = icon_player_right
-        elif icon_player_right:
+        elif self.image == icon_player_right:
             self.image = icon_player_down
-        elif icon_player_down:
+        elif self.image == icon_player_down:
             self.image = icon_player_left
-        elif icon_player_left:
+        elif self.image == icon_player_left:
             self.image = icon_player_front
 
     def rotateLeft(self):
-        if icon_player_front:
+        if self.image == icon_player_front:
             self.image = icon_player_left
-        elif icon_player_right:
+        elif self.image == icon_player_right:
             self.image = icon_player_down
-        elif icon_player_down:
+        elif self.image == icon_player_down:
             self.image = icon_player_right
-        elif icon_player_left:
+        elif self.image == icon_player_left:
             self.image = icon_player_front
 
     def moveForward(self):
-        if icon_player_front:
+        if self.image == icon_player_front:
             self.moveUp()
-        elif icon_player_right:
+        elif self.image == icon_player_right:
             self.moveRight()
-        elif icon_player_down:
+        elif self.image == icon_player_down:
             self.moveDown()
-        elif icon_player_left:
+        elif self.image == icon_player_left:
             self.moveLeft()
 
     def moveBackward(self):
-        if icon_player_front:
+        if self.image == icon_player_front:
             self.moveDown()
-        elif icon_player_right:
+        elif self.image == icon_player_right:
             self.moveLeft()
-        elif icon_player_down:
+        elif self.image == icon_player_down:
             self.moveUp()
-        elif icon_player_left:
+        elif self.image == icon_player_left:
             self.moveRight()
 
 

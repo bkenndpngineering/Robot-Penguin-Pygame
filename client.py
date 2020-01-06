@@ -1,3 +1,4 @@
+import pygame
 from textures import *
 from grid import Grid
 import math
@@ -68,9 +69,8 @@ def run_game(difficulty=1):
 
         # test recieve instructions
         instructions = client.getInstructions()
-        if not instructions == False:
-            print(instructions)
-            #client.makeReady()          # would not make it ready until after the arm moves all the pieces
+        if client.stopped:
+            prog_terminate = True
 
         if grid.getCollision(grid.player, grid.enemy): # player dies
             prog_terminate = True
@@ -81,6 +81,7 @@ def run_game(difficulty=1):
             has_won = True
 
         # character movement, replace with delta arm client/server commands
+        '''
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = True
@@ -93,18 +94,18 @@ def run_game(difficulty=1):
                     grid.player.moveDown()
                 if event.key == pygame.K_UP:
                     grid.player.moveUp()
-
+        '''
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                if instruction == "left":
-                    grid.player.moveLeft()
-                elif instruction == "right":
-                    grid.player.moveRight()
-                elif instruction == "up":
-                    grid.player.moveUp()
-                elif instruction == "down":
-                    grid.player.moveDown()
+                if instruction == "rotateLeft":
+                    grid.player.rotateLeft()
+                elif instruction == "rotateRight":
+                    grid.player.rotateRight()
+                elif instruction == "forwards":
+                    grid.player.moveForward()
+                elif instruction == "backwards":
+                    grid.player.moveBackward()
 
             client.makeReady()
 
@@ -128,4 +129,3 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
-client.stop()
