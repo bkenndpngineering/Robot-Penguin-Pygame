@@ -64,7 +64,7 @@ class Player(Object):
 
     def moveRight(self):
         super().moveRight()
-
+        print('penguin moved right')
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 self.grid.goal.collect()
@@ -79,6 +79,7 @@ class Player(Object):
 
     def moveLeft(self):
         super().moveLeft()
+        print('penguin moved left')
 
         # check is in an obstacle, move back
         # check if in goal, win game
@@ -98,6 +99,7 @@ class Player(Object):
 
     def moveUp(self):
         super().moveUp()
+        print('penguin moved up')
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
@@ -113,6 +115,7 @@ class Player(Object):
 
     def moveDown(self):
         super().moveDown()
+        print('penguin moved down')
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
@@ -135,6 +138,7 @@ class Player(Object):
             self.image = icon_player_left
         elif self.image == icon_player_left:
             self.image = icon_player_front
+        print('penguin rotated right')
 
     def rotateLeft(self):
         if self.image == icon_player_front:
@@ -145,6 +149,7 @@ class Player(Object):
             self.image = icon_player_right
         elif self.image == icon_player_left:
             self.image = icon_player_down
+        print('penguin rotated left')
 
     def moveForward(self):
         if self.image == icon_player_front:
