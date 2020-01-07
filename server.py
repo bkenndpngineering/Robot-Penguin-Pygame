@@ -10,11 +10,14 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
-server = gameServer().run()
+server = gameServer()#.run()
 
 def start_screen():
     button_width = 100
     button_height = 50
+
+    #bottom right, hidden exit button
+    button_hidden = Button("", (SCREEN_WIDTH - button_width, SCREEN_HEIGHT - button_height, button_width, button_height), inact_color=(0,0,0), act_color=(0,0,0))   # background color must be same as button color
 
     button_diff_easy = Button("Easy", (0, 0 * button_height, button_width, button_height))
     button_diff_med = Button("Medium", (0, 1 * button_height, button_width, button_height))
@@ -31,6 +34,7 @@ def start_screen():
         button_diff_easy.render(display)
         button_diff_med.render(display)
         button_diff_hard.render(display)
+        button_hidden.render(display)
 
         if button_diff_easy.isPressed():
             print("difficulty 1")
@@ -45,6 +49,11 @@ def start_screen():
         elif button_diff_hard.isPressed():
             print("difficulty 3")
             difficulty = 3
+            prog_terminate = True
+
+        elif button_hidden.isPressed():
+            print("hidden button. exit")
+            difficulty = None
             prog_terminate = True
 
         pygame.display.update()
@@ -184,8 +193,8 @@ def main():
         clock.tick(60)
 
 if __name__ == "__main__":
-    #start_screen()
-    main()
+    start_screen()
+    #main()
 
 pygame.quit()
 server.stop()
