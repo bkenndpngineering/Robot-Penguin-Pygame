@@ -75,6 +75,9 @@ def run_game(difficulty=1):
     prog_terminate = False
     has_won = False
     while not prog_terminate:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                prog_terminate = True
 
         button_hidden.render(display)
         if button_hidden.isPressed():
