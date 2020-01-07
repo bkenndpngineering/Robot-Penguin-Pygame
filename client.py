@@ -5,6 +5,7 @@ import math
 import random
 from clientPoll import gameClient
 from button import Button
+from packetType import PacketType
 
 # TODO
 # get movement
