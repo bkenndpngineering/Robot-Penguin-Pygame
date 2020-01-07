@@ -76,7 +76,7 @@ def run_game(difficulty=1):
     while not prog_terminate:
 
         button_hidden.render(display)
-        if button_hidden.isPressed()
+        if button_hidden.isPressed():
             prog_terminate = True
 
         # test recieve instructions
