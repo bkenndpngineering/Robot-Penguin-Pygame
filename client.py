@@ -80,7 +80,7 @@ def run_game(difficulty=1):
         if button_hidden.isPressed():
             prog_terminate = True
 
-        # test recieve instructions
+        # test receive instructions
         instructions = client.getInstructions()
         if client.stopped:
             prog_terminate = True
