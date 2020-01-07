@@ -4,6 +4,7 @@ from grid import Grid
 import math
 import random
 from clientPoll import gameClient
+from button import Button
 
 # TODO
 # get movement
@@ -32,6 +33,13 @@ def end_effect(image, delay_time=35):
             pygame.time.wait(delay_time)
 
 def run_game(difficulty=1):
+
+    # hidden escape button
+    # bottom right
+    button_height = 50
+    button_width = 100
+    button_hidden = Button("", (SCREEN_WIDTH - button_width, SCREEN_HEIGHT - button_height, button_width, button_height), inact_color=(0,0,0), act_color=(0,0,0)) # act colors must match background color to be "hidden"
+
     # set up game board
     grid = Grid(display, (510, 60), 100, [9, 9])
     # end goal
@@ -66,6 +74,10 @@ def run_game(difficulty=1):
     prog_terminate = False
     has_won = False
     while not prog_terminate:
+
+        button_hidden.render(display)
+        if button_hidden.isPressed()
+            prog_terminate = True
 
         # test recieve instructions
         instructions = client.getInstructions()
