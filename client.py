@@ -6,11 +6,27 @@ import random
 from clientPoll import gameClient
 from button import Button
 from packetType import PacketType
+from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
 # get movement
 # remote shutdown
 # client--> server status, allow for next packet
+
+# start up robot arm
+arm = DeltaArm()
+print("starting robot arm")
+if not arm.initialize():
+    print("robot failed init")
+    exit()
+print("robot setup")
+
+# coordinates for grid
+#
+#
+#
+#
+######################
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -137,6 +153,7 @@ def run_game(difficulty=1):
     return has_won
 
 if __name__ == '__main__':
+    # main loop 
     # get difficulty from surface tablet
 
     if run_game(3) == True:  # wins the game
@@ -145,3 +162,4 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
+arm.shutdown()
