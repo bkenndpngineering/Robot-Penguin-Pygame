@@ -59,7 +59,7 @@ class Goal(Object):
 
 class Player(Object):
     def __init__(self, grid, location):
-        super().__init__(grid, icon_player_front, location)
+        super().__init__(grid, icon_player_down, location)
         self.alive = True
 
     def moveRight(self):
