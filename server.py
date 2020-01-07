@@ -6,11 +6,51 @@ from clientPoll import gameServer
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
-display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
 server = gameServer().run()
+
+def start_screen():
+    button_width = 100
+    button_height = 50
+
+    button_diff_easy = Button("Easy", (0, 0 * button_height, button_width, button_height))
+    button_diff_med = Button("Medium", (0, 1 * button_height, button_width, button_height))
+    button_diff_hard = Button("Hard", (0, 2 * button_height, button_width, button_height))
+
+    difficulty = None
+
+    prog_terminate = False
+    while not prog_terminate:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                prog_terminate = True
+
+        button_diff_easy.render(display)
+        button_diff_med.render(display)
+        button_diff_hard.render(display)
+
+        if button_diff_easy.isPressed():
+            print("difficulty 1")
+            difficulty = 1
+            prog_terminate = True
+
+        elif button_diff_med.isPressed():
+            print("difficulty 2")
+            difficulty = 2
+            prog_terminate = True
+
+        elif button_diff_hard.isPressed():
+            print("difficulty 3")
+            difficulty = 3
+            prog_terminate = True
+
+        pygame.display.update()
+        clock.tick(60)
+
+    #return difficulty # do something with client
 
 def main():
     # resize images
@@ -144,6 +184,7 @@ def main():
         clock.tick(60)
 
 if __name__ == "__main__":
+    start_screen()
     main()
 
 pygame.quit()

@@ -13,7 +13,7 @@ from clientPoll import gameClient
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
-display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
