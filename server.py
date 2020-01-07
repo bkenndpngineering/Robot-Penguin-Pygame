@@ -10,7 +10,7 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
-server = gameServer()#.run()
+server = gameServer().run()
 
 def start_screen():
     button_width = 100
@@ -203,7 +203,7 @@ def main():
         clock.tick(60)
 
 if __name__ == "__main__":
-    #start_screen()
+    start_screen()
     main()
 
 pygame.quit()
