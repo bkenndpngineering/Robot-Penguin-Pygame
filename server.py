@@ -10,11 +10,14 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
-server = gameServer().run()
+server = gameServer()#.run()
 
 def start_screen():
     button_width = 100
     button_height = 50
+
+    #bottom right, hidden exit button
+    button_hidden = Button("", (SCREEN_WIDTH - button_width, SCREEN_HEIGHT - button_height, button_width, button_height), inact_color=(0,0,0), act_color=(0,0,0))   # background color must be same as button color
 
     button_diff_easy = Button("Easy", (0, 0 * button_height, button_width, button_height))
     button_diff_med = Button("Medium", (0, 1 * button_height, button_width, button_height))
@@ -31,6 +34,7 @@ def start_screen():
         button_diff_easy.render(display)
         button_diff_med.render(display)
         button_diff_hard.render(display)
+        button_hidden.render(display)
 
         if button_diff_easy.isPressed():
             print("difficulty 1")
@@ -45,6 +49,11 @@ def start_screen():
         elif button_diff_hard.isPressed():
             print("difficulty 3")
             difficulty = 3
+            prog_terminate = True
+
+        elif button_hidden.isPressed():
+            print("hidden button. exit")
+            difficulty = None
             prog_terminate = True
 
         pygame.display.update()
@@ -71,6 +80,11 @@ def main():
     button_height = 75
     button_reset = Button("RESET IT!", (0 * SCREEN_WIDTH/8+offset_x - button_width, offset_y * 2 + card_resize_rect[1], button_width, button_height))
     button_send = Button("SEND IT!", (5 * SCREEN_WIDTH/8+offset_x + card_resize_rect[0], offset_y * 2 + card_resize_rect[1], button_width, button_height))
+
+    # bottom right, hidden exit button
+    button_hidden = Button("",
+                           (SCREEN_WIDTH - button_width, SCREEN_HEIGHT - button_height, button_width, button_height),
+                           inact_color=(0, 0, 0), act_color=(0, 0, 0))  # background color must be same as button color
 
     # create grid
     instruction_list = []
@@ -107,43 +121,48 @@ def main():
         # render utility buttons
         button_send.render(display)
         button_reset.render(display)
+        button_hidden.render(display)
+
+        if button_hidden.isPressed():
+            print("hidden button. exit")
+            prog_terminate = True
 
         # check button status
-        if button_left_card.isPressed():
+        elif button_left_card.isPressed():
             print("rotateLeft")
             if len(instruction_list) < 6:
                 instruction_list.append("rotateLeft")
             pygame.time.delay(250) # simple debouncing
             button_left_card.reset()
 
-        if button_right_card.isPressed():
+        elif button_right_card.isPressed():
             print("rotateRight")
             if len(instruction_list) < 6:
                 instruction_list.append("rotateRight")
             pygame.time.delay(250)  # simple debouncing
             button_right_card.reset()
 
-        if button_down_card.isPressed():
+        elif button_down_card.isPressed():
             print("backwards")
             if len(instruction_list) < 6:
                 instruction_list.append("backwards")
             pygame.time.delay(250)  # simple debouncing
             button_down_card.reset()
 
-        if button_up_card.isPressed():
+        elif button_up_card.isPressed():
             print("forwards")
             if len(instruction_list) < 6:
                 instruction_list.append("forwards")
             pygame.time.delay(250)  # simple debouncing
             button_up_card.reset()
 
-        if button_reset.isPressed():
+        elif button_reset.isPressed():
             instruction_list = []
             print("reset")
             pygame.time.delay(250)  # simple debouncing
             button_reset.reset()
 
-        if button_send.isPressed():
+        elif button_send.isPressed():
             print("send")
             print(instruction_list)
             # need at least four moves to send, make things interesting
