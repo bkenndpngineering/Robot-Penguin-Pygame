@@ -3,7 +3,7 @@ from packetType import PacketType
 from dpea_p2p import Server, Client
 
 class gameServer():
-    def __init__(self, IP="127.0.0.1", port=9999):
+    def __init__(self, IP="172.17.21.1", port=9999):
         self.server = Server(IP, port, PacketType)  # IP, port, packet-type
         self.stopped = False
         self.instructions_list = []
@@ -51,8 +51,8 @@ class gameServer():
         self.server.close_server()
 
 class gameClient():
-    def __init__(self, IP="127.0.0.1", port=9999):
-        self.client = Client("127.0.0.1", 9999, PacketType)
+    def __init__(self, IP="172.17.21.1", port=9999):
+        self.client = Client(IP, port, PacketType)
         self.stopped = False
         self.ready = False
         self.change_ready = False
