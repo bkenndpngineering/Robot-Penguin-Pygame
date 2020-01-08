@@ -59,6 +59,7 @@ def start_screen():
 
         elif button_hidden.isPressed():
             print("hidden button. exit")
+            instruction_list.append("shutdown")
             difficulty = None
             prog_terminate = True
 
