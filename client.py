@@ -132,9 +132,9 @@ def run_game(difficulty=1):
 
             if not grid.player.won:
                 client.makeReady()
-            else:
-                client.reset = True
-                client.makeReady()
+            #else:
+            #    client.reset = True
+            #    client.makeReady()
 
         if grid.player.won:
             prog_terminate = True
@@ -171,10 +171,12 @@ if __name__ == '__main__':
             # send reset signal to server -- > go to start screen
             end_effect(win_screen)
             client.restart = True
+            client.makeReady()
         elif state == 2:# looses the game
             # send reset signal to server -- > go to start screen
             end_effect(loose_screen)
             client.restart = True
+            client.makeReady()
         elif state == 3:
             # kill the whole thang
             break
