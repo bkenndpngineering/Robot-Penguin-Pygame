@@ -1,5 +1,6 @@
 import pygame
 from obstacle import Obstacle, Goal, Enemy, Player, Baby
+from textures import *
 import copy
 import random
 
@@ -82,6 +83,8 @@ class Grid():
         return (x_coordinate, y_coordinate)
 
     def draw(self):
+        self.surface.blit(background, (0, 0))
+
         # draw black rectangles
         for i in range(0, self.grid_dimensions[0]):
             for ii in range(0, self.grid_dimensions[1]):
