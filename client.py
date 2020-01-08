@@ -6,6 +6,7 @@ import random
 from clientPoll import gameClient
 from button import Button
 from packetType import PacketType
+from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
 # get movement
@@ -75,6 +76,9 @@ def run_game(difficulty=1):
     prog_terminate = False
     has_won = False
     while not prog_terminate:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                prog_terminate = True
 
         button_hidden.render(display)
         if button_hidden.isPressed():
@@ -93,21 +97,6 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = True
 
-        # character movement, replace with delta arm client/server commands
-        '''
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                prog_terminate = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    grid.player.moveLeft()
-                if event.key == pygame.K_RIGHT:
-                    grid.player.moveRight()
-                if event.key == pygame.K_DOWN:
-                    grid.player.moveDown()
-                if event.key == pygame.K_UP:
-                    grid.player.moveUp()
-        '''
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
@@ -134,6 +123,7 @@ def run_game(difficulty=1):
     return has_won
 
 if __name__ == '__main__':
+    # main loop 
     # get difficulty from surface tablet
     instructions = []
     while not instructions:
@@ -153,3 +143,4 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
+client.stop()
