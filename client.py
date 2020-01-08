@@ -13,21 +13,6 @@ from Delta_Arm_Testing.deltaArm import DeltaArm
 # remote shutdown
 # client--> server status, allow for next packet
 
-# start up robot arm
-arm = DeltaArm()
-print("starting robot arm")
-if not arm.initialize():
-    print("robot failed init")
-    exit()
-print("robot setup")
-
-# coordinates for grid
-#
-#
-#
-#
-######################
-
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -112,21 +97,6 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = True
 
-        # character movement, replace with delta arm client/server commands
-        '''
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                prog_terminate = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    grid.player.moveLeft()
-                if event.key == pygame.K_RIGHT:
-                    grid.player.moveRight()
-                if event.key == pygame.K_DOWN:
-                    grid.player.moveDown()
-                if event.key == pygame.K_UP:
-                    grid.player.moveUp()
-        '''
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
@@ -162,4 +132,4 @@ if __name__ == '__main__':
         end_effect(loose_screen)
 
 pygame.quit()
-arm.shutdown()
+client.stop()
