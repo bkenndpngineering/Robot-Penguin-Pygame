@@ -53,7 +53,9 @@ class gameServer():
                 if packet == (PacketType.COMMAND1, b"ready"):
                     self.client_ready = True
                 elif packet == (PacketType.COMMAND1, b"restart"):
+                    print("RESTART FROM CLIENT")
                     self.restart = True
+                    self.client_ready = True
 
         self.server.send_packet(PacketType.COMMAND2, b"shutdown")
         self.server.close_connection()
