@@ -76,6 +76,9 @@ def run_game(difficulty=1):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    prog_terminate = True
 
         button_hidden.render(display)
         if button_hidden.isPressed():

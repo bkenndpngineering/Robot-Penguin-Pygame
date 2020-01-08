@@ -30,6 +30,9 @@ def start_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    prog_terminate = True
 
         display.fill((0,0,0))
 
@@ -112,6 +115,9 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = 2
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    prog_terminate = 2
 
         # background
         display.fill((0, 0, 0))
