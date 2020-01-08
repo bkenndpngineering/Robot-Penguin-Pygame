@@ -86,6 +86,9 @@ class gameClient():
         self.instructions_ready = False
         self.change_ready = True
 
+    def stop(self):
+        self.stopped = True
+
     def update(self):
         print("CLIENT: waiting for a connection")
         self.client.connect()
