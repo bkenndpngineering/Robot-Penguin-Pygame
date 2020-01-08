@@ -64,14 +64,17 @@ def start_screen():
         clock.tick(60)
 
     #return difficulty # do something with client
-    if server.client_ready:
-        print("sending...")
-        # send the instructions list then clear it
-        server.send(instruction_list)
-        instruction_list = []
+    if difficulty:
+        if server.client_ready:
+            print("sending...")
+            # send the instructions list then clear it
+            server.send(instruction_list)
+            instruction_list = []
+        else:
+            print("client not ready")
+        return True
     else:
-        print("client not ready")
-
+        return False
 
 def main():
     # resize images
@@ -137,7 +140,7 @@ def main():
 
         if button_hidden.isPressed():
             print("hidden button. exit")
-            prog_terminate = True
+            prog_terminate = 2
 
         # check button status
         elif button_left_card.isPressed():
@@ -217,9 +220,13 @@ def main():
         pygame.display.update()
         clock.tick(60)
 
+    return prog_terminate
+
 if __name__ == "__main__":
     while 1:
-        start_screen()
+        state = start_screen()
+        if state == False:
+            break
         state = main()
         if state == 2:
             break
