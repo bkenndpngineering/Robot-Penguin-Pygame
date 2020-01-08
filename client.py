@@ -5,7 +5,6 @@ import math
 import random
 from clientPoll import gameClient
 from button import Button
-from packetType import PacketType
 from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
