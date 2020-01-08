@@ -61,6 +61,7 @@ class Player(Object):
     def __init__(self, grid, location):
         super().__init__(grid, icon_player_down, location)
         self.alive = True
+        self.won = False
 
     def moveRight(self):
         super().moveRight()
@@ -70,7 +71,7 @@ class Player(Object):
             elif self.grid.isAtEnemy(self):
                 self.alive = False
             elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True): # winning game, got to child
-                pass
+                self.won = True
             elif self.grid.isAtBaby(self): # if not with goal, acts as barrier
                 self.location[0] -= 1
             else:
@@ -89,7 +90,7 @@ class Player(Object):
             elif self.grid.isAtEnemy(self):
                 self.alive = False
             elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
-                pass
+                self.won = True
             elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
                 self.location[0] += 1
             else:  # obstacle or something
@@ -104,7 +105,7 @@ class Player(Object):
             elif self.grid.isAtEnemy(self):
                 self.alive = False
             elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
-                pass
+                self.won = True
             elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
                 self.location[1] += 1
             else:
@@ -119,7 +120,7 @@ class Player(Object):
             elif self.grid.isAtEnemy(self):
                 self.alive = False
             elif self.grid.isAtBaby(self) and (self.grid.goal.collected == True):  # winning game, got to child
-                pass
+                self.won = True
             elif self.grid.isAtBaby(self):  # if not with goal, acts as barrier
                 self.location[1] -= 1
             else:

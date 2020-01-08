@@ -96,9 +96,10 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 2
 
-        if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
-            prog_terminate = True
-            has_won = 1
+        #
+        #if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
+        #    prog_terminate = True
+        #    has_won = 1
 
         waitTime = .25
         # character movement, networked
@@ -109,24 +110,35 @@ def run_game(difficulty=1):
                     grid.draw()
                     pygame.display.update()
                     time.sleep(waitTime)
+                    if grid.player.won: break
                 elif instruction == "rotateRight":
                     grid.player.rotateRight()
                     grid.draw()
                     pygame.display.update()
                     time.sleep(waitTime)
+                    if grid.player.won: break
                 elif instruction == "forwards":
                     grid.player.moveForward()
                     grid.draw()
                     pygame.display.update()
                     time.sleep(waitTime)
+                    if grid.player.won: break
                 elif instruction == "backwards":
                     grid.player.moveBackward()
                     grid.draw()
                     pygame.display.update()
                     time.sleep(waitTime)
+                    if grid.player.won: break
 
-            client.makeReady()
+            if not grid.player.won:
+                client.makeReady()
+            else:
+                client.reset = True
+                client.makeReady()
 
+        if grid.player.won:
+            prog_terminate = True
+            has_won = 1
 
         # draw background
         display.blit(background, (0,0))
