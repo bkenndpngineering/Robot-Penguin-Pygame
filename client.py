@@ -6,7 +6,6 @@ import random
 from clientPoll import gameClient
 from button import Button
 import time
-#from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
 # get movement
@@ -74,7 +73,10 @@ def run_game(difficulty=1):
     grid.addEnemy(grid.getUnusedCoordinates(), difficulty)
 
     prog_terminate = False
-    has_won = False
+    has_won = 2 # bool --> enum, 1,2,3
+    # seperate has won, and prog_terminate
+    # make enums -- win, loose, exit
+
     while not prog_terminate:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -88,14 +90,15 @@ def run_game(difficulty=1):
         instructions = client.getInstructions()
         if client.stopped:
             prog_terminate = True
+            has_won = 3
 
         if grid.getCollision(grid.player, grid.enemy): # player dies
             prog_terminate = True
-            has_won = False
+            has_won = 2
 
         if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
             prog_terminate = True
-            has_won = True
+            has_won = 1
 
         waitTime = .25
         # character movement, networked
@@ -138,22 +141,36 @@ def run_game(difficulty=1):
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
-    instructions = []
-    while not instructions:
-        instructions = client.getInstructions()
-        pass
-    for instruction in instructions:
-        if instruction == "1":
-            diff = 1
-        if instruction == "2":
-            diff = 2
-        if instruction == "3":
-            diff = 3
-    client.makeReady()
-    if run_game(diff) == True:  # wins the game
-        end_effect(win_screen)
-    else: # looses the game
-        end_effect(loose_screen)
+    while 1:
+        instructions = []
+        while not instructions:
+            instructions = client.getInstructions()
+            pass
+        for instruction in instructions:
+            if instruction == "1":
+                diff = 1
+            if instruction == "2":
+                diff = 2
+            if instruction == "3":
+                diff = 3
+        client.makeReady()
+        state = run_game(diff)
+        if state == 1:  # wins the game
+            # send reset signal to server -- > go to start screen
+            end_effect(win_screen)
+        elif state == 2:# looses the game
+            # send reset signal to server -- > go to start screen
+            end_effect(loose_screen)
+        elif state == 3:
+            # kill the whole thang
+            break
+
+
+# still needs to be able to exit
+# server/client
+# send reset command from client --> server
+# server --> start screen
+# client reset, wait for difficulty
 
 pygame.quit()
 client.stop()
