@@ -152,14 +152,16 @@ if __name__ == '__main__':
         instructions = []
         while not instructions:
             instructions = client.getInstructions()
-            pass
+
         for instruction in instructions:
             if instruction == "1":
                 diff = 1
-            if instruction == "2":
+            elif instruction == "2":
                 diff = 2
-            if instruction == "3":
+            elif instruction == "3":
                 diff = 3
+            else:
+                diff = 1
         client.makeReady()
         state = run_game(diff)
         if state == 1:  # wins the game
