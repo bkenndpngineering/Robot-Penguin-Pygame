@@ -5,7 +5,7 @@ import math
 import random
 from clientPoll import gameClient
 from button import Button
-from Delta_Arm_Testing.deltaArm import DeltaArm
+#from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
 # get movement
@@ -23,7 +23,7 @@ client = gameClient().run()
 
 def end_effect(image, delay_time=35):
     image_height = 100
-    image_width = 100
+    image_width = 100 
     image = pygame.transform.scale(image, (image_width, image_height))
     cols = math.ceil(SCREEN_WIDTH / image_width)
     rows = math.ceil(SCREEN_HEIGHT / image_height)
