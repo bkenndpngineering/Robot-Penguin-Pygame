@@ -152,10 +152,10 @@ def run_game(difficulty=1):
 
 arm = DeltaArm()
 ## Grid coordinates
-## (71, -183, -269.63)
-## (-177, -44.5, -272.5)
-## (-32, 198, -272.69)
-## (198, 61, -270.1)
+## (71, -183, -269.63) # TOP LEFT
+## (-177, -44.5, -272.5) # TOP RIGHT
+## (-32, 198, -272.69) # BOTTOM RIGHT
+## (198, 61, -270.1) # BOTTOM LEFT
 ## table height around 270
 
 if __name__ == '__main__':
