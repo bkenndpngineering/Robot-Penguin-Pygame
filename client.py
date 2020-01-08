@@ -5,6 +5,7 @@ import math
 import random
 from clientPoll import gameClient
 from button import Button
+import time
 #from Delta_Arm_Testing.deltaArm import DeltaArm
 
 # TODO
@@ -96,17 +97,26 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = True
 
+        waitTime = .25
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
+                    grid.draw()
+                    time.sleep(waitTime)
                 elif instruction == "rotateRight":
                     grid.player.rotateRight()
+                    grid.draw()
+                    time.sleep(waitTime)
                 elif instruction == "forwards":
                     grid.player.moveForward()
+                    grid.draw()
+                    time.sleep(waitTime)
                 elif instruction == "backwards":
                     grid.player.moveBackward()
+                    grid.draw()
+                    time.sleep(waitTime)
 
             client.makeReady()
 
