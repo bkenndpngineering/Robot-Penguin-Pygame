@@ -135,8 +135,19 @@ def run_game(difficulty=1):
 
 if __name__ == '__main__':
     # get difficulty from surface tablet
-
-    if run_game(3) == True:  # wins the game
+    instructions = []
+    while not instructions:
+        instructions = client.getInstructions()
+        pass
+    for instruction in instructions:
+        if instruction == "1":
+            diff = 1
+        if instruction == "2":
+            diff = 2
+        if instruction == "3":
+            diff = 3
+    client.makeReady()
+    if run_game(diff) == True:  # wins the game
         end_effect(win_screen)
     else: # looses the game
         end_effect(loose_screen)

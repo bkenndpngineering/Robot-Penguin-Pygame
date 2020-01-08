@@ -37,6 +37,12 @@ class gameServer():
                             self.server.send_packet(PacketType.COMMAND2, b"forwards")
                         elif instruction == "backwards":
                             self.server.send_packet(PacketType.COMMAND2, b"backwards")
+                        elif instruction == "1":
+                            self.server.send_packet(PacketType.COMMAND2, b"1")
+                        elif instruction == "2":
+                            self.server.send_packet(PacketType.COMMAND2, b"2")
+                        elif instruction == "3":
+                            self.server.send_packet(PacketType.COMMAND2, b"3")
                     self.server.send_packet(PacketType.COMMAND2, b"end")
                     self.instructions_list = []
                     self.client_ready = False
@@ -101,7 +107,12 @@ class gameClient():
                     self.instructions_ready = True
                 elif packet == (PacketType.COMMAND2, b"shutdown"):
                     self.stopped = True
-
+                elif packet == (PacketType.COMMAND2, b"1"):
+                    self.instructions.append("1")
+                elif packet == (PacketType.COMMAND2, b"2"):
+                    self.instructions.append("2")
+                elif packet == (PacketType.COMMAND2, b"3"):
+                    self.instructions.append("3")
 
             else:
                 if self.change_ready:

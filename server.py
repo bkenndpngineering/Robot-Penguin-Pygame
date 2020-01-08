@@ -35,20 +35,24 @@ def start_screen():
         button_diff_med.render(display)
         button_diff_hard.render(display)
         button_hidden.render(display)
+        instruction_list = []
 
         if button_diff_easy.isPressed():
             print("difficulty 1")
             difficulty = 1
+            instruction_list.append("1")
             prog_terminate = True
 
         elif button_diff_med.isPressed():
             print("difficulty 2")
             difficulty = 2
+            instruction_list.append("2")
             prog_terminate = True
 
         elif button_diff_hard.isPressed():
             print("difficulty 3")
             difficulty = 3
+            instruction_list.append("3")
             prog_terminate = True
 
         elif button_hidden.isPressed():
@@ -60,6 +64,14 @@ def start_screen():
         clock.tick(60)
 
     #return difficulty # do something with client
+    if server.client_ready:
+        print("sending...")
+        # send the instructions list then clear it
+        server.send(instruction_list)
+        instruction_list = []
+    else:
+        print("client not ready")
+
 
 def main():
     # resize images
