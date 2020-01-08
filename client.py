@@ -92,7 +92,7 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 3
 
-        if grid.getCollision(grid.player, grid.enemy): # player dies
+        if grid.getCollision(grid.player, grid.enemy): # player dies # redundant. use player.isAlive ??
             prog_terminate = True
             has_won = 2
 

@@ -123,7 +123,7 @@ class gameClient():
             else:
                 if self.change_ready:
                     if not self.restart:
-                        self.client.send_packet(PacketType.COMMAND1, b"ready")
+                        self.client.send_packet(PacketType.COMMAND1, b"restart")# ready
                         self.ready = True
                     else:
                         self.client.send_packet(PacketType.COMMAND1, b"restart")

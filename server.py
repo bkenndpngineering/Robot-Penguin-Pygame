@@ -216,6 +216,7 @@ def main():
 
         if server.restart:
             prog_terminate = 1
+            server.restart = False
 
         pygame.display.update()
         clock.tick(60)
