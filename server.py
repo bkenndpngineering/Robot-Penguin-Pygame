@@ -60,7 +60,7 @@ def start_screen():
         elif button_hidden.isPressed():
             print("hidden button. exit")
             instruction_list.append("shutdown")
-            difficulty = None
+            difficulty = True
             prog_terminate = True
 
         pygame.display.update()
