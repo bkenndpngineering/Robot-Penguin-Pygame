@@ -7,11 +7,6 @@ from clientPoll import gameClient
 from button import Button
 import time
 
-# TODO
-# get movement
-# remote shutdown
-# client--> server status, allow for next packet
-
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080

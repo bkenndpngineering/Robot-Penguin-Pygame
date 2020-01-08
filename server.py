@@ -31,6 +31,8 @@ def start_screen():
             if event.type == pygame.QUIT:
                 prog_terminate = True
 
+        display.fill((0,0,0))
+
         button_diff_easy.render(display)
         button_diff_med.render(display)
         button_diff_hard.render(display)

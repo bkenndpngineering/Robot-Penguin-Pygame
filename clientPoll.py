@@ -86,6 +86,12 @@ class gameClient():
         self.instructions_ready = False
         self.change_ready = True
 
+    #def resetSignal(self):
+    #    self.instructions = []
+    #    self.instructions_ready = False
+    #    self.change_ready = False
+    #    self.restart = True
+
     def stop(self):
         self.stopped = True
 
@@ -125,12 +131,15 @@ class gameClient():
 
             else:
                 if self.change_ready:
-                    if not self.restart:
-                        self.client.send_packet(PacketType.COMMAND1, b"restart")# ready
-                        self.ready = True
-                    else:
+                    if self.restart:
                         self.client.send_packet(PacketType.COMMAND1, b"restart")
+                        self.ready = True
                         self.restart = False
+                        self.change_ready = False
+                    else:
+                        self.client.send_packet(PacketType.COMMAND1, b"ready")
+                        self.ready = True
+                        self.change_ready = False
 
 
         # needs to time out or something. waits forever for a packet
