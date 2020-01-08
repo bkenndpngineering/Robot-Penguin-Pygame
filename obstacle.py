@@ -62,11 +62,8 @@ class Player(Object):
         super().__init__(grid, icon_player_down, location)
         self.alive = True
 
-    waitTime = .25
-
     def moveRight(self):
         super().moveRight()
-        print('penguin moved right')
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 self.grid.goal.collect()
@@ -78,11 +75,9 @@ class Player(Object):
                 self.location[0] -= 1
             else:
                 self.location[0] -= 1
-        time.sleep(self.waitTime)
 
     def moveLeft(self):
         super().moveLeft()
-        print('penguin moved left')
 
         # check is in an obstacle, move back
         # check if in goal, win game
@@ -99,11 +94,9 @@ class Player(Object):
                 self.location[0] += 1
             else:  # obstacle or something
                 self.location[0] += 1
-        time.sleep(self.waitTime)
 
     def moveUp(self):
         super().moveUp()
-        print('penguin moved up')
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
@@ -116,11 +109,9 @@ class Player(Object):
                 self.location[1] += 1
             else:
                 self.location[1] += 1
-        time.sleep(self.waitTime)
 
     def moveDown(self):
         super().moveDown()
-        print('penguin moved down')
 
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
@@ -133,7 +124,6 @@ class Player(Object):
                 self.location[1] -= 1
             else:
                 self.location[1] -= 1
-        time.sleep(self.waitTime)
 
     def rotateRight(self):
         if self.image == icon_player_front:
@@ -144,7 +134,6 @@ class Player(Object):
             self.image = icon_player_left
         elif self.image == icon_player_left:
             self.image = icon_player_front
-        time.sleep(self.waitTime)
 
     def rotateLeft(self):
         if self.image == icon_player_front:
@@ -155,7 +144,6 @@ class Player(Object):
             self.image = icon_player_right
         elif self.image == icon_player_left:
             self.image = icon_player_down
-        time.sleep(self.waitTime)
 
     def moveForward(self):
         if self.image == icon_player_front:

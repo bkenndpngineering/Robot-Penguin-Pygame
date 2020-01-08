@@ -3,6 +3,7 @@ from obstacle import Obstacle, Goal, Enemy, Player, Baby
 from textures import *
 import copy
 import random
+from textures import *
 
 class Grid():
     def __init__(self, surface, start_coordinates, rect_size, grid_dimensions=[9, 9]):
