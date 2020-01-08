@@ -6,6 +6,7 @@ import random
 from clientPoll import gameClient
 from button import Button
 import time
+from Delta_Arm_Testing.deltaArm import DeltaArm
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -125,7 +126,7 @@ def run_game(difficulty=1):
                     grid.player.moveBackward()
                     grid.draw()
                     pygame.display.update()
-                    time.sleep(waitTime)
+                    time.sleep(waitTime) # replace with blocking arm move function
                     if grid.player.won: break
 
             if not grid.player.won:
@@ -148,10 +149,29 @@ def run_game(difficulty=1):
     grid.enemy.stop()
     return has_won
 
+
+arm = DeltaArm()
+## Grid coordinates
+## (71, -183, -269.63)
+## (-177, -44.5, -272.5)
+## (-32, 198, -272.69)
+## (198, 61, -270.1)
+## table height around 270
+
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
-    while 1:
+    if not arm.initialize():
+        ready = True
+    else:
+        ready = False
+
+    arm.moveToCoordinates(71, -183, -260)
+    arm.moveToCoordinates(-177, -44.5, -260)
+    arm.moveToCoordinates(-32, 198, -260)
+    arm.moveToCoordinates(198, 61, -260)
+
+    while ready:
         instructions = []
         while not instructions:
             instructions = client.getInstructions()
@@ -190,3 +210,4 @@ if __name__ == '__main__':
 
 pygame.quit()
 client.stop()
+arm.shutdown()
