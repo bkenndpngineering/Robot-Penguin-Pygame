@@ -104,18 +104,22 @@ def run_game(difficulty=1):
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
                     grid.draw()
+                    pygame.display.update()
                     time.sleep(waitTime)
                 elif instruction == "rotateRight":
                     grid.player.rotateRight()
                     grid.draw()
+                    pygame.display.update()
                     time.sleep(waitTime)
                 elif instruction == "forwards":
                     grid.player.moveForward()
                     grid.draw()
+                    pygame.display.update()
                     time.sleep(waitTime)
                 elif instruction == "backwards":
                     grid.player.moveBackward()
                     grid.draw()
+                    pygame.display.update()
                     time.sleep(waitTime)
 
             client.makeReady()
