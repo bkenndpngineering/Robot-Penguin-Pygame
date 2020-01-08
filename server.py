@@ -101,11 +101,11 @@ def main():
     # create grid
     instruction_list = []
 
-    prog_terminate = False
+    prog_terminate = 0
     while not prog_terminate:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                prog_terminate = True
+                prog_terminate = 2
 
         # background
         display.fill((0, 0, 0))
@@ -211,12 +211,18 @@ def main():
             x += 1
             coordinate_x = x * SCREEN_WIDTH / 8 + offset_x
 
+        if server.restart:
+            prog_terminate = 1
+
         pygame.display.update()
         clock.tick(60)
 
 if __name__ == "__main__":
-    start_screen()
-    main()
+    while 1:
+        start_screen()
+        state = main()
+        if state == 2:
+            break
 
 pygame.quit()
 server.stop()

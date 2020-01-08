@@ -158,9 +158,11 @@ if __name__ == '__main__':
         if state == 1:  # wins the game
             # send reset signal to server -- > go to start screen
             end_effect(win_screen)
+            client.restart = True
         elif state == 2:# looses the game
             # send reset signal to server -- > go to start screen
             end_effect(loose_screen)
+            client.restart = True
         elif state == 3:
             # kill the whole thang
             break

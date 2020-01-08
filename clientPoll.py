@@ -8,6 +8,7 @@ class gameServer():
         self.stopped = False
         self.instructions_list = []
         self.client_ready = False
+        self.restart = False
 
     def send(self, instructions_list):
         self.instructions_list = instructions_list
@@ -51,6 +52,8 @@ class gameServer():
                 print(packet)
                 if packet == (PacketType.COMMAND1, b"ready"):
                     self.client_ready = True
+                elif packet == (PacketType.COMMAND1, b"restart"):
+                    self.restart = True
 
         self.server.send_packet(PacketType.COMMAND2, b"shutdown")
         self.server.close_connection()
@@ -64,6 +67,7 @@ class gameClient():
         self.change_ready = False
         self.instructions = []
         self.instructions_ready = False
+        self.restart = False
 
     def run(self):
         Thread(target=self.update, args=()).start()
@@ -116,8 +120,13 @@ class gameClient():
 
             else:
                 if self.change_ready:
-                    self.client.send_packet(PacketType.COMMAND1, b"ready")
-                    self.ready = True
+                    if not self.restart:
+                        self.client.send_packet(PacketType.COMMAND1, b"ready")
+                        self.ready = True
+                    else:
+                        self.client.send_packet(PacketType.COMMAND1, b"restart")
+                        self.restart = False
+
 
         # needs to time out or something. waits forever for a packet
         self.client.close_connection()
