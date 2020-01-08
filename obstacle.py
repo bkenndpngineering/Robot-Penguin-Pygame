@@ -62,6 +62,8 @@ class Player(Object):
         super().__init__(grid, icon_player_down, location)
         self.alive = True
 
+    waitTime = .25
+
     def moveRight(self):
         super().moveRight()
         print('penguin moved right')
@@ -76,6 +78,7 @@ class Player(Object):
                 self.location[0] -= 1
             else:
                 self.location[0] -= 1
+        time.sleep(self.waitTime)
 
     def moveLeft(self):
         super().moveLeft()
@@ -96,6 +99,7 @@ class Player(Object):
                 self.location[0] += 1
             else:  # obstacle or something
                 self.location[0] += 1
+        time.sleep(self.waitTime)
 
     def moveUp(self):
         super().moveUp()
@@ -112,6 +116,7 @@ class Player(Object):
                 self.location[1] += 1
             else:
                 self.location[1] += 1
+        time.sleep(self.waitTime)
 
     def moveDown(self):
         super().moveDown()
@@ -128,6 +133,7 @@ class Player(Object):
                 self.location[1] -= 1
             else:
                 self.location[1] -= 1
+        time.sleep(self.waitTime)
 
     def rotateRight(self):
         if self.image == icon_player_front:
@@ -138,7 +144,7 @@ class Player(Object):
             self.image = icon_player_left
         elif self.image == icon_player_left:
             self.image = icon_player_front
-        print('penguin rotated right')
+        time.sleep(self.waitTime)
 
     def rotateLeft(self):
         if self.image == icon_player_front:
@@ -149,7 +155,7 @@ class Player(Object):
             self.image = icon_player_right
         elif self.image == icon_player_left:
             self.image = icon_player_down
-        print('penguin rotated left')
+        time.sleep(self.waitTime)
 
     def moveForward(self):
         if self.image == icon_player_front:
