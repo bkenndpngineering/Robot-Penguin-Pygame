@@ -161,15 +161,15 @@ arm = DeltaArm()
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
-    if not arm.initialize():
+    if arm.initialize():
         ready = True
     else:
         ready = False
 
+    arm.moveToCoordinates(-177, -44.5, -240)
+    arm.moveToCoordinates(-32, 198, -240)
+    arm.moveToCoordinates(198, 61, -240)
     arm.moveToCoordinates(71, -183, -260)
-    arm.moveToCoordinates(-177, -44.5, -260)
-    arm.moveToCoordinates(-32, 198, -260)
-    arm.moveToCoordinates(198, 61, -260)
 
     while ready:
         instructions = []
