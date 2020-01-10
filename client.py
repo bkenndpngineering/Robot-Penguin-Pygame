@@ -158,6 +158,10 @@ arm = DeltaArm()
 ## (198, 61, -270.1) # BOTTOM LEFT
 ## table height around 270
 
+
+# if X, Y does not work
+# got to coordinates then lower Z from a larger height
+
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
@@ -167,9 +171,13 @@ if __name__ == '__main__':
         ready = False
 
     arm.moveToCoordinates(-177, -44.5, -100)
+    arm.moveToCoordinates(-177, -44.5, -240)
     arm.moveToCoordinates(-32, 198, -100)
+    arm.moveToCoordinates(-32, 198, -240)
     arm.moveToCoordinates(198, 61, -100)
+    arm.moveToCoordinates(198, 61, -240)
     arm.moveToCoordinates(71, -183, -100)
+    arm.moveToCoordinates(71, -183, -240)
     
     '''
     while ready:
