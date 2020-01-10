@@ -1,0 +1,32 @@
+
+-For calibration (I will go more deeply into this)
+
+**lets focus on this because it is important
+
+there are 3 types of calibrations 
+-motor calibration 
+	-od0.axis0.requested_state.AXIS_STATE_MOTOR_CALIBRATION
+-encoder calibration
+	-od0.axis0.requested_state.AXIS_STATE_ENCODER_OFFSET_CALIBRATION
+-full calibration
+	-od0.axis0.requested_state.AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+
+Now you only need to do the motor calibration the first time you plug a motor into an odrive
+lets learn how to do that
+-run a motor calibration
+-then do 
+	od0.axis0.motor.config.pre_calibrated = True
+	od0.axis0.save_configuration()
+	od0.axis0.reboot()
+
+
+Afther this you can always test it by just typing 
+	-od0.axis0.motor.config.pre_calibrated
+and it should print out true
+
+To reset, set this to False and reboot the Odrive
+
+
+**what this is actually doing is modifying/setting the variables of <axis>.motor.config.phase_resistance and <axis>.motor.config.phase_inductance
+
+

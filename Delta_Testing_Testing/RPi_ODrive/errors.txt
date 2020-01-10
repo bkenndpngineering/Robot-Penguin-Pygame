@@ -1,0 +1,19 @@
+
+
+Odrive tool is very good for Debugging:
+
+You can always test if you are able to connect to an Odrive by plugging it in and running Odrivetool
+
+Another thing you can do with Odrive tool is test out any errors that a board may throw
+Now unlike issues that may arrive within code you write, the Odrive doesn't spit out an error, you actually have to go seek it out
+
+How do you do that
+
+odrv0.axis0.error
+
+
+https://docs.odriverobotics.com/troubleshooting#usb-connectivity-issues
+
+
+
+
