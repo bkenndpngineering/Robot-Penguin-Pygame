@@ -6,7 +6,7 @@ import random
 from clientPoll import gameClient
 from button import Button
 import time
-from Delta_Arm_Testing.deltaArm import DeltaArm
+from Delta_Testing_Testing.deltaArm import DeltaArm
 
 pygame.init()
 SCREEN_WIDTH = 1920
