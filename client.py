@@ -15,7 +15,7 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
-client = gameClient().run()
+#client = gameClient().run()
 
 def end_effect(image, delay_time=35):
     image_height = 100
@@ -166,11 +166,12 @@ if __name__ == '__main__':
     else:
         ready = False
 
-    arm.moveToCoordinates(-177, -44.5, -240)
-    arm.moveToCoordinates(-32, 198, -240)
-    arm.moveToCoordinates(198, 61, -240)
-    arm.moveToCoordinates(71, -183, -260)
-
+    arm.moveToCoordinates(-177, -44.5, -100)
+    arm.moveToCoordinates(-32, 198, -100)
+    arm.moveToCoordinates(198, 61, -100)
+    arm.moveToCoordinates(71, -183, -100)
+    
+    '''
     while ready:
         instructions = []
         while not instructions:
@@ -200,7 +201,7 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
-
+    '''
 
 # still needs to be able to exit
 # server/client
@@ -209,5 +210,5 @@ if __name__ == '__main__':
 # client reset, wait for difficulty
 
 pygame.quit()
-client.stop()
+#client.stop()
 arm.shutdown()
