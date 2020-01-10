@@ -12,16 +12,30 @@ clock = pygame.time.Clock()
 
 server = gameServer().run()
 
+def text_objects(text, font):
+    white = (255,255,255)
+    textSurface = font.render(text, True, white)
+    return textSurface, textSurface.get_rect()
+
+
 def start_screen():
-    button_width = 100
-    button_height = 50
+    button_width = 600
+    button_height = 100
+
+    largeText = pygame.font.Font('freesansbold.ttf', 50)
+    TextSurf, TextRect = text_objects("Robot Penguin", largeText)
+    TextRect.center = (4*button_height, button_width)
+    display.blit(TextSurf, TextRect)
+
 
     #bottom right, hidden exit button
     button_hidden = Button("", (SCREEN_WIDTH - button_width, SCREEN_HEIGHT - button_height, button_width, button_height), inact_color=(0,0,0), act_color=(0,0,0))   # background color must be same as button color
 
-    button_diff_easy = Button("Easy", (0, 0 * button_height, button_width, button_height))
-    button_diff_med = Button("Medium", (0, 1 * button_height, button_width, button_height))
-    button_diff_hard = Button("Hard", (0, 2 * button_height, button_width, button_height))
+    button_diff_easy = Button("SIMPLE", (1.2*button_width, 5 * button_height, button_width, button_height), inact_color=(255,0,0), act_color=(0,255,0))
+    button_diff_med = Button("CHALLENGING", (1.2*button_width, 7 * button_height, button_width, button_height), inact_color=(255,255,255), act_color=(0,0,255))
+    button_diff_hard = Button("MIND-BUSTING", (1.2*button_width, 9 * button_height, button_width, button_height), inact_color=(0,0,255), act_color=(255,0,0))
+
+    pygame.display.update()
 
     difficulty = None
 
