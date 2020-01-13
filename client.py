@@ -6,8 +6,8 @@ import random
 from clientPoll import gameClient
 from button import Button
 import time
-#from Delta_Testing_Testing.deltaArm import DeltaArm
-
+from Delta_Testing_Testing.deltaArm import DeltaArm
+'''
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -16,7 +16,7 @@ pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
 client = gameClient().run()
-
+'''
 def end_effect(image, delay_time=35):
     image_height = 100
     image_width = 100 
@@ -167,7 +167,7 @@ def run_game(difficulty=1):
     return has_won
 
 
-#arm = DeltaArm()
+arm = DeltaArm()
 
 ## Grid coordinates
 ## (71, -183, -269.63) # TOP LEFT
@@ -188,14 +188,21 @@ def run_game(difficulty=1):
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
-    '''
+
     if arm.initialize():
         ready = True
     else:
         ready = False
 
     # move into idle position
-    arm.moveToCoordinates(71, -183, -240)
+    #arm.moveToCoordinates(71, -183, -240)
+    x_val = 71
+    y_val = -183
+    for i in range(0,9):
+        for l in range(0,9):
+            arm.moveToCoordinates(x_val, y_val, -240)
+            x_val -= 27
+        y_val += 27
     '''
     while 1:
         instructions = []
@@ -235,4 +242,5 @@ if __name__ == '__main__':
 
 pygame.quit()
 client.stop()
-#arm.shutdown()
+'''
+arm.shutdown()
