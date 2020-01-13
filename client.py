@@ -7,7 +7,7 @@ from clientPoll import gameClient
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
-'''
+
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -16,7 +16,7 @@ pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
 client = gameClient().run()
-'''
+
 def end_effect(image, delay_time=35):
     image_height = 100
     image_width = 100 
@@ -95,12 +95,10 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 2
 
-        '''
-        Leave commented
         if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
             prog_terminate = True
             has_won = 1
-        '''
+
         waitTime = .25
         # character movement, networked
         if instructions != False:
@@ -132,6 +130,15 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     print(player_coord)
+
+                    if grid.player.image == icon_player_front:
+                        arm.moveToRelativeCoordinates((-14, -27, 0))
+                    if grid.player.image == icon_player_down:
+                        arm.moveToRelativeCoordinates((14, 27, 0))
+                    if grid.player.image == icon_player_left:
+                        arm.moveToRelativeCoordinates((27, -15, 0))
+                    if grid.player.image == icon_player_right:
+                        arm.moveToRelativeCoordinates((-27, 15, 0))
 
                     time.sleep(waitTime)
                     if grid.player.won: break
@@ -216,7 +223,7 @@ if __name__ == '__main__':
         x_val = prex + 14
         y_val = prey + 27
         
-    '''
+
     while 1:
         instructions = []
         while not instructions:
@@ -255,5 +262,5 @@ if __name__ == '__main__':
 
 pygame.quit()
 client.stop()
-'''
+
 arm.shutdown()
