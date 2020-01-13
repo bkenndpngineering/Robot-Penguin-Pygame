@@ -7,7 +7,7 @@ from clientPoll import gameClient
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
-
+'''
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -16,7 +16,7 @@ pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
 client = gameClient().run()
-
+'''
 def end_effect(image, delay_time=35):
     image_height = 100
     image_width = 100 
@@ -223,7 +223,7 @@ if __name__ == '__main__':
         x_val = prex + 14
         y_val = prey + 27
         
-
+'''
     while 1:
         instructions = []
         while not instructions:
@@ -253,14 +253,14 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
-
+'''
 # still needs to be able to exit
 # server/client
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
 
-pygame.quit()
-client.stop()
+#pygame.quit()
+#client.stop()
 
 arm.shutdown()
