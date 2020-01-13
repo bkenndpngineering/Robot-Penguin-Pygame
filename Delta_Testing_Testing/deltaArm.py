@@ -186,7 +186,7 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 5     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 15     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         
         if self.initialized:
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
