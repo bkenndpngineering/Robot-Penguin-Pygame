@@ -194,7 +194,23 @@ Movement:
 1 space up = +(-14, -27, 0)
 1 space down = +(14 27, 0)
 '''
+def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
+    # grid coordinates relative to top left corner
+    top_left_x = 71
+    top_left_y = -183
+    
+    X = top_left_x
+    Y = top_left_y
+   
+    # calculate X
+    X -= 27 * box_X
+    Y += 15 * box_X
+        
+    # calculate Y
+    X += 15 * box_Y
+    Y += 27 * box_Y
 
+    return (X, Y)
 
 # if X, Y does not work
 # got to coordinates then lower Z from a larger height
@@ -210,6 +226,8 @@ if __name__ == '__main__':
 
     # move into idle position
     #arm.moveToCoordinates(71, -183, -240)
+    # function return coordinates given, grid box (0-->8) XY
+    '''
     x_val = 71
     y_val = -183
     for i in range(0,9):
@@ -220,9 +238,12 @@ if __name__ == '__main__':
             arm.moveToCoordinates(x_val, y_val, -240)
             x_val -= 27
             y_val += 15
-        x_val = prex + 14
+        x_val = prex + 15
         y_val = prey + 27
-        
+    '''
+    for i in range(0, 9):
+        for ii in range(0, 9):
+            arm.moveToCoordinates(i, ii, -240)
 '''
     while 1:
         instructions = []
