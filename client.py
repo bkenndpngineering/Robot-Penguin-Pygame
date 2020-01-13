@@ -15,7 +15,7 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
-#client = gameClient().run()
+client = gameClient().run()
 
 def end_effect(image, delay_time=35):
     image_height = 100
@@ -108,25 +108,41 @@ def run_game(difficulty=1):
                     grid.player.rotateLeft()
                     grid.draw()
                     pygame.display.update()
-                    time.sleep(waitTime)
+
+                    player_coord = grid.player.getLocation()  # top left corner
+                    print(player_coord)
+
+                    time.sleep(waitTime)  # replace with blocking move functions
                     if grid.player.won: break
                 elif instruction == "rotateRight":
                     grid.player.rotateRight()
                     grid.draw()
                     pygame.display.update()
+
+                    player_coord = grid.player.getLocation()  # top left corner
+                    print(player_coord)
+
                     time.sleep(waitTime)
                     if grid.player.won: break
                 elif instruction == "forwards":
                     grid.player.moveForward()
                     grid.draw()
                     pygame.display.update()
+
+                    player_coord = grid.player.getLocation()  # top left corner
+                    print(player_coord)
+
                     time.sleep(waitTime)
                     if grid.player.won: break
                 elif instruction == "backwards":
                     grid.player.moveBackward()
                     grid.draw()
                     pygame.display.update()
-                    time.sleep(waitTime) # replace with blocking arm move function
+
+                    player_coord = grid.player.getLocation()  # top left corner
+                    print(player_coord)
+
+                    time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
 
             if not grid.player.won:
@@ -150,12 +166,18 @@ def run_game(difficulty=1):
     return has_won
 
 
-arm = DeltaArm()
+#arm = DeltaArm()
+
 ## Grid coordinates
 ## (71, -183, -269.63) # TOP LEFT
 ## (-177, -44.5, -272.5) # TOP RIGHT
 ## (-32, 198, -272.69) # BOTTOM RIGHT
 ## (198, 61, -270.1) # BOTTOM LEFT
+## num boxes height 9,
+## box height = TLeft - BLeft = 244/9 = 27
+## num boxes width 9
+## width box = TLeft - TRight = 248/9 = 27.5
+## 27 = BOX DIMENSIONS
 ## table height around 270
 
 
@@ -165,20 +187,14 @@ arm = DeltaArm()
 if __name__ == '__main__':
     # main loop 
     # get difficulty from surface tablet
+    '''
     if arm.initialize():
         ready = True
     else:
         ready = False
 
-    arm.moveToCoordinates(-177, -44.5, -100)
-    arm.moveToCoordinates(-177, -44.5, -240)
-    arm.moveToCoordinates(-32, 198, -100)
-    arm.moveToCoordinates(-32, 198, -240)
-    arm.moveToCoordinates(198, 61, -100)
-    arm.moveToCoordinates(198, 61, -240)
-    arm.moveToCoordinates(71, -183, -100)
+    # move into idle position
     arm.moveToCoordinates(71, -183, -240)
-    
     '''
     while ready:
         instructions = []
@@ -201,7 +217,7 @@ if __name__ == '__main__':
             end_effect(win_screen)
             client.restart = True
             client.makeReady()
-        elif state == 2:# looses the game
+        elif state == 2:  # looses the game
             # send reset signal to server -- > go to start screen
             end_effect(loose_screen)
             client.restart = True
@@ -209,7 +225,6 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
-    '''
 
 # still needs to be able to exit
 # server/client
@@ -218,5 +233,5 @@ if __name__ == '__main__':
 # client reset, wait for difficulty
 
 pygame.quit()
-#client.stop()
-arm.shutdown()
+client.stop()
+#arm.shutdown()
