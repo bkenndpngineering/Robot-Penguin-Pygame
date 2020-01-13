@@ -95,11 +95,12 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 2
 
-        #
-        #if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
-        #    prog_terminate = True
-        #    has_won = 1
-
+        '''
+        Leave commented
+        if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
+            prog_terminate = True
+            has_won = 1
+        '''
         waitTime = .25
         # character movement, networked
         if instructions != False:
@@ -147,9 +148,9 @@ def run_game(difficulty=1):
 
             if not grid.player.won:
                 client.makeReady()
-            #else:
-            #    client.reset = True
-            #    client.makeReady()
+            else:
+                client.reset = True
+                client.makeReady()
 
         if grid.player.won:
             prog_terminate = True
@@ -196,7 +197,7 @@ if __name__ == '__main__':
     # move into idle position
     arm.moveToCoordinates(71, -183, -240)
     '''
-    while ready:
+    while 1:
         instructions = []
         while not instructions:
             instructions = client.getInstructions()
