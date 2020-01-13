@@ -180,6 +180,13 @@ arm = DeltaArm()
 ## width box = TLeft - TRight = 248/9 = 27.5
 ## 27 = BOX DIMENSIONS
 ## table height around 270
+'''
+Movement:
+1 space right = +(-27, 15, 0)
+1 space left = +(27, -15, 0)
+1 space up = +(-14, -27, 0)
+1 space down = +(14 27, 0)
+'''
 
 
 # if X, Y does not work
@@ -199,10 +206,16 @@ if __name__ == '__main__':
     x_val = 71
     y_val = -183
     for i in range(0,9):
+        prex = x_val
+        prey = y_val
+        print(str(i))
         for l in range(0,9):
             arm.moveToCoordinates(x_val, y_val, -240)
             x_val -= 27
-        y_val += 27
+            y_val += 15
+        x_val = prex + 14
+        y_val = prey + 27
+        
     '''
     while 1:
         instructions = []
