@@ -243,7 +243,8 @@ if __name__ == '__main__':
     '''
     for i in range(0, 9):
         for ii in range(0, 9):
-            arm.moveToCoordinates(i, ii, -240)
+            X, Y = grid_to_arm_coord(i, ii)
+            arm.moveToCoordinates(X, Y, -240)
 '''
     while 1:
         instructions = []
