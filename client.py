@@ -7,7 +7,7 @@ from clientPoll import gameClient
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
-'''
+
 pygame.init()
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
@@ -16,7 +16,7 @@ pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
 client = gameClient().run()
-'''
+
 def end_effect(image, delay_time=35):
     image_height = 100
     image_width = 100 
@@ -109,46 +109,48 @@ def run_game(difficulty=1):
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
-                    print(player_coord)
+                    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(X, Y, -240)
+                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)  # replace with blocking move functions
                     if grid.player.won: break
+
                 elif instruction == "rotateRight":
                     grid.player.rotateRight()
                     grid.draw()
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
-                    print(player_coord)
+                    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(X, Y, -240)
+                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)
                     if grid.player.won: break
+
                 elif instruction == "forwards":
                     grid.player.moveForward()
                     grid.draw()
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
-                    print(player_coord)
-
-                    if grid.player.image == icon_player_front:
-                        arm.moveToRelativeCoordinates((-14, -27, 0))
-                    if grid.player.image == icon_player_down:
-                        arm.moveToRelativeCoordinates((14, 27, 0))
-                    if grid.player.image == icon_player_left:
-                        arm.moveToRelativeCoordinates((27, -15, 0))
-                    if grid.player.image == icon_player_right:
-                        arm.moveToRelativeCoordinates((-27, 15, 0))
+                    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(X, Y, -240)
+                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)
                     if grid.player.won: break
+
                 elif instruction == "backwards":
                     grid.player.moveBackward()
                     grid.draw()
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
-                    print(player_coord)
+                    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(X, Y, -240)
+                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
@@ -225,27 +227,14 @@ if __name__ == '__main__':
         ready = False
 
     # move into idle position
-    #arm.moveToCoordinates(71, -183, -240)
-    # function return coordinates given, grid box (0-->8) XY
-    '''
-    x_val = 71
-    y_val = -183
-    for i in range(0,9):
-        prex = x_val
-        prey = y_val
-        print(str(i))
-        for l in range(0,9):
-            arm.moveToCoordinates(x_val, y_val, -240)
-            x_val -= 27
-            y_val += 15
-        x_val = prex + 15
-        y_val = prey + 27
-    '''
-    for i in range(0, 9):
-        for ii in range(0, 9):
-            X, Y = grid_to_arm_coord(i, ii)
-            arm.moveToCoordinates(X, Y, -240)
-'''
+    X, Y = grid_to_arm_coord(0,0)
+    arm.moveToCoordinates(X, Y, -200)
+
+    #for i in range(0, 9):
+    #    for ii in range(0, 9):
+    #        X, Y = grid_to_arm_coord(i, ii)
+    #        arm.moveToCoordinates(X, Y, -240)
+
     while 1:
         instructions = []
         while not instructions:
@@ -260,6 +249,7 @@ if __name__ == '__main__':
                 diff = 3
             else:
                 diff = 1
+
         client.makeReady()
         state = run_game(diff)
         if state == 1:  # wins the game
@@ -275,14 +265,13 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
-'''
+
 # still needs to be able to exit
 # server/client
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
 
-#pygame.quit()
-#client.stop()
-
+pygame.quit()
+client.stop()
 arm.shutdown()
