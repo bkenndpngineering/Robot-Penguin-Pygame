@@ -113,9 +113,14 @@ class DeltaArm():
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
 
-        pos_gain = 1
-        vel_gain = 0
+        pos_gain = 4
+        vel_gain = 0.01
         vel_integrator_gain = 0.1
+        
+        # default
+        # pos_gain = 0.1
+        # vel_gain = 0.02
+        # vel_integrator_gain = 0.1
 
         self.ax2.axis.controller.config.vel_integrator_gain = vel_integrator_gain
         self.ax1.axis.controller.config.vel_integrator_gain = vel_integrator_gain
@@ -229,7 +234,7 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 15     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 14     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         
         if self.initialized:
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
