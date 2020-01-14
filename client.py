@@ -99,7 +99,7 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 1
 
-        waitTime = .25
+        #waitTime = .25
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
@@ -111,9 +111,14 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(True)
+                    arm.rotateStepper(-90)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, -240)
 
-                    time.sleep(waitTime)  # replace with blocking move functions
+                    #time.sleep(waitTime)  # replace with blocking move functions
                     if grid.player.won: break
 
                 elif instruction == "rotateRight":
@@ -124,35 +129,54 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(True)
+                    arm.rotateStepper(90)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, -240)
 
-                    time.sleep(waitTime)
+                    #time.sleep(waitTime)
                     if grid.player.won: break
 
                 elif instruction == "forwards":
+                    player_coord = grid.player.getLocation()  # top left corner
+                    preX, preY = grid_to_arm_coord(player_coord[0], player_coord[1])
+
                     grid.player.moveForward()
                     grid.draw()
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(preX, preY, -240)
+                    arm.moveToCoordinates(preX, preY, -255)
+                    arm.powerSolenoid(True)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
-                    time.sleep(waitTime)
+                    #time.sleep(waitTime)
                     if grid.player.won: break
 
                 elif instruction == "backwards":
+                    player_coord = grid.player.getLocation()  # top left corner
+                    preX, preY = grid_to_arm_coord(player_coord[0], player_coord[1])
+
                     grid.player.moveBackward()
                     grid.draw()
                     pygame.display.update()
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+                    arm.moveToCoordinates(preX, preY, -240)
+                    arm.moveToCoordinates(preX, preY, -255)
+                    arm.powerSolenoid(True)
+                    arm.moveToCoordinates(X, Y, -255)
+                    arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
-                    time.sleep(waitTime)  # replace with blocking arm move function
+                    #time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
 
             if not grid.player.won:
