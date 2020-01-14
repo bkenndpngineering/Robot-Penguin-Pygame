@@ -111,7 +111,6 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)  # replace with blocking move functions
                     if grid.player.won: break
@@ -124,7 +123,6 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)
                     if grid.player.won: break
@@ -137,7 +135,6 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)
                     if grid.player.won: break
@@ -150,7 +147,6 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    print(player_coord, arm_coord)
 
                     time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
