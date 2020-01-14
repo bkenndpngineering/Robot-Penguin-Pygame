@@ -100,17 +100,17 @@ class DeltaArm():
         
         # set controller tuning parameters
         print("pos_gain")
-        print("ax0", self.ax0.controller.config.pos_gain)
-        print("ax1", self.ax1.controller.config.pos_gain)
-        print("ax2", self.ax2.controller.config.pos_gain)
+        print("ax0", self.ax0.axis.controller.config.pos_gain)
+        print("ax1", self.ax1.axis.controller.config.pos_gain)
+        print("ax2", self.ax2.axis.controller.config.pos_gain)
         print("vel_gain")
-        print("ax0", self.ax0.controller.config.vel_gain)
-        print("ax1", self.ax1.controller.config.vel_gain)
-        print("ax2", self.ax2.controller.config.vel_gain)
+        print("ax0", self.ax0.axis.controller.config.vel_gain)
+        print("ax1", self.ax1.axis.controller.config.vel_gain)
+        print("ax2", self.ax2.axis.controller.config.vel_gain)
         print("vel_integrator_gain")
-        print("ax0", self.ax0.controller.config.vel_integrator_gain)
-        print("ax1", self.ax1.controller.config.vel_integrator_gain)
-        print("ax2", self.ax2.controller.config.vel_integrator_gain)
+        print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
+        print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
+        print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
 
         return True
 
