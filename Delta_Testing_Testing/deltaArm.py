@@ -99,6 +99,35 @@ class DeltaArm():
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
         
         # set controller tuning parameters
+        print("orignal values")
+        print("pos_gain")
+        print("ax0", self.ax0.axis.controller.config.pos_gain)
+        print("ax1", self.ax1.axis.controller.config.pos_gain)
+        print("ax2", self.ax2.axis.controller.config.pos_gain)
+        print("vel_gain")
+        print("ax0", self.ax0.axis.controller.config.vel_gain)
+        print("ax1", self.ax1.axis.controller.config.vel_gain)
+        print("ax2", self.ax2.axis.controller.config.vel_gain)
+        print("vel_integrator_gain")
+        print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
+        print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
+        print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
+
+        pos_gain = 1
+        vel_gain = 0
+        vel_integrator_gain = 0.1
+
+        self.ax2.axis.controller.config.vel_integrator_gain = vel_integrator_gain
+        self.ax1.axis.controller.config.vel_integrator_gain = vel_integrator_gain
+        self.ax0.axis.controller.config.vel_integrator_gain = vel_integrator_gain
+        self.ax2.axis.controller.config.vel_gain = vel_gain
+        self.ax1.axis.controller.config.vel_gain = vel_gain
+        self.ax0.axis.controller.config.vel_gain = vel_gain
+        self.ax2.axis.controller.config.pos_gain = pos_gain
+        self.ax1.axis.controller.config.pos_gain = pos_gain
+        self.ax0.axis.controller.config.pos_gain = pos_gain
+
+        print("configured values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
         print("ax1", self.ax1.axis.controller.config.pos_gain)
