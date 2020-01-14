@@ -111,10 +111,10 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(True)
-                    arm.rotateStepper(-90)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.rotateStepper(-45)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
 
@@ -129,10 +129,10 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(True)
-                    arm.rotateStepper(90)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.rotateStepper(45)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
 
@@ -150,9 +150,9 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, -240)
-                    arm.moveToCoordinates(preX, preY, -255)
+                    arm.moveToCoordinates(preX, preY, -265)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
 
@@ -170,9 +170,9 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, -240)
-                    arm.moveToCoordinates(preX, preY, -255)
+                    arm.moveToCoordinates(preX, preY, -265)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -255)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -240)
 
