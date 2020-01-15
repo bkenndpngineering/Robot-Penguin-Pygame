@@ -111,12 +111,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -270)
-                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.rotateStepper(-45)
-                    arm.moveToCoordinates(X, Y, -270)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, -240)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking move functions
@@ -130,12 +130,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -270)
-                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.rotateStepper(45)
-                    arm.moveToCoordinates(X, Y, -270)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, -240)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -152,11 +152,11 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, -240)
-                    arm.moveToCoordinates(preX, preY, -270)
-                    arm.powerSolenoid(False)
-                    arm.moveToCoordinates(X, Y, -270)
+                    arm.moveToCoordinates(preX, preY, -265)
+                    arm.moveToCoordinates(X, Y, -265)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, -240)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -174,10 +174,10 @@ def run_game(difficulty=1):
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, -240)
                     arm.moveToCoordinates(preX, preY, -270)
-                    arm.powerSolenoid(False)
                     arm.moveToCoordinates(X, Y, -270)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, -240)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking arm move function
