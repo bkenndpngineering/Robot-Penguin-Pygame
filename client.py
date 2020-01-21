@@ -72,7 +72,7 @@ def run_game(difficulty=1):
     has_won = 2 # bool --> enum, 1,2,3
     # seperate has won, and prog_terminate
     # make enums -- win, loose, exit
-
+    #arm.stepper.home()
     while not prog_terminate:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -103,6 +103,8 @@ def run_game(difficulty=1):
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
+                surface = -255
+                loft = -200
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
                     grid.draw()
@@ -110,12 +112,11 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -265)
-                    arm.rotateStepper(-45)
-                    arm.moveToCoordinates(X, Y, -265)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToCoordinates(X, Y, surface)
+                    arm.rotateStepper(-90)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -240)
+                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -129,12 +130,11 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    arm.moveToCoordinates(X, Y, -240)
-                    arm.moveToCoordinates(X, Y, -265)
-                    arm.rotateStepper(45)
-                    arm.moveToCoordinates(X, Y, -265)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToCoordinates(X, Y, surface)
+                    arm.rotateStepper(90)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -240)
+                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -151,11 +151,11 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    arm.moveToCoordinates(preX, preY, -240)
-                    arm.moveToCoordinates(preX, preY, -265)
-                    arm.moveToCoordinates(X, Y, -265)
+                    arm.moveToCoordinates(preX, preY, loft)
+                    arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToCoordinates(X, Y, surface)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -240)
+                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -172,11 +172,11 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    arm.moveToCoordinates(preX, preY, -240)
-                    arm.moveToCoordinates(preX, preY, -270)
-                    arm.moveToCoordinates(X, Y, -270)
+                    arm.moveToCoordinates(preX, preY, loft)
+                    arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToCoordinates(X, Y, surface)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, -240)
+                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -184,8 +184,6 @@ def run_game(difficulty=1):
                     if grid.player.won: break
 
             if not grid.player.won:
-                client.makeReady()
-            else:
                 client.reset = True
                 client.makeReady()
 

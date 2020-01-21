@@ -23,6 +23,7 @@ class DeltaArm():
         
         self.spi = None             # spidev
         self.stepper = None         # stepper motor object
+        self.ready = True
 
         self.ODriveSerialNumber1 = 59877000491063   # first ODrive serial number. Controls motors 1 and 2
         self.ODriveSerialNumber2 = 35623325151307   # second ODrive serial number. Controls motor 3
@@ -35,12 +36,21 @@ class DeltaArm():
         self.ax2 = None             # axis 0 of the second ODrive. Motor 3
 
         self.homedCoordinates = None  # coordinates of the home position, use for relative movement
-
+    
     def rotateStepper(self, degree):
         # rotate stepper motor shaft in degrees
         if self.initialized:
+            self.ready = False
+            print("step-False")
+            preStep = self.stepper.get_position_in_units()
+            print(str(preStep))
+            Step = 0
             steps = degree * DEG_TO_STEPS
-            self.stepper.relative_move(steps)
+            self.stepper.move_steps(int(steps))
+            time.sleep(.8)
+            self.ready = True
+            print("step-True")
+
 
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
@@ -234,9 +244,25 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 14     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
-        
+        tolerance = 10     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        while not self.ready:
+            pass
         if self.initialized:
+       
+            current_x, current_y, current_z = self.getCoordinates()
+            if desired_x > current_x:
+                desired_x += tolerance*2
+            else:
+                desired_x -= tolerance*2
+            if desired_y < current_y:
+                desired_y += tolerance*2
+            else:
+                desired_y -= tolerance*2
+            if desired_z > current_z:
+                desired_z += tolerance
+            else:
+                desired_z -= tolerance
+
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
             pos2 = angle2 * DEG_TO_CPR
@@ -245,6 +271,7 @@ class DeltaArm():
             self.ax1.set_pos(pos2)
             self.ax2.set_pos(pos3)
 
+        
             # implementation of the old wait function of the stepper motor driver, but now for ODrive
             x_lower = desired_x - tolerance
             x_upper = desired_x + tolerance

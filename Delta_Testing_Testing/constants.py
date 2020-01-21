@@ -19,7 +19,9 @@ z0 = 0
 
 
 ####### Extra Constants #######
-DEG_TO_STEPS = 6400/360         # for the stepper motor
+
+DEG_TO_STEPS = 400/360         # for the stepper motor
+# 200 steps per revolution * microstepping count
 
 ENCODER_CPR = 8192
 
