@@ -3,16 +3,16 @@
 # measurements taken by Joseph Pearlman and Charly Parker
 
 # base to motor AKA base radius
-f = 121.44  # millimeters
+f = 80.9 #121.44 millimeters
 
 # motor to elbow AKA bicep length
-rf = 307.83 # millimeters
+rf = 304.8 #307.83 millimeters
 
 # elbow to wrist AKA forearm length
-re = 616.58 # millimeters
+re = 616.58 #millimeters
 
 # wrist to tool AKA end effector radius
-e = 62.59
+e = 66.17 #62.59
 
 # end effector z offset
 z0 = 0
