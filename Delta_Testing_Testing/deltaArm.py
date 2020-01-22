@@ -51,6 +51,13 @@ class DeltaArm():
             self.ready = True
             print("step-True")
 
+    def deMagSolenoid(self):
+        state = True
+        for i in range(3000):
+            state = not state
+            self.powerSolenoid(state)
+
+        self.powerSolenoid(False)
 
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
@@ -244,7 +251,7 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 10     # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 5    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         while not self.ready:
             pass
         if self.initialized:
@@ -279,10 +286,16 @@ class DeltaArm():
             y_upper = desired_y + tolerance
             z_lower = desired_z - tolerance
             z_upper = desired_z + tolerance
+            print("Desired:")
+            print(desired_x, desired_y, desired_z)
             while True:
                 (current_x, current_y, current_z) = self.getHomedCoordinates()
                 if (x_lower <= current_x <= x_upper) and (y_lower <= current_y <= y_upper) and (z_lower <= current_z <= z_upper):
+                    print("Actual:")
+                    print(current_x, current_y, current_z)
                     break
+                else:
+                    print(current_x, current_y, current_z)
 
             return
 
