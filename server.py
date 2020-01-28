@@ -125,7 +125,7 @@ def main():
     instruction_list = []
 
     prog_terminate = 0
-    while not prog_terminate:
+    while prog_terminate == 0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 prog_terminate = 2

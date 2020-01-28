@@ -182,7 +182,7 @@ def run_game(difficulty=1):
                     grid.draw()
                     pygame.display.update()
 
-                    player_coord = grid.player.getLocation()  # top left corner
+                    player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     #arm.moveToCoordinates(preX, preY, loft)
                     #arm.moveToCoordinates(preX, preY, surface)

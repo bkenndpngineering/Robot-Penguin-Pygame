@@ -231,40 +231,40 @@ class Enemy(Object):
 
     def moveRight(self):
         super().moveRight()
-
+        '''
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 pass  # do nothing
             else:
                 self.location[0] -= 1
-
+        '''
     def moveLeft(self):
         super().moveLeft()
-
+        '''
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 pass  # do nothing
             else:  # obstacle or something, move back
                 self.location[0] += 1
-
+        '''
     def moveUp(self):
         super().moveUp()
-
+        '''
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 pass  # do nothing
             else:
                 self.location[1] += 1
-
+        '''
     def moveDown(self):
         super().moveDown()
-
+        '''
         if self.grid.getAnyCollision(self):
             if self.grid.isAtGoal(self):
                 pass  # do nothing
             else:
                 self.location[1] -= 1
-
+        '''
 class Baby(Object):
     def __init__(self, grid, location):
         super().__init__(grid, icon_jewel, location)
