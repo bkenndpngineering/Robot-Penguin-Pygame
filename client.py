@@ -67,7 +67,13 @@ def run_game(difficulty=1):
 
     # enemy after player
     grid.addEnemy(grid.getUnusedCoordinates(), difficulty)
-
+    X, Y = grid_to_arm_coord(0,0)
+    height = -100
+    for i in range(0,8):
+        arm.rotateStepper(90)
+        arm.moveToCoordinates(X, Y, height)
+        height -= 5
+        arm.rotateStepper(90)
     prog_terminate = False
     has_won = 2 # bool --> enum, 1,2,3
     # seperate has won, and prog_terminate
@@ -98,12 +104,12 @@ def run_game(difficulty=1):
         if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
             prog_terminate = True
             has_won = 1
-
+        
         #waitTime = .25
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                surface = -143
+                surface = -135
                 loft = -100
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
@@ -113,12 +119,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     #arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    #arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
-                    #arm.powerSolenoid(True)
+                    arm.powerSolenoid(True)
+                    time.sleep(.5)
                     #arm.moveToCoordinates(X, Y, loft)
-                    #arm.powerSolenoid(False)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking move functions
@@ -132,12 +139,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     #arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    #arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(90)
-                    #arm.powerSolenoid(True)
+                    arm.powerSolenoid(True)
+                    time.sleep(.5)
                     #arm.moveToCoordinates(X, Y, loft)
-                    #arm.powerSolenoid(False)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -154,8 +162,9 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     #arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToCoordinates(preX, preY, surface)
+                    #arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
+                    print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
                     #arm.powerSolenoid(True)
                     #arm.moveToCoordinates(X, Y, loft)
@@ -176,8 +185,9 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     #arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToCoordinates(preX, preY, surface)
+                    #arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
+                    print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
                     #arm.powerSolenoid(True)
                     #arm.moveToCoordinates(X, Y, loft)
@@ -235,12 +245,12 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     Y = top_left_y
    
     # calculate X
-    X -= 30 * 10/9 * box_X
-    Y += 21.5 * 10/9 * box_X
+    X -= 30 * 37/34 * box_X
+    Y += 16.5 * 37/34 * box_X
         
     # calculate Y
-    X += 16.5 * 10/9 * box_Y
-    Y += 35 * 10/9 * box_Y
+    X += 16.5 * 37/34 * box_Y
+    Y += 30 * 37/34 * box_Y
 
     return (X, Y)
 
@@ -256,20 +266,12 @@ if __name__ == '__main__':
     else:
         ready = False
     
-    print("start demag")
-    arm.deMagSolenoid()
-    print("fin demag")
+    #print("start demag")
+    #arm.deMagSolenoid()
+    #print("fin demag")
 
     # move into idle position
-    X, Y = grid_to_arm_coord(0,0)
-    height = -100
-    for i in range(0,9):
-        arm.rotateStepper(90)
-        arm.moveToCoordinates(X, Y, height)
-        height -= 5
-        arm.rotateStepper(90)
-
-    #for i in range(0, 9):
+        #for i in range(0, 9):
     #    for ii in range(0, 9):
     #        X, Y = grid_to_arm_coord(i, ii)
     #        arm.moveToCoordinates(X, Y, -240)

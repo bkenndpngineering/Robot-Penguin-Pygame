@@ -12,7 +12,6 @@ import time
 """
 DeltaArm API V.3 (Dec 2, 2019) by Braedan Kennedy (bkenndpngineering)
 Supplemental development by Joseph Pearman and Philip Nordblad
-
 for use with the DPEA Robot Penguin project
 modules can be used for any Delta Arm project
 """
@@ -52,12 +51,17 @@ class DeltaArm():
             print("step-True")
 
     def deMagSolenoid(self):
-        state = True
-        for i in range(3000):
-            state = not state
-            self.powerSolenoid(state)
+        cv = 50000
+        while cv != 0:
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=cv, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+            cv = -cv
+            if cv > 0:
+                cv -= 1
+            else: 
+                cv += 1
 
-        self.powerSolenoid(False)
+            print(cv)
+ 
 
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
@@ -251,13 +255,13 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 3    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 4    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         while not self.ready:
             pass
         if self.initialized:
        
             current_x, current_y, current_z = self.getCoordinates()
-            if desired_x > current_x:
+            """ if desired_x > current_x:
                 desired_x += tolerance*2
             else:
                 desired_x -= tolerance*2
@@ -269,7 +273,7 @@ class DeltaArm():
                 desired_z += tolerance
             else:
                 desired_z -= tolerance
-
+            """
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
             pos2 = angle2 * DEG_TO_CPR
