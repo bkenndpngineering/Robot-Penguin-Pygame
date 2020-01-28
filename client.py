@@ -196,20 +196,14 @@ def run_game(difficulty=1):
 
                     #time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
-                    elif not player.alive:
-                        has_won = 2
-                        break
 
-            if not grid.player.won:
+            if not grid.player.won and player.alive:
                 client.reset = True
                 client.makeReady()
 
         if grid.player.won:
             prog_terminate = True
             has_won = 1
-        elif not player.alive:
-            prog_terminate = True
-            has_won = 2
 
         # draw background
         display.blit(background, (0,0))
