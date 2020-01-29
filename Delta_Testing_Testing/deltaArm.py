@@ -54,7 +54,7 @@ class DeltaArm():
         cv = 50000
         pv = 100000
         while cv != 0:
-            cyprus.set_pwm_values(1, period_value=pv, compare_value=cv, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+            cyprus.set_pwm_values(1, period_value=pv, compare_value=50000, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             cv = -cv
             pv = -pv
             if cv > 0:
@@ -67,6 +67,8 @@ class DeltaArm():
 
             print("CV: " + str(cv))
             print("PV --- " + str(pv))
+            cyprus.set_pwm_values(1, period_value=pv, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+            time.sleep(.1)
         cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
 
     def powerSolenoid(self, state):
