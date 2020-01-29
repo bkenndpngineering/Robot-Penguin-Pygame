@@ -54,11 +54,13 @@ class DeltaArm():
         cv = 50000
         while cv != 0:
             cyprus.set_pwm_values(1, period_value=100000, compare_value=cv, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-            #cv = -cv
-            cv -= 10
+            cv = -cv
+            if cv > 0:
+                cv -= 100
+            else:
+                cv += 100
             time.sleep(.1)
-            cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-            time.sleep(.15)
+
             print(cv)
  
 
