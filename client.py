@@ -43,6 +43,8 @@ def run_game(difficulty=1):
     grid.addGoal([8, 8]) # place goal and player at opposite ends
     # player before enemy
     grid.addPlayer([0, 0])
+    grid.player.alive = True
+    grid.player.won = False
     grid.addBaby(grid.getUnusedCoordinates()) # randomize baby/jewel
 
     if difficulty > 3 or (difficulty < 0) or (difficulty == 1):
@@ -197,7 +199,7 @@ def run_game(difficulty=1):
                     #time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
 
-            if not grid.player.won and player.alive:
+            if not grid.player.won and grid.player.alive:
                 client.reset = True
                 client.makeReady()
 
