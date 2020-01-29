@@ -292,10 +292,15 @@ if __name__ == '__main__':
                 diff = 2
             elif instruction == "3":
                 diff = 3
+            else:
+                diff = 0
             #else:
             #    client.restart = True
         client.makeReady()
-        state = run_game(diff)
+        if diff != 0:
+            state = run_game(diff)
+        else:
+            state = 0
         if state == 1:  # wins the game
             # send reset signal to server -- > go to start screen
             end_effect(win_screen)
@@ -309,6 +314,9 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
+        elif state == 0:
+            pass
+
 
 # still needs to be able to exit
 # server/client
@@ -318,4 +326,4 @@ if __name__ == '__main__':
 
 pygame.quit()
 client.stop()
-arm.shutdown() 
+##arm.shutdown()
