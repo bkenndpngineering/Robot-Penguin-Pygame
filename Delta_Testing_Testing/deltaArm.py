@@ -62,7 +62,7 @@ class DeltaArm():
             time.sleep(.1)
             print(cv)
 
-            cyprus.set_pwm_values(1, period_value=pv, compare_value=cv, compare_mode=cyprus.GREATER_THAN_OR_EQUAL)
+            cyprus.set_pwm_values(1, period_value=100000, compare_value=cv, compare_mode=cyprus.GREATER_THAN_OR_EQUAL)
             cv -= 50
             time.sleep(.1)
             print(cv)
