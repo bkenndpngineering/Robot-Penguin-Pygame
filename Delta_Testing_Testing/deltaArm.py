@@ -65,8 +65,8 @@ class DeltaArm():
                 pv += 200
             time.sleep(.1)
 
-            print("CV: " + cv)
-            print("PV --- " + pv)
+            print("CV: " + str(cv))
+            print("PV --- " + str(pv))
         cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
 
     def powerSolenoid(self, state):
