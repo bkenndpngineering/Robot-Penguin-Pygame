@@ -43,6 +43,8 @@ def run_game(difficulty=1):
     grid.addGoal([8, 8]) # place goal and player at opposite ends
     # player before enemy
     grid.addPlayer([0, 0])
+    grid.player.alive = True
+    grid.player.won = False
     grid.addBaby(grid.getUnusedCoordinates()) # randomize baby/jewel
 
     if difficulty > 3 or (difficulty < 0) or (difficulty == 1):
@@ -77,7 +79,7 @@ def run_game(difficulty=1):
     prog_terminate = False
     has_won = 2 # bool --> enum, 1,2,3
     # seperate has won, and prog_terminate
-    # make enums -- win, loose, exit
+    # make enums -- win, lose, exit
     #arm.stepper.home()
     while not prog_terminate:
         for event in pygame.event.get():
