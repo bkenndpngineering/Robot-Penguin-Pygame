@@ -51,18 +51,22 @@ class DeltaArm():
             print("step-True")
 
     def deMagSolenoid(self):
-        cv = 50000
-        while cv != 0:
-            cyprus.set_pwm_values(1, period_value=100000, compare_value=cv, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-            cv -= 50
-            time.sleep(.1)
-            print(cv)
+        cv = 0
+        delayTime = .5
+        cyprus.setup_servo(1)
+        while cv != .5:
+            cyprus.set_servo_position(1, cv)
+            time.sleep(delayTime)
+            cv = 1- cv
+            if cv < .5 and .5 - cv > .009:
+                cv += .01
+            elif cv > .5 and cv - .5 > .009:
+                cv -= .01
+            else:
+                break
+        print("demag finished")
+        cyprus.set_servo_position(1, .5)
 
-            cyprus.set_pwm_values(2, period_value=100000, compare_value=cv, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-            cv -= 50
-            time.sleep(.1)
-            print(cv)
-        cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
 
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
