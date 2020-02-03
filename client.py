@@ -235,12 +235,12 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     Y = top_left_y
    
     # calculate X
-    X -= 27 * box_X
-    Y += 15 * box_X
+    X -= 31 * box_X
+    Y += 16 * box_X
         
     # calculate Y
-    X += 15 * box_Y
-    Y += 27 * box_Y
+    X += 16 * box_Y
+    Y += 31 * box_Y
 
     return (X, Y)
 
@@ -262,7 +262,7 @@ if __name__ == '__main__':
 
     # move into idle position
     X, Y = grid_to_arm_coord(0,0)
-    arm.moveToCoordinates(X, Y, -90)
+    arm.moveToCoordinates(X, Y, -100)
 
     #for i in range(0, 9):
     #    for ii in range(0, 9):
