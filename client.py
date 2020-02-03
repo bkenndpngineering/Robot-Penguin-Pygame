@@ -111,8 +111,9 @@ def run_game(difficulty=1):
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                surface = -135
+                surface = -140
                 loft = -100
+                height = loft - surface
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
                     grid.draw()
@@ -121,12 +122,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToRelativeCoordinates(0, 0, -height)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(0, 0, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -141,12 +142,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToRelativeCoordinates(0, 0, -height)
                     time.sleep(.5)
                     arm.rotateStepper(90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(0, 0, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -164,12 +165,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToRelativeCoordinates(0, 0, -height)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
+                    time.sleep(.1)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(0, 0, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -187,12 +189,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToRelativeCoordinates(0, 0, -height)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
+                    time.sleep(.1)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(0, 0, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
