@@ -50,34 +50,29 @@ class DeltaArm():
             self.ready = True
             print("step-True")
 
-    def deMagSolenoid(self, delayTime):
-        cv = 0
-        cyprus.setup_servo(1)
-        while cv != .5:
-            cyprus.set_servo_position(1, cv)
-            time.sleep(delayTime)
-            cv = 1- cv
-            if cv < .5 and .5 - cv > .009:
-                cv += .01
-            elif cv > .5 and cv - .5 > .009:
-                cv -= .01
-            else:
-                break
-        print("demag finished")
-        cyprus.set_servo_position(1, .5)
-
-
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
         # toggle solenoid on and off
         if self.initialized:
+            cyprus.setup_servo(1)
             if state == True:
-                cyprus.set_pwm_values(1, period_value=100000, compare_value=500000, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+                cyprus.set_servo_position(1, 1)
             elif state == False:
-                cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
-                time.sleep(.1)
-                self.deMagSolenoid(.01)
+                cv = 1
+                while cv != .5:
+                    cyprus.set_servo_position(1, cv)
+                    if cv > .5 and cv - .5 > .009:
+                        cv -= .01
+                    elif cv < .5 and .5 - cv > .009:
+                        cv += .01
+                    else:
+                        break
+                    time.sleep(.01)
+                    cv = 1 - cv
+                print("demag finished")
+                cyprus.set_servo_position(1, .5)
             else:
+                print("no valid input")
                 return
 
     def getLim1(self):
