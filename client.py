@@ -124,10 +124,10 @@ def run_game(difficulty=1):
                     arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
-                    arm.powerSolenoid(False)
+                    arm.powerSolenoid(True)
                     time.sleep(.5)
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.powerSolenoid(True)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking move functions
@@ -144,10 +144,10 @@ def run_game(difficulty=1):
                     arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(90)
-                    arm.powerSolenoid(False)
+                    arm.powerSolenoid(True)
                     time.sleep(.5)
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.powerSolenoid(True)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -168,9 +168,9 @@ def run_game(difficulty=1):
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
-                    arm.powerSolenoid(False)
-                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(True)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -191,9 +191,9 @@ def run_game(difficulty=1):
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
-                    arm.powerSolenoid(False)
-                    arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(True)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(False)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking arm move function
