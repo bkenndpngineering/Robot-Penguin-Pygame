@@ -72,7 +72,7 @@ def run_game(difficulty=1):
 
     X, Y = grid_to_arm_coord(0,0)
     height = -100
-    for i in range(0,8):
+    for i in range(0,9):
         arm.rotateStepper(90)
         arm.moveToCoordinates(X, Y, height)
         height -= 5
@@ -268,9 +268,7 @@ if __name__ == '__main__':
     else:
         ready = False
 
-    print("start demag")
-    arm.deMagSolenoid(.5)
-    print("fin demag")
+    arm.powerSolenoid(False)
 
     # move into idle position
         #for i in range(0, 9):
