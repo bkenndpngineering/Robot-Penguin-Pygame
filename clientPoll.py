@@ -86,6 +86,7 @@ class gameClient():
         self.instructions = []
         self.instructions_ready = False
         self.change_ready = True
+        print("made ready: no instructions")
 
     #def resetSignal(self):
     #    self.instructions = []
@@ -131,8 +132,8 @@ class gameClient():
                     self.instructions.append("3")
                 elif packet == (PacketType.COMMAND2, b"newGame"):
                     print("received newGame command")
-                    self.ready = False
-                    self.makeReady()
+                    self.instructions.append("newGame")
+
 
             else:
                 if self.change_ready:

@@ -219,8 +219,9 @@ def main():
             pygame.time.delay(250)  # simple debouncing
             button_send.reset()
         elif button_newGame.isPressed():
-            print("newGame")
             server.send("newGame")
+            pygame.time.delay(250)  # simple debouncing
+            button_newGame.reset()
 
         # render grid icons
         x = 0
