@@ -115,6 +115,7 @@ def main():
     button_height = 75
     button_reset = Button("RESET IT!", (0 * SCREEN_WIDTH/8+offset_x - button_width, offset_y * 2 + card_resize_rect[1], button_width, button_height))
     button_send = Button("SEND IT!", (5 * SCREEN_WIDTH/8+offset_x + card_resize_rect[0], offset_y * 2 + card_resize_rect[1], button_width, button_height))
+    button_newGame = Button("NEW GAME!", (0 * SCREEN_WIDTH/8+offset_x - button_width, offset_y + card_resize_rect[1], button_width, button_height))
 
     # bottom right, hidden exit button
     button_hidden = Button("",
@@ -160,6 +161,7 @@ def main():
         button_send.render(display)
         button_reset.render(display)
         button_hidden.render(display)
+        button_newGame.render(display)
 
         if button_hidden.isPressed():
             print("hidden button. exit")
@@ -216,6 +218,9 @@ def main():
                     print("client not ready")
             pygame.time.delay(250)  # simple debouncing
             button_send.reset()
+        elif button_newGame.isPressed():
+            print("newGame")
+            server.send("newGame")
 
         # render grid icons
         x = 0

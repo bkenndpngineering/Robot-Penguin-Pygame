@@ -44,6 +44,8 @@ class gameServer():
                             self.server.send_packet(PacketType.COMMAND2, b"2")
                         elif instruction == "3":
                             self.server.send_packet(PacketType.COMMAND2, b"3")
+                        elif instruction == "newGame":
+                            self.server.send_packet(PacketType.COMMAND2, b"newGame")
                     self.server.send_packet(PacketType.COMMAND2, b"end")
                     self.instructions_list = []
                     self.client_ready = False
@@ -127,6 +129,8 @@ class gameClient():
                     self.instructions.append("2")
                 elif packet == (PacketType.COMMAND2, b"3"):
                     self.instructions.append("3")
+                elif packet == (PacketType.COMMAND2, b"newGame"):
+                    self.instructions.append("newGame")
 
             else:
                 if self.change_ready:
