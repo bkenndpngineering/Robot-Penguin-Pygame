@@ -82,7 +82,6 @@ def run_game(difficulty=1):
     has_won = 2 # bool --> enum, 1,2,3
     # seperate has won, and prog_terminate
     # make enums -- win, lose, exit
-    #arm.stepper.home()
     while not prog_terminate:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -109,7 +108,6 @@ def run_game(difficulty=1):
             prog_terminate = True
             has_won = 1
         
-        #waitTime = .25
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
@@ -122,14 +120,14 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    #arm.moveToCoordinates(X, Y, loft)
-                    #arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
-                    arm.powerSolenoid(True)
-                    time.sleep(.5)
-                    #arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
+                    time.sleep(.5)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(True)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking move functions
@@ -142,14 +140,14 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    #arm.moveToCoordinates(X, Y, loft)
-                    #arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToCoordinates(X, Y, surface)
                     time.sleep(.5)
                     arm.rotateStepper(90)
-                    arm.powerSolenoid(True)
-                    time.sleep(.5)
-                    #arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
+                    time.sleep(.5)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(True)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -165,14 +163,14 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    #arm.moveToCoordinates(preX, preY, loft)
-                    #arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToCoordinates(preX, preY, loft)
+                    arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
-                    #arm.powerSolenoid(True)
-                    #arm.moveToCoordinates(X, Y, loft)
-                    #arm.powerSolenoid(False)
+                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(True)
                     print("ready")
 
                     #time.sleep(waitTime)
@@ -188,14 +186,14 @@ def run_game(difficulty=1):
 
                     player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-                    #arm.moveToCoordinates(preX, preY, loft)
-                    #arm.moveToCoordinates(preX, preY, surface)
+                    arm.moveToCoordinates(preX, preY, loft)
+                    arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
-                    #arm.powerSolenoid(True)
-                    #arm.moveToCoordinates(X, Y, loft)
-                    #arm.powerSolenoid(False)
+                    arm.powerSolenoid(False)
+                    arm.moveToCoordinates(X, Y, loft)
+                    arm.powerSolenoid(True)
                     print("ready")
 
                     #time.sleep(waitTime)  # replace with blocking arm move function
@@ -271,7 +269,7 @@ if __name__ == '__main__':
         ready = False
 
     print("start demag")
-    arm.deMagSolenoid()
+    arm.deMagSolenoid(.5)
     print("fin demag")
 
     # move into idle position

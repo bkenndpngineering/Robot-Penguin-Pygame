@@ -50,9 +50,8 @@ class DeltaArm():
             self.ready = True
             print("step-True")
 
-    def deMagSolenoid(self):
+    def deMagSolenoid(self, delayTime):
         cv = 0
-        delayTime = .5
         cyprus.setup_servo(1)
         while cv != .5:
             cyprus.set_servo_position(1, cv)
@@ -76,6 +75,8 @@ class DeltaArm():
                 cyprus.set_pwm_values(1, period_value=100000, compare_value=500000, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
             elif state == False:
                 cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+                time.sleep(.1)
+                self.deMagSolenoid(.01)
             else:
                 return
 
