@@ -307,6 +307,7 @@ if __name__ == '__main__':
             end_effect(loose_screen)
             client.restart = True
             client.makeReady()
+            print("game was lost")
         elif state == 3:
             # kill the whole thang
             break

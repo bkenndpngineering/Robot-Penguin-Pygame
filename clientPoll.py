@@ -131,8 +131,7 @@ class gameClient():
                     self.instructions.append("3")
                 elif packet == (PacketType.COMMAND2, b"newGame"):
                     print("received newGame command")
-                    self.ready = False
-                    self.makeReady()
+                    self.instructions.append("newGame")
 
             else:
                 if self.change_ready:
