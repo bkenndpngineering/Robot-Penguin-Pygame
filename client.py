@@ -43,6 +43,8 @@ def run_game(difficulty=1):
     grid.addGoal([8, 8]) # place goal and player at opposite ends
     # player before enemy
     grid.addPlayer([0, 0])
+    grid.player.alive = True
+    grid.player.won = False
     grid.addBaby(grid.getUnusedCoordinates()) # randomize baby/jewel
 
     if difficulty > 3 or (difficulty < 0) or (difficulty == 1):
@@ -68,11 +70,18 @@ def run_game(difficulty=1):
     # enemy after player
     grid.addEnemy(grid.getUnusedCoordinates(), difficulty)
 
+    X, Y = grid_to_arm_coord(0,0)
+    height = -100
+    for i in range(0,9):
+        arm.rotateStepper(90)
+        arm.moveToCoordinates(X, Y, height)
+        height -= 5
+        arm.rotateStepper(90)
+
     prog_terminate = False
     has_won = 2 # bool --> enum, 1,2,3
     # seperate has won, and prog_terminate
-    # make enums -- win, loose, exit
-    #arm.stepper.home()
+    # make enums -- win, lose, exit
     while not prog_terminate:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,13 +107,12 @@ def run_game(difficulty=1):
         if grid.getCollision(grid.player, grid.baby) and grid.goal.collected:
             prog_terminate = True
             has_won = 1
-
-        #waitTime = .25
+        
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                surface = -150
-                loft = -130
+                surface = -135
+                loft = -100
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
                     grid.draw()
@@ -117,6 +125,7 @@ def run_game(difficulty=1):
                     time.sleep(.5)
                     arm.rotateStepper(-90)
                     arm.powerSolenoid(True)
+                    time.sleep(.5)
                     arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
@@ -136,6 +145,7 @@ def run_game(difficulty=1):
                     time.sleep(.5)
                     arm.rotateStepper(90)
                     arm.powerSolenoid(True)
+                    time.sleep(.5)
                     arm.moveToCoordinates(X, Y, loft)
                     arm.powerSolenoid(False)
                     print("ready")
@@ -156,6 +166,7 @@ def run_game(difficulty=1):
                     arm.moveToCoordinates(preX, preY, loft)
                     arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
+                    print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, loft)
@@ -173,11 +184,12 @@ def run_game(difficulty=1):
                     grid.draw()
                     pygame.display.update()
 
-                    player_coord = grid.player.getLocation()  # top left corner
+                    player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
                     arm.moveToCoordinates(preX, preY, surface)
                     time.sleep(.5)
+                    print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface)
                     arm.powerSolenoid(True)
                     arm.moveToCoordinates(X, Y, loft)
@@ -187,7 +199,7 @@ def run_game(difficulty=1):
                     #time.sleep(waitTime)  # replace with blocking arm move function
                     if grid.player.won: break
 
-            if not grid.player.won:
+            if not grid.player.won and grid.player.alive:
                 client.reset = True
                 client.makeReady()
 
@@ -228,19 +240,28 @@ Movement:
 '''
 def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     # grid coordinates relative to top left corner
-    top_left_x = 69
-    top_left_y = -197
+    top_left_x = 45
+    top_left_y = -207
     
     X = top_left_x
     Y = top_left_y
    
     # calculate X
+<<<<<<< HEAD
     X -= 31 * box_X
     Y += 16 * box_X
         
     # calculate Y
     X += 16 * box_Y
     Y += 31 * box_Y
+=======
+    X -= 30 * 37/34 * box_X
+    Y += 16.5 * 37/34 * box_X
+        
+    # calculate Y
+    X += 16.5 * 37/34 * box_Y
+    Y += 30 * 37/34 * box_Y
+>>>>>>> 9c1a049112432ac253963ef72a44e146aa631691
 
     return (X, Y)
 
@@ -255,16 +276,17 @@ if __name__ == '__main__':
         ready = True
     else:
         ready = False
-    
-    #print("start demag")
-    #arm.deMagSolenoid()
-    #print("fin demag")
 
+<<<<<<< HEAD
     # move into idle position
     X, Y = grid_to_arm_coord(0,0)
     arm.moveToCoordinates(X, Y, -100)
+=======
+    arm.powerSolenoid(False)
+>>>>>>> 9c1a049112432ac253963ef72a44e146aa631691
 
-    #for i in range(0, 9):
+    # move into idle position
+        #for i in range(0, 9):
     #    for ii in range(0, 9):
     #        X, Y = grid_to_arm_coord(i, ii)
     #        arm.moveToCoordinates(X, Y, -240)
@@ -282,16 +304,20 @@ if __name__ == '__main__':
             elif instruction == "3":
                 diff = 3
             else:
-                diff = 1
-
+                diff = 0
+            #else:
+            #    client.restart = True
         client.makeReady()
-        state = run_game(diff)
+        if diff != 0:
+            state = run_game(diff)
+        else:
+            state = 0
         if state == 1:  # wins the game
             # send reset signal to server -- > go to start screen
             end_effect(win_screen)
             client.restart = True
             client.makeReady()
-        elif state == 2:  # looses the game
+        elif state == 2:  # loses the game
             # send reset signal to server -- > go to start screen
             end_effect(loose_screen)
             client.restart = True
@@ -299,6 +325,9 @@ if __name__ == '__main__':
         elif state == 3:
             # kill the whole thang
             break
+        elif state == 0:
+            pass
+
 
 # still needs to be able to exit
 # server/client

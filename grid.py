@@ -24,6 +24,7 @@ class Grid():
 
     def addPlayer(self, location):
         if self.player == None: # only add one player
+            print("NEW PLAYER ADDED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             self.player = Player(self, location)
             self.addObject(self.player)
 

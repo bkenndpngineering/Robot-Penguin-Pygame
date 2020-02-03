@@ -12,7 +12,6 @@ import time
 """
 DeltaArm API V.3 (Dec 2, 2019) by Braedan Kennedy (bkenndpngineering)
 Supplemental development by Joseph Pearman and Philip Nordblad
-
 for use with the DPEA Robot Penguin project
 modules can be used for any Delta Arm project
 """
@@ -51,23 +50,29 @@ class DeltaArm():
             self.ready = True
             print("step-True")
 
-    def deMagSolenoid(self):
-        state = True
-        for i in range(3000):
-            state = not state
-            self.powerSolenoid(state)
-
-        self.powerSolenoid(False)
-
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
         # toggle solenoid on and off
         if self.initialized:
+            cyprus.setup_servo(1)
             if state == True:
-                cyprus.set_pwm_values(1, period_value=100000, compare_value=500000, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+                cyprus.set_servo_position(1, 1)
             elif state == False:
-                cyprus.set_pwm_values(1, period_value=100000, compare_value=0, compare_mode=cyprus.LESS_THAN_OR_EQUAL)
+                cv = 1
+                while cv != .5:
+                    cyprus.set_servo_position(1, cv)
+                    if cv > .5 and cv - .5 > .009:
+                        cv -= .01
+                    elif cv < .5 and .5 - cv > .009:
+                        cv += .01
+                    else:
+                        break
+                    time.sleep(.01)
+                    cv = 1 - cv
+                print("demag finished")
+                cyprus.set_servo_position(1, .5)
             else:
+                print("no valid input")
                 return
 
     def getLim1(self):
@@ -251,13 +256,13 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 5    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 4    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         while not self.ready:
             pass
         if self.initialized:
        
             current_x, current_y, current_z = self.getCoordinates()
-            if desired_x > current_x:
+            """ if desired_x > current_x:
                 desired_x += tolerance*2
             else:
                 desired_x -= tolerance*2
@@ -269,7 +274,7 @@ class DeltaArm():
                 desired_z += tolerance
             else:
                 desired_z -= tolerance
-
+            """
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
             pos2 = angle2 * DEG_TO_CPR
