@@ -119,10 +119,10 @@ class Grid():
             for entity in self.entity_list:
                 taken_coordinates.append(entity.location)
 
-            x = random.randint(1, self.grid_dimensions[0] - 2)
-            y = random.randint(1, self.grid_dimensions[1] - 2)
+            x = random.randint(3, self.grid_dimensions[0] - 1)
+            y = random.randint(3, self.grid_dimensions[1] - 1)
             while ([x, y] in taken_coordinates):
-                x = random.randint(1, self.grid_dimensions[0] - 2)
-                y = random.randint(1, self.grid_dimensions[1] - 2)
+                x = random.randint(3, self.grid_dimensions[0] - 1)
+                y = random.randint(3, self.grid_dimensions[1] - 1)
 
             return [x, y]
