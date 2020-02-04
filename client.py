@@ -243,8 +243,8 @@ Movement:
 '''
 def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     # grid coordinates relative to top left corner
-    top_left_x = 45
-    top_left_y = -207
+    top_left_x = 50
+    top_left_y = -196
     
     X = top_left_x
     Y = top_left_y
@@ -323,7 +323,7 @@ if __name__ == '__main__':
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
-
+arm.moveToCoordinates(-176, -304, -140)
 pygame.quit()
 client.stop()
 arm.shutdown()

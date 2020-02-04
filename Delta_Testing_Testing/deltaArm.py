@@ -338,7 +338,6 @@ class DeltaArm():
     def shutdown(self):
         if self.initialized:
             # reset and disconnect from the first ODrive
-            self.moveToCoordinates(-176, -304, -140)
             try:
                 self.od1.reboot()
             except:
