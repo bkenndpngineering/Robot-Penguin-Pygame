@@ -172,11 +172,19 @@ class DeltaArm():
 
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
+        self.ax2.index_and_hold(-1, 1)
+        time.sleep(1)
         self.ax0.index_and_hold(-1, 1)
         time.sleep(1)
         self.ax1.index_and_hold(-1, 1)
         time.sleep(1)
-        self.ax2.index_and_hold(-1, 1)
+
+        # home motor 3
+        self.ax2.set_vel(-20)
+        while (not self.getLim3()):
+            continue
+        self.ax2.set_vel(0)
+        self.ax2.set_home()
         time.sleep(1)
 
         # home motor 1
@@ -195,15 +203,12 @@ class DeltaArm():
         self.ax1.set_home()
         time.sleep(1)
 
-        # home motor 3
-        self.ax2.set_vel(-20)
-        while (not self.getLim3()):
-            continue
-        self.ax2.set_vel(0)
-        self.ax2.set_home()
-        time.sleep(1)
-
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
+        if self.ax2.axis.error != 0: return False
+        if self.ax2.axis.motor.error != 0: return False
+        if self.ax2.axis.encoder.error != 0: return False
+        if self.ax2.axis.controller.error != 0: return False
+
         if self.ax0.axis.error != 0: return False
         if self.ax0.axis.motor.error != 0: return False
         if self.ax0.axis.encoder.error != 0: return False
@@ -213,11 +218,6 @@ class DeltaArm():
         if self.ax1.axis.motor.error != 0: return False
         if self.ax1.axis.encoder.error != 0: return False
         if self.ax1.axis.controller.error != 0: return False
-        
-        if self.ax2.axis.error != 0: return False
-        if self.ax2.axis.motor.error != 0: return False
-        if self.ax2.axis.encoder.error != 0: return False
-        if self.ax2.axis.controller.error != 0: return False
 
         return True
 
