@@ -122,12 +122,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToRelativeCoordinates(0, 0, -height)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToRelativeCoordinates(0, 0, height)
+                    arm.moveToRelativeCoordinates(-1, -1, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -142,12 +142,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToRelativeCoordinates(0, 0, -height)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     arm.rotateStepper(90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToRelativeCoordinates(0, 0, height)
+                    arm.moveToRelativeCoordinates(-1, -1, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -165,13 +165,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToRelativeCoordinates(0, 0, -height)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
                     time.sleep(.1)
                     arm.powerSolenoid(True)
-                    arm.moveToRelativeCoordinates(0, 0, height - 5)
+                    arm.moveToRelativeCoordinates(-1, -1, height - 5)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -189,13 +189,13 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
-                    arm.moveToRelativeCoordinates(0, 0, -height)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
                     time.sleep(.1)
                     arm.powerSolenoid(True)
-                    arm.moveToRelativeCoordinates(0, 0, height - 5)
+                    arm.moveToRelativeCoordinates(-1, -1, height - 5)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -243,8 +243,8 @@ Movement:
 '''
 def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     # grid coordinates relative to top left corner
-    top_left_x = 50
-    top_left_y = -196
+    top_left_x = 60
+    top_left_y = -185
     
     X = top_left_x
     Y = top_left_y
@@ -323,7 +323,9 @@ if __name__ == '__main__':
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
-arm.moveToCoordinates(-176, -304, -140)
+arm.moveToCoordinates(0, 0, -100)
+arm.moveToCoordinates(-150, -250, -100)
+arm.moveToCoordinates(-150, -250, -140)
 pygame.quit()
 client.stop()
 arm.shutdown()
