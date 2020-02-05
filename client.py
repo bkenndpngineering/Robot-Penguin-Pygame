@@ -223,28 +223,11 @@ def run_game(difficulty=1):
 
 arm = DeltaArm()
 
-## Grid coordinates
-## (71, -183, -269.63) # TOP LEFT
-## (-177, -44.5, -272.5) # TOP RIGHT
-## (-32, 198, -272.69) # BOTTOM RIGHT
-## (198, 61, -270.1) # BOTTOM LEFT
-## num boxes height 9,
-## box height = TLeft - BLeft = 244/9 = 27
-## num boxes width 9
-## width box = TLeft - TRight = 248/9 = 27.5
-## 27 = BOX DIMENSIONS
-## table height around 270
-'''
-Movement:
-1 space right = +(-27, 15, 0)
-1 space left = +(27, -15, 0)
-1 space up = +(-14, -27, 0)
-1 space down = +(14 27, 0)
-'''
 def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     # grid coordinates relative to top left corner
-    top_left_x = 50
-    top_left_y = -196
+    top_left_x = 60
+    top_left_y = -205
+
     
     X = top_left_x
     Y = top_left_y
@@ -323,6 +306,7 @@ if __name__ == '__main__':
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
+arm.moveToRelativeCoordinates(0, 0, 40)
 arm.moveToCoordinates(-176, -304, -140)
 pygame.quit()
 client.stop()
