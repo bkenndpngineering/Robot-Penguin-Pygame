@@ -253,7 +253,8 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     Y += 30 * 37/34 * box_Y
 
     return (X, Y)
-def increment_move(times, now_x, now_y, now_z,  x_move, y_move, z_move):
+
+def increment_move(times, now_x, now_y, now_z, x_move, y_move, z_move):
     for i in range(0, times):
         now_x += x_move
         now_y += y_move
@@ -294,12 +295,6 @@ if __name__ == '__main__':
         ready = False
 
     arm.powerSolenoid(False)
-
-    # move into idle position
-        #for i in range(0, 9):
-    #    for ii in range(0, 9):
-    #        X, Y = grid_to_arm_coord(i, ii)
-    #        arm.moveToCoordinates(X, Y, -240)
 
     while 1:
         instructions = []
