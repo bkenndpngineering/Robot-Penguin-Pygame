@@ -166,13 +166,13 @@ def run_game(difficulty=1):
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
                     if grid.player.image == icon_player_front:
-                        arm.moveToCoordinates(prex - 10, preY - 10, surface)
+                        arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
-                        arm.moveToCoordinates(prex + 10, preY + 10, surface)
+                        arm.moveToCoordinates(preX + 10, preY + 10, surface)
                     elif grid.player.image == icon_player_right:
-                        arm.moveToCoordinates(prex - 10, preY + 10, surface)
+                        arm.moveToCoordinates(preX - 10, preY + 10, surface)
                     elif grid.player.image == icon_player_left:
-                        arm.moveToCoordinates(prex + 10, preY - 10, surface)
+                        arm.moveToCoordinates(preX + 10, preY - 10, surface)
                     arm.moveToCoordinates(preX, preY, surface)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
@@ -196,13 +196,13 @@ def run_game(difficulty=1):
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
                     if grid.player.image == icon_player_front:
-                        arm.moveToCoordinates(prex - 10, preY - 10, surface)
+                        arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
-                        arm.moveToCoordinates(prex + 10, preY + 10, surface)
+                        arm.moveToCoordinates(preX + 10, preY + 10, surface)
                     elif grid.player.image == icon_player_right:
-                        arm.moveToCoordinates(prex - 10, preY + 10, surface)
+                        arm.moveToCoordinates(preX - 10, preY + 10, surface)
                     elif grid.player.image == icon_player_left:
-                        arm.moveToCoordinates(prex + 10, preY - 10, surface)
+                        arm.moveToCoordinates(preX + 10, preY - 10, surface)
                     arm.moveToCoordinates(preX, preY, surface)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
