@@ -7,6 +7,7 @@ from clientPoll import gameClient
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
+from odrive.enums import *
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -252,6 +253,33 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     Y += 30 * 37/34 * box_Y
 
     return (X, Y)
+def increment_move(times, now_x, now_y, now_z,  x_move, y_move, z_move):
+    for i in range(0, times):
+        now_x += x_move
+        now_y += y_move
+        now_z += z_move
+        arm.moveToCoordinates(now_x, now_y, now_z)
+
+def Rest():
+    player_coord = grid.player.getLocation()
+    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+    arm.moveToCoordinates(X, Y, -80)
+    arm.moveToCoordinates(X, Y, -140)
+    x = -152
+    y = -154
+    z = -80
+    arm.moveToCoordinates(x, y, z)
+    increment_move(4, x, y, z, -2, -10, 0)
+    increment_move(2, x, y, z, 0, 0, -10)
+    arm.powerSolenoid(True)
+    increment_move(2, x, y, z, 0, 0, 10)
+    arm.powerSolenoid(False)
+    x = -50
+    y = -154
+    z = -80
+    arm.moveToCoordinates(x,y,z)
+    increment_move(7, x, y, z, 0, -10, 0)
+    increment_move(5, x, y, z, 0, 0, -10)
 
 # if X, Y does not work
 # got to coordinates then lower Z from a larger height
@@ -317,9 +345,7 @@ if __name__ == '__main__':
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
-arm.moveToCoordinates(0, 0, -100)
-arm.moveToCoordinates(-150, -250, -100)
-arm.moveToCoordinates(-150, -250, -140)
+Rest()
 pygame.quit()
 client.stop()
 arm.shutdown()
