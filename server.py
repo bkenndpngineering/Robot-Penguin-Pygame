@@ -34,6 +34,9 @@ def start_screen():
     button_diff_easy = Button("SIMPLE", (1.2*button_width, 5 * button_height, button_width, button_height), inact_color=(255,0,0), act_color=(0,255,0))
     button_diff_med = Button("CHALLENGING", (1.2*button_width, 7 * button_height, button_width, button_height), inact_color=(255,255,255), act_color=(0,0,255))
     button_diff_hard = Button("MIND-BUSTING", (1.2*button_width, 9 * button_height, button_width, button_height), inact_color=(0,0,255), act_color=(255,0,0))
+    
+    #background
+    display,blit(iceberg2.png)
 
     pygame.display.update()
 

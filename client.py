@@ -262,10 +262,8 @@ def increment_move(times, now_x, now_y, now_z, x_move, y_move, z_move):
         arm.moveToCoordinates(now_x, now_y, now_z)
 
 def Rest():
-    player_coord = grid.player.getLocation()
-    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
-    arm.moveToCoordinates(X, Y, -80)
-    arm.moveToCoordinates(X, Y, -140)
+    x, y, z = arm.getCoordinates()
+    arm.moveToCoordinates(x, y, -140)
     x = -152
     y = -154
     z = -80
@@ -275,11 +273,10 @@ def Rest():
     arm.powerSolenoid(True)
     increment_move(2, x, y, z, 0, 0, 10)
     arm.powerSolenoid(False)
-    x = -50
-    y = -154
+    x = -60
+    y = -185
     z = -80
     arm.moveToCoordinates(x,y,z)
-    increment_move(7, x, y, z, 0, -10, 0)
     increment_move(5, x, y, z, 0, 0, -10)
 
 # if X, Y does not work
