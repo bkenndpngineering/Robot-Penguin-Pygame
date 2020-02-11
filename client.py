@@ -167,6 +167,7 @@ def run_game(difficulty=1):
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if grid.player.image == icon_player_front:
                         arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
@@ -176,6 +177,8 @@ def run_game(difficulty=1):
                     elif grid.player.image == icon_player_left:
                         arm.moveToCoordinates(preX + 10, preY - 10, surface)
 =======
+=======
+>>>>>>> parent of 6df55e9... moving 3.1
                     if player.image == icon_player_front:
                         arm.moveToCoordinates(prex - 10, preY - 10, surface)
                     elif player.image == icon_player_down:
@@ -208,6 +211,7 @@ def run_game(difficulty=1):
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if grid.player.image == icon_player_front:
                         arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
@@ -217,6 +221,8 @@ def run_game(difficulty=1):
                     elif grid.player.image == icon_player_left:
                         arm.moveToCoordinates(preX + 10, preY - 10, surface)
 =======
+=======
+>>>>>>> parent of 6df55e9... moving 3.1
                     if player.image == icon_player_front:
                         arm.moveToCoordinates(prex - 10, preY - 10, surface)
                     elif player.image == icon_player_down:
