@@ -166,6 +166,7 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
+<<<<<<< HEAD
                     if grid.player.image == icon_player_front:
                         arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
@@ -174,6 +175,16 @@ def run_game(difficulty=1):
                         arm.moveToCoordinates(preX - 10, preY + 10, surface)
                     elif grid.player.image == icon_player_left:
                         arm.moveToCoordinates(preX + 10, preY - 10, surface)
+=======
+                    if player.image == icon_player_front:
+                        arm.moveToCoordinates(prex - 10, preY - 10, surface)
+                    elif player.image == icon_player_down:
+                        arm.moveToCoordinates(prex + 10, preY + 10, surface)
+                    elif player.image == icon_player_right:
+                        arm.moveToCoordinates(prex - 10, preY + 10, surface)
+                    elif player.image == icon_player_left:
+                        arm.moveToCoordinates(prex + 10, preY - 10, surface)
+>>>>>>> parent of 6df55e9... moving 3.1
                     arm.moveToCoordinates(preX, preY, surface)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
@@ -196,6 +207,7 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
+<<<<<<< HEAD
                     if grid.player.image == icon_player_front:
                         arm.moveToCoordinates(preX - 10, preY - 10, surface)
                     elif grid.player.image == icon_player_down:
@@ -204,6 +216,16 @@ def run_game(difficulty=1):
                         arm.moveToCoordinates(preX - 10, preY + 10, surface)
                     elif grid.player.image == icon_player_left:
                         arm.moveToCoordinates(preX + 10, preY - 10, surface)
+=======
+                    if player.image == icon_player_front:
+                        arm.moveToCoordinates(prex - 10, preY - 10, surface)
+                    elif player.image == icon_player_down:
+                        arm.moveToCoordinates(prex + 10, preY + 10, surface)
+                    elif player.image == icon_player_right:
+                        arm.moveToCoordinates(prex - 10, preY + 10, surface)
+                    elif player.image == icon_player_left:
+                        arm.moveToCoordinates(prex + 10, preY - 10, surface)
+>>>>>>> parent of 6df55e9... moving 3.1
                     arm.moveToCoordinates(preX, preY, surface)
                     print(str(player_coord))
                     arm.moveToCoordinates(X, Y, surface + 5)
