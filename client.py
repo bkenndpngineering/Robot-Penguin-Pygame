@@ -7,7 +7,6 @@ from clientPoll import gameClient
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
-from odrive.enums import *
 
 pygame.init()
 SCREEN_WIDTH = 1920
