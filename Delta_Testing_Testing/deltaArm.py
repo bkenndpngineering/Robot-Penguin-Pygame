@@ -173,12 +173,13 @@ class DeltaArm():
 
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
-        self.ax2.index_and_hold(-1, 1)
-        time.sleep(1)
-        self.ax0.index_and_hold(-1, 1)
-        time.sleep(1)
-        self.ax1.index_and_hold(-1, 1)
-        time.sleep(1)
+        if self.ax1.is_calibrated():
+            self.ax2.index_and_hold(-1, 1)
+            time.sleep(1)
+            self.ax0.index_and_hold(-1, 1)
+            time.sleep(1)
+            self.ax1.index_and_hold(-1, 1)
+            time.sleep(1)
 
         # home motor 3
         self.ax2.set_vel(-20)
@@ -232,12 +233,14 @@ class DeltaArm():
 
         # connect to ODrives
         ODriveConnected = self.connectODrive()
-        print(str(ODriveConnected))
 
         if (ODriveConnected == True):
             # if GPIO and ODrive are setup properly, attempt to home
             HomedMotors = self.homeMotors()
-            if (HomedMotors == True): self.initialized = True
+            if (HomedMotors == True):
+                self.initialized = True
+            else:
+                print("Home Failure")
 
         if self.initialized:
             # calculate homed coordinates
@@ -248,7 +251,7 @@ class DeltaArm():
                                    deaccel_current=40, steps_per_unit=200,
                                    speed=1)  # slower speed and a higher current means more torque.
             self.stepper.home(1)
-
+            print("initialize True")
             return True
 
         else:
@@ -330,6 +333,7 @@ class DeltaArm():
 
             pos2 = self.ax1.get_pos()
             angle2 = pos2 * CPR_TO_DEG
+
 
             pos3 = self.ax2.get_pos()
             angle3 = pos3 * CPR_TO_DEG
