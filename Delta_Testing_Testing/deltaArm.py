@@ -174,35 +174,48 @@ class DeltaArm():
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
         if self.ax1.is_calibrated():
+            print("self.ax1.is_calibrated()")
             self.ax2.index_and_hold(-1, 1)
+            print('self.ax2.index_and_hold(-1, 1)')
             time.sleep(1)
             self.ax0.index_and_hold(-1, 1)
+            print('self.ax0.index_and_hold(-1, 1)')
             time.sleep(1)
             self.ax1.index_and_hold(-1, 1)
+            print('self.ax1.index_and_hold(-1, 1)')
             time.sleep(1)
 
         # home motor 3
         self.ax2.set_vel(-20)
+        print("set ax2 vel")
         while (not self.getLim3()):
             continue
+        print("getLim3")
         self.ax2.set_vel(0)
         self.ax2.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # home motor 1
         self.ax0.set_vel(-20)
+        print("set ax0 vel")
         while (not self.getLim1()):
             continue
+        print("getLim1")
         self.ax0.set_vel(0)
         self.ax0.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # home motor 2
         self.ax1.set_vel(-20)
+        print("set ax1 vel")
         while (not self.getLim2()):
             continue
+        print("getLim2")
         self.ax1.set_vel(0)
         self.ax1.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
@@ -232,13 +245,17 @@ class DeltaArm():
         print("Found CyPrus, Firmware version: ", version)
 
         # connect to ODrives
+        print('ODriveConnected = self.connectODrive()')
         ODriveConnected = self.connectODrive()
 
         if (ODriveConnected == True):
             # if GPIO and ODrive are setup properly, attempt to home
+            print('HomedMotors = self.homeMotors()')
             HomedMotors = self.homeMotors()
+            print(HomedMotors)
             if (HomedMotors == True):
                 self.initialized = True
+                print("initialized")
             else:
                 print("Home Failure")
 
