@@ -184,6 +184,8 @@ class DeltaArm():
             self.ax1.index_and_hold(-1, 1)
             print('self.ax1.index_and_hold(-1, 1)')
             time.sleep(1)
+        else:
+            print("ax1 not calibrated")
 
         # home motor 3
         self.ax2.set_vel(-20)
