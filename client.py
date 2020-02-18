@@ -111,8 +111,9 @@ def run_game(difficulty=1):
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                surface = -135
+                surface = -140
                 loft = -100
+                height = loft - surface
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
                     grid.draw()
@@ -121,12 +122,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     arm.rotateStepper(-90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(-1, -1, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -141,12 +142,12 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(X, Y, loft)
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToRelativeCoordinates(1, 1, -height)
                     time.sleep(.5)
                     arm.rotateStepper(90)
                     arm.powerSolenoid(True)
                     time.sleep(.5)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(-1, -1, height)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -164,12 +165,21 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()  # top left corner
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
+
+                    if grid.player.image == icon_player_front:
+                        arm.moveToCoordinates(preX - 10, preY - 10, surface)
+                    elif grid.player.image == icon_player_down:
+                        arm.moveToCoordinates(preX + 10, preY + 10, surface)
+                    elif grid.player.image == icon_player_right:
+                        arm.moveToCoordinates(preX - 10, preY + 10, surface)
+                    elif grid.player.image == icon_player_left:
+                        arm.moveToCoordinates(preX + 10, preY - 10, surface)
+
                     arm.moveToCoordinates(preX, preY, surface)
-                    time.sleep(.5)
                     print(str(player_coord))
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToCoordinates(X, Y, surface + 5)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(-1, -1, height - 5)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -187,12 +197,21 @@ def run_game(difficulty=1):
                     player_coord = grid.player.getLocation()
                     X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
                     arm.moveToCoordinates(preX, preY, loft)
+
+                    if grid.player.image == icon_player_front:
+                        arm.moveToCoordinates(preX - 10, preY - 10, surface)
+                    elif grid.player.image == icon_player_down:
+                        arm.moveToCoordinates(preX + 10, preY + 10, surface)
+                    elif grid.player.image == icon_player_right:
+                        arm.moveToCoordinates(preX - 10, preY + 10, surface)
+                    elif grid.player.image == icon_player_left:
+                        arm.moveToCoordinates(preX + 10, preY - 10, surface)
+
                     arm.moveToCoordinates(preX, preY, surface)
-                    time.sleep(.5)
                     print(str(player_coord))
-                    arm.moveToCoordinates(X, Y, surface)
+                    arm.moveToCoordinates(X, Y, surface + 5)
                     arm.powerSolenoid(True)
-                    arm.moveToCoordinates(X, Y, loft)
+                    arm.moveToRelativeCoordinates(-1, -1, height - 5)
                     arm.powerSolenoid(False)
                     print("ready")
 
@@ -220,28 +239,10 @@ def run_game(difficulty=1):
 
 arm = DeltaArm()
 
-## Grid coordinates
-## (71, -183, -269.63) # TOP LEFT
-## (-177, -44.5, -272.5) # TOP RIGHT
-## (-32, 198, -272.69) # BOTTOM RIGHT
-## (198, 61, -270.1) # BOTTOM LEFT
-## num boxes height 9,
-## box height = TLeft - BLeft = 244/9 = 27
-## num boxes width 9
-## width box = TLeft - TRight = 248/9 = 27.5
-## 27 = BOX DIMENSIONS
-## table height around 270
-'''
-Movement:
-1 space right = +(-27, 15, 0)
-1 space left = +(27, -15, 0)
-1 space up = +(-14, -27, 0)
-1 space down = +(14 27, 0)
-'''
 def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     # grid coordinates relative to top left corner
-    top_left_x = 45
-    top_left_y = -207
+    top_left_x = 60
+    top_left_y = -185
     
     X = top_left_x
     Y = top_left_y
@@ -265,6 +266,34 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
 
     return (X, Y)
 
+def increment_move(times, now_x, now_y, now_z, x_move, y_move, z_move):
+    for i in range(0, times):
+        now_x += x_move
+        now_y += y_move
+        now_z += z_move
+        arm.moveToCoordinates(now_x, now_y, now_z)
+
+def Rest():
+    player_coord = grid.player.getLocation()
+    X, Y = grid_to_arm_coord(player_coord[0], player_coord[1])
+    arm.moveToCoordinates(X, Y, -80)
+    arm.moveToCoordinates(X, Y, -140)
+    x = -152
+    y = -154
+    z = -80
+    arm.moveToCoordinates(x, y, z)
+    increment_move(4, x, y, z, -2, -10, 0)
+    increment_move(2, x, y, z, 0, 0, -10)
+    arm.powerSolenoid(True)
+    increment_move(2, x, y, z, 0, 0, 10)
+    arm.powerSolenoid(False)
+    x = -50
+    y = -154
+    z = -80
+    arm.moveToCoordinates(x,y,z)
+    increment_move(7, x, y, z, 0, -10, 0)
+    increment_move(5, x, y, z, 0, 0, -10)
+
 # if X, Y does not work
 # got to coordinates then lower Z from a larger height
 
@@ -284,12 +313,6 @@ if __name__ == '__main__':
 =======
     arm.powerSolenoid(False)
 >>>>>>> 9c1a049112432ac253963ef72a44e146aa631691
-
-    # move into idle position
-        #for i in range(0, 9):
-    #    for ii in range(0, 9):
-    #        X, Y = grid_to_arm_coord(i, ii)
-    #        arm.moveToCoordinates(X, Y, -240)
 
     while 1:
         instructions = []
@@ -335,7 +358,7 @@ if __name__ == '__main__':
 # send reset command from client --> server
 # server --> start screen
 # client reset, wait for difficulty
-
+Rest()
 pygame.quit()
 client.stop()
 arm.shutdown()

@@ -121,6 +121,7 @@ class DeltaArm():
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
         
         # set controller tuning parameters
+        '''
         print("orignal values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -134,7 +135,7 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-
+        '''
         pos_gain = 4
         vel_gain = 0.01
         vel_integrator_gain = 0.1
@@ -153,7 +154,7 @@ class DeltaArm():
         self.ax2.axis.controller.config.pos_gain = pos_gain
         self.ax1.axis.controller.config.pos_gain = pos_gain
         self.ax0.axis.controller.config.pos_gain = pos_gain
-
+        '''
         print("configured values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -167,43 +168,64 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-
+        '''
         return True
 
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
-        self.ax0.index_and_hold(-1, 1)
-        time.sleep(1)
-        self.ax1.index_and_hold(-1, 1)
-        time.sleep(1)
-        self.ax2.index_and_hold(-1, 1)
+        if self.ax1.is_calibrated():
+            print("self.ax1.is_calibrated()")
+            self.ax2.index_and_hold(-1, 1)
+            print('self.ax2.index_and_hold(-1, 1)')
+            time.sleep(1)
+            self.ax0.index_and_hold(-1, 1)
+            print('self.ax0.index_and_hold(-1, 1)')
+            time.sleep(1)
+            self.ax1.index_and_hold(-1, 1)
+            print('self.ax1.index_and_hold(-1, 1)')
+            time.sleep(1)
+        else:
+            print("ax1 not calibrated")
+
+        # home motor 3
+        self.ax2.set_vel(-20)
+        print("set ax2 vel")
+        while (not self.getLim3()):
+            continue
+        print("getLim3")
+        self.ax2.set_vel(0)
+        self.ax2.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # home motor 1
         self.ax0.set_vel(-20)
+        print("set ax0 vel")
         while (not self.getLim1()):
             continue
+        print("getLim1")
         self.ax0.set_vel(0)
         self.ax0.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # home motor 2
         self.ax1.set_vel(-20)
+        print("set ax1 vel")
         while (not self.getLim2()):
             continue
+        print("getLim2")
         self.ax1.set_vel(0)
         self.ax1.set_home()
-        time.sleep(1)
-
-        # home motor 3
-        self.ax2.set_vel(-20)
-        while (not self.getLim3()):
-            continue
-        self.ax2.set_vel(0)
-        self.ax2.set_home()
+        print("set ax2 home")
         time.sleep(1)
 
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
+        if self.ax2.axis.error != 0: return False
+        if self.ax2.axis.motor.error != 0: return False
+        if self.ax2.axis.encoder.error != 0: return False
+        if self.ax2.axis.controller.error != 0: return False
+
         if self.ax0.axis.error != 0: return False
         if self.ax0.axis.motor.error != 0: return False
         if self.ax0.axis.encoder.error != 0: return False
@@ -213,11 +235,6 @@ class DeltaArm():
         if self.ax1.axis.motor.error != 0: return False
         if self.ax1.axis.encoder.error != 0: return False
         if self.ax1.axis.controller.error != 0: return False
-        
-        if self.ax2.axis.error != 0: return False
-        if self.ax2.axis.motor.error != 0: return False
-        if self.ax2.axis.encoder.error != 0: return False
-        if self.ax2.axis.controller.error != 0: return False
 
         return True
 
@@ -230,12 +247,19 @@ class DeltaArm():
         print("Found CyPrus, Firmware version: ", version)
 
         # connect to ODrives
+        print('ODriveConnected = self.connectODrive()')
         ODriveConnected = self.connectODrive()
 
         if (ODriveConnected == True):
             # if GPIO and ODrive are setup properly, attempt to home
+            print('HomedMotors = self.homeMotors()')
             HomedMotors = self.homeMotors()
-            if (HomedMotors == True): self.initialized = True
+            print(HomedMotors)
+            if (HomedMotors == True):
+                self.initialized = True
+                print("initialized")
+            else:
+                print("Home Failure")
 
         if self.initialized:
             # calculate homed coordinates
@@ -246,7 +270,7 @@ class DeltaArm():
                                    deaccel_current=40, steps_per_unit=200,
                                    speed=1)  # slower speed and a higher current means more torque.
             self.stepper.home(1)
-
+            print("initialize True")
             return True
 
         else:
@@ -328,6 +352,7 @@ class DeltaArm():
 
             pos2 = self.ax1.get_pos()
             angle2 = pos2 * CPR_TO_DEG
+
 
             pos3 = self.ax2.get_pos()
             angle3 = pos3 * CPR_TO_DEG
