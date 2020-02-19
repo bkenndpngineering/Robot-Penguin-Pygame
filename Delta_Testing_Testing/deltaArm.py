@@ -119,9 +119,17 @@ class DeltaArm():
         self.ax0 = ODrive_Ease_Lib.ODrive_Axis(od1.axis0)
         self.ax1 = ODrive_Ease_Lib.ODrive_Axis(od1.axis1)
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
-        
+
+        print("OD DUMP")
+        print(self.ax0)
+        print("self,ax0")
+        print(self.ax1)
+        print("self,ax1")
+        print(self.ax2)
+        print("self,ax2")
+ 
+ 
         # set controller tuning parameters
-        '''
         print("orignal values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -135,7 +143,7 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-        '''
+        
         pos_gain = 4
         vel_gain = 0.01
         vel_integrator_gain = 0.1
@@ -154,7 +162,7 @@ class DeltaArm():
         self.ax2.axis.controller.config.pos_gain = pos_gain
         self.ax1.axis.controller.config.pos_gain = pos_gain
         self.ax0.axis.controller.config.pos_gain = pos_gain
-        '''
+        
         print("configured values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -168,7 +176,7 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-        '''
+        
         return True
 
     def homeMotors(self):

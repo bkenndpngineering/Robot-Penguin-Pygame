@@ -248,21 +248,12 @@ def grid_to_arm_coord(box_X, box_Y):  # box_X/Y is in interval [0, 8]
     Y = top_left_y
    
     # calculate X
-<<<<<<< HEAD
     X -= 31 * box_X
     Y += 16 * box_X
         
     # calculate Y
     X += 16 * box_Y
     Y += 31 * box_Y
-=======
-    X -= 30 * 37/34 * box_X
-    Y += 16.5 * 37/34 * box_X
-        
-    # calculate Y
-    X += 16.5 * 37/34 * box_Y
-    Y += 30 * 37/34 * box_Y
->>>>>>> 9c1a049112432ac253963ef72a44e146aa631691
 
     return (X, Y)
 
@@ -306,13 +297,10 @@ if __name__ == '__main__':
     else:
         ready = False
 
-<<<<<<< HEAD
     # move into idle position
     X, Y = grid_to_arm_coord(0,0)
     arm.moveToCoordinates(X, Y, -100)
-=======
     arm.powerSolenoid(False)
->>>>>>> 9c1a049112432ac253963ef72a44e146aa631691
 
     while 1:
         instructions = []
