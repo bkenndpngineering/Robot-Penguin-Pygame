@@ -122,11 +122,11 @@ class DeltaArm():
 
         print("OD DUMP")
         print(self.ax0)
-        print("self,ax0")
+        print("self.ax0")
         print(self.ax1)
-        print("self,ax1")
+        print("self.ax1")
         print(self.ax2)
-        print("self,ax2")
+        print("self.ax2")
  
  
         # set controller tuning parameters

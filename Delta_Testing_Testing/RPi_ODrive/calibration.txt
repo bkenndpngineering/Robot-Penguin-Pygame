@@ -16,8 +16,8 @@ lets learn how to do that
 -run a motor calibration
 -then do 
 	od0.axis0.motor.config.pre_calibrated = True
-	od0.axis0.save_configuration()
-	od0.axis0.reboot()
+	od0.save_configuration()
+	od0.reboot()
 
 
 Afther this you can always test it by just typing 
