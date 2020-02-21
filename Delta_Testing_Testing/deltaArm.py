@@ -120,8 +120,23 @@ class DeltaArm():
         self.ax1 = ODrive_Ease_Lib.ODrive_Axis(od1.axis1)
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
         
+        print("OD Dump")
+        print("controller.config")
+        print("ax0", self.ax0.axis.controller.config)
+        print("ax1", self.ax1.axis.controller.config)
+        print("ax2", self.ax2.axis.controller.config)
+        print("motor.config")
+        print("ax0", self.ax0.axis.motor.config)
+        print("ax1", self.ax1.axis.motor.config)
+        print("ax2", self.ax2.axis.motor.config)
+        print("encoder.config")
+        print("ax0", self.ax0.axis.encoder.config)
+        print("ax1", self.ax1.axis.encoder.config)
+        print("ax2", self.ax2.axis.encoder.config)
+ 
+
         # set controller tuning parameters
-        '''
+        
         print("orignal values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -135,7 +150,7 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-        '''
+        
         pos_gain = 4
         vel_gain = 0.01
         vel_integrator_gain = 0.1
@@ -154,7 +169,7 @@ class DeltaArm():
         self.ax2.axis.controller.config.pos_gain = pos_gain
         self.ax1.axis.controller.config.pos_gain = pos_gain
         self.ax0.axis.controller.config.pos_gain = pos_gain
-        '''
+        
         print("configured values")
         print("pos_gain")
         print("ax0", self.ax0.axis.controller.config.pos_gain)
@@ -168,12 +183,12 @@ class DeltaArm():
         print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
         print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
         print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-        '''
+        
         return True
 
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
-        if self.ax1.is_calibrated():
+        if self.ax2.is_calibrated():
             print("self.ax1.is_calibrated()")
             self.ax2.index_and_hold(-1, 1)
             print('self.ax2.index_and_hold(-1, 1)')
