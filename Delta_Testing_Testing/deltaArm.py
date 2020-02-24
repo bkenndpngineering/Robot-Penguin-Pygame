@@ -233,41 +233,41 @@ class DeltaArm():
 
         if self.ax2.axis.error != 0:
             print("ax2.axis failure" + str(self.ax2.axis.error))
+            print("ax2.axis.motor failure" + str(self.ax2.axis.motor.error))
+            print("ax2.axis.encoder failure" + str(self.ax2.axis.encoder.error))
+            print("ax2.axis.controller failure" + str(self.ax2.axis.controller.error))
             return False
         if self.ax2.axis.motor.error != 0:
-            print("ax2.axis.motor failure" + str(self.ax2.axis.motor.error))
             return False
         if self.ax2.axis.encoder.error != 0:
-            print("ax2.axis.encoder failure" + str(self.ax2.axis.encoder.error))
             return False
         if self.ax2.axis.controller.error != 0:
-            print("ax2.axis.controller failure" + str(self.ax2.axis.controller.error))
             return False
 
         if self.ax0.axis.error != 0:
-            print("ax0.axis failure")
+            print("ax0.axis failure" + str(self.ax0.axis.error))
+            print("ax0.axis.motor failure" + str(self.ax0.axis.motor.error))
+            print("ax0.axis.encoder failure" + str(self.ax0.axis.encoder.error))
+            print("ax0.axis.controller failure" + str(self.ax0.axis.controller.error))
             return False
         if self.ax0.axis.motor.error != 0:
-            print("ax0.axis.motor failure")
             return False
         if self.ax0.axis.encoder.error != 0:
-            print("ax0.axis.encoder failure")
             return False
         if self.ax0.axis.controller.error != 0:
-            print("ax0.axis.controller failure")
             return False
 
         if self.ax1.axis.error != 0:
-            print("ax1.axis failure")
+            print("ax1.axis failure" + str(self.ax1.axis.error))
+            print("ax1.axis.motor failure" + str(self.ax1.axis.motor.error))
+            print("ax1.axis.encoder failure" + str(self.ax1.axis.encoder.error))
+            print("ax1.axis.controller failure" + str(self.ax1.axis.controller.error))
             return False
         if self.ax1.axis.motor.error != 0:
-            print("ax1.axis.motor failure")
             return False
         if self.ax1.axis.encoder.error != 0:
-            print("ax1.axis.encoder failure")
             return False
         if self.ax1.axis.controller.error != 0:
-            print("ax1.axis.controller failure")
             return False
 
         return True
