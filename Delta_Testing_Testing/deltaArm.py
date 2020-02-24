@@ -232,16 +232,16 @@ class DeltaArm():
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
 
         if self.ax2.axis.error != 0:
-            print("ax2.axis failure")
+            print("ax2.axis failure" + str(self.ax2.axis.error))
             return False
         if self.ax2.axis.motor.error != 0:
-            print("ax2.axis.motor failure")
+            print("ax2.axis.motor failure" + str(self.ax2.axis.motor.error))
             return False
         if self.ax2.axis.encoder.error != 0:
-            print("ax2.axis.encoder failure")
+            print("ax2.axis.encoder failure" + str(self.ax2.axis.encoder.error))
             return False
         if self.ax2.axis.controller.error != 0:
-            print("ax2.axis.controller failure")
+            print("ax2.axis.controller failure" + str(self.ax2.axis.controller.error))
             return False
 
         if self.ax0.axis.error != 0:
