@@ -119,21 +119,7 @@ class DeltaArm():
         self.ax0 = ODrive_Ease_Lib.ODrive_Axis(od1.axis0)
         self.ax1 = ODrive_Ease_Lib.ODrive_Axis(od1.axis1)
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
-        
-        print("OD Dump")
-        print("controller.config")
-        print("ax0", self.ax0.axis.controller.config)
-        print("ax1", self.ax1.axis.controller.config)
-        print("ax2", self.ax2.axis.controller.config)
-        print("motor.config")
-        print("ax0", self.ax0.axis.motor.config)
-        print("ax1", self.ax1.axis.motor.config)
-        print("ax2", self.ax2.axis.motor.config)
-        print("encoder.config")
-        print("ax0", self.ax0.axis.encoder.config)
-        print("ax1", self.ax1.axis.encoder.config)
-        print("ax2", self.ax2.axis.encoder.config)
- 
+
 
         # set controller tuning parameters
         
@@ -154,7 +140,15 @@ class DeltaArm():
         pos_gain = 4
         vel_gain = 0.01
         vel_integrator_gain = 0.1
-        
+        od2.axis0.motor.config.calibration_current = 15.0
+        od2.axis0.motor.config.current_lim = 40.0
+        od2.axis0.motor.config.requested_current_range = 60.0
+        od1.axis0.motor.config.calibration_current = 15.0
+        od1.axis0.motor.config.current_lim = 40.0
+        od1.axis0.motor.config.requested_current_range = 60.0
+        od1.axis1.motor.config.calibration_current = 15.0
+        od1.axis1.motor.config.current_lim = 40.0
+        od1.axis1.motor.config.requested_current_range = 60.0
         # default
         # pos_gain = 0.1
         # vel_gain = 0.02
@@ -236,6 +230,7 @@ class DeltaArm():
         time.sleep(1)
 
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
+
         if self.ax2.axis.error != 0:
             print("ax2.axis failure")
             return False
