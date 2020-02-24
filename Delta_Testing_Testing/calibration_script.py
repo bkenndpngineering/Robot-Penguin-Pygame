@@ -9,7 +9,7 @@ if od.serial_number == 59877000491063:
     od.axis0.motor.config.current_lim = 40.0
     od.axis0.motor.config.requested_current_range = 60.0
 
-    od.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+    od.axis0.requested_state = AXIS_STATE_MOTOR_CALIBRATION
     time.sleep(32)
     print("axis error: " + str(od.axis0.error))
     print("motor error: " + str(od.axis0.motor.error))
@@ -20,7 +20,7 @@ if od.serial_number == 59877000491063:
     od.axis1.motor.config.current_lim = 40.0
     od.axis1.motor.config.requested_current_range = 60.0
 
-    od.axis1.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+    od.axis1.requested_state = AXIS_STATE_MOTOR_CALIBRATION
     time.sleep(32)
     print("axis error: " + str(od.axis1.error))
     print("motor error: " + str(od.axis1.motor.error))
@@ -33,7 +33,7 @@ elif od.serial_number == 35623325151307:
     od.axis0.motor.config.current_lim = 40.0
     od.axis0.motor.config.requested_current_range = 60.0
  
-    od.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+    od.axis0.requested_state = AXIS_STATE_MOTOR_CALIBRATION
     time.sleep(32)
     print("axis error: " + str(od.axis0.error))
     print("motor error: " + str(od.axis0.motor.error))
