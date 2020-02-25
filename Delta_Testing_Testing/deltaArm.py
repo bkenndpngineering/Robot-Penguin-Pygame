@@ -149,6 +149,7 @@ class DeltaArm():
         od1.axis1.motor.config.calibration_current = 15.0
         od1.axis1.motor.config.current_lim = 40.0
         od1.axis1.motor.config.requested_current_range = 60.0
+        od1.axis1.encoder.config.cpr = 4096
         # default
         # pos_gain = 0.1
         # vel_gain = 0.02
@@ -335,7 +336,7 @@ class DeltaArm():
             """
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
-            pos2 = angle2 * DEG_TO_CPR
+            pos2 = angle2 * ABS_DEG_TO_CPR
             pos3 = angle3 * DEG_TO_CPR
             self.ax0.set_pos(pos1)
             self.ax1.set_pos(pos2)
@@ -385,7 +386,7 @@ class DeltaArm():
             angle1 = pos1 * CPR_TO_DEG
 
             pos2 = self.ax1.get_pos()
-            angle2 = pos2 * CPR_TO_DEG
+            angle2 = pos2 * ABS_CPR_TO_DEG
 
 
             pos3 = self.ax2.get_pos()
