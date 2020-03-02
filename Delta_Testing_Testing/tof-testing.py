@@ -2,12 +2,10 @@
 # printing it every second.
 # Author: Tony DiCola
 import time
-
 import board
 import busio
-
 import adafruit_vl6180x
-
+import math
 
 # Create I2C bus.
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -33,3 +31,25 @@ while True:
     #print('Light (1x gain): {0}lux'.format(light_lux))
     # Delay for a second.
     #time.sleep(0.25)
+
+
+    # Delta arm angle calculations using TOF sensor
+    #           x 
+    #           x x
+    #           x A x
+    #   offset  x     x arm
+    #           x       x
+    #           x         x
+    #           xxxxxxxxxxxxx
+    #               range
+
+    # horizontal distance from sensor to motor axle in millimeters
+    offset = 60
+    # vertical distance measurement taken by sensor
+    range_mm = range_mm
+    # distance from top of arm to sensor when the arm is horizontal in millimeters
+    horizontal_offset = 45
+
+    A_rad = math.atan((range_mm-horizontal_offset)/offset)
+    A_deg = math.degrees(A_rad)
+    print('Angle: {}deg'.format(A_deg))
