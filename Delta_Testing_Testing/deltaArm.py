@@ -75,6 +75,12 @@ class DeltaArm():
                 print("no valid input")
                 return
 
+    def getProx(self):
+        if (cyprus.read_gpio() & 0b1000):
+            return False
+        else:
+            return True
+
     def getLim1(self):
         # return status of limit switch 1, of motor 1
         if (cyprus.read_gpio() & 0b0001):
