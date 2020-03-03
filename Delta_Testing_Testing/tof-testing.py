@@ -5,13 +5,17 @@ import time
 import board
 import busio
 import adafruit_vl6180x
+import adafruit_tca9548a
 import math
 
 # Create I2C bus.
 i2c = busio.I2C(board.SCL, board.SDA)
 
+# create TCA9548a object and give it the bus
+tca = adafruit_tca9548a.TCA9548A(i2c)
+
 # Create sensor instance.
-sensor = adafruit_vl6180x.VL6180X(i2c)
+sensor = adafruit_vl6180x.VL6180X(tca[6])
 
 # Main loop prints the range and lux every second:
 while True:
