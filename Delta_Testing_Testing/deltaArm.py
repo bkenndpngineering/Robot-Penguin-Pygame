@@ -7,6 +7,11 @@ import odrive
 from .RPi_ODrive import ODrive_Ease_Lib
 import RPi.GPIO as GPIO
 from .kinematicFunctions import *
+import board
+import busio
+import adafruit_vl6180x
+import adafruit_tca9548a
+from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET
 import time
 
 """
@@ -19,7 +24,9 @@ modules can be used for any Delta Arm project
 class DeltaArm():
     def __init__(self):
         self.initialized = False    # if the arm is not initialized no motor related commands will work. represents the ODrive harware
-        
+        self.i2c_initialized = False                # if the i2c bus was not initialized, prevent access to i2c devices
+
+        self.i2c = None
         self.spi = None             # spidev
         self.stepper = None         # stepper motor object
         self.ready = True
@@ -33,6 +40,10 @@ class DeltaArm():
         self.ax0 = None             # axis 0 of the first ODrive. Motor 1
         self.ax1 = None             # axis 1 of the first ODrive. Motor 2
         self.ax2 = None             # axis 0 of the second ODrive. Motor 3
+
+        self.VL6180X_1 = None       # TOF sensor for Motor 1
+        self.VL6180X_2 = None       # TOF sensor for Motor 2
+        self.VL6180X_3 = None       # TOF sensor for Motor 3
 
         self.homedCoordinates = None  # coordinates of the home position, use for relative movement
     
@@ -74,6 +85,36 @@ class DeltaArm():
             else:
                 print("no valid input")
                 return
+
+    def getTOF1(self):
+        if self.i2c_initialized:
+            # get range from sensor
+            range_mm = self.VL6180X_1.range
+
+            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
+            A_deg = math.degrees(A_rad)
+
+            return A_deg
+
+    def getTOF2(self):
+        if self.i2c_initialized:
+            # get range from sensor
+            range_mm = self.VL6180X_2.range
+
+            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
+            A_deg = math.degrees(A_rad)
+
+            return A_deg
+
+    def getTOF3(self):
+        if self.i2c_initialized:
+            # get range from sensor
+            range_mm = self.VL6180X_3.range
+
+            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
+            A_deg = math.degrees(A_rad)
+
+            return A_deg
 
     def getProx(self):
         if (cyprus.read_gpio() & 0b1000):
@@ -294,6 +335,15 @@ class DeltaArm():
         return True
 
     def initialize(self):
+        print("Initialize I2C bus")
+        self.i2c = busio.I2C(board.SCL, board.SDA)
+        self.TCA9548a = adafruit_tca9548a.TCA9548A(i2c)
+        self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
+        self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
+        #self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
+        print("Initialized I2C objects")
+        self.i2c_initialized = True
+
         # returns true is successful, false if not
         # setup limit switches and solenoid
         self.spi = spidev.SpiDev()
