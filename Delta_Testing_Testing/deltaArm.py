@@ -11,7 +11,7 @@ import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET
+from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, ODRIVE_CONFIG_VARS
 import time
 
 """
@@ -167,78 +167,42 @@ class DeltaArm():
         self.ax1 = ODrive_Ease_Lib.ODrive_Axis(od1.axis1)
         self.ax2 = ODrive_Ease_Lib.ODrive_Axis(od2.axis0)
 
+        # set ODrive parameters
+        self.ax2.axis.encoder.config.cpr = ODRIVE_CONFIG_VARS["encoder_cpr"]
+        self.ax2.axis.encoder.config.cpr = ODRIVE_CONFIG_VARS["encoder_cpr"]
+        self.ax2.axis.encoder.config.cpr = ODRIVE_CONFIG_VARS["encoder_cpr"]
 
-        # set controller tuning parameters
-        
-        print("orignal values")
-        print("pos_gain")
-        print("ax0", self.ax0.axis.controller.config.pos_gain)
-        print("ax1", self.ax1.axis.controller.config.pos_gain)
-        print("ax2", self.ax2.axis.controller.config.pos_gain)
-        print("vel_gain")
-        print("ax0", self.ax0.axis.controller.config.vel_gain)
-        print("ax1", self.ax1.axis.controller.config.vel_gain)
-        print("ax2", self.ax2.axis.controller.config.vel_gain)
-        print("vel_integrator_gain")
-        print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
-        print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
-        print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
-        
-        pos_gain = 4
-        vel_gain = 0.01
-        vel_integrator_gain = 0.1
-        cpr = 8192
-        calibration_current = 15.0
-        current_lim = 40.0
-        current_control_bandwidth = 100.0
-        requested_current_range = 60.0
-        pole_pairs = 15
-        od2.axis0.motor.config.calibration_current = calibration_current
-        od2.axis0.motor.config.current_lim = current_lim
-        od2.axis0.motor.config.requested_current_range = requested_current_range
-        od2.axis0.motor.config.current_control_bandwidth = current_control_bandwidth
-        od2.axis0.motor.config.pole_pairs = pole_pairs
-        od1.axis0.motor.config.calibration_current = calibration_current
-        od1.axis0.motor.config.current_lim = current_lim
-        od1.axis0.motor.config.requested_current_range = requested_current_range
-        od1.axis0.motor.config.current_control_bandwidth = current_control_bandwidth
-        od1.axis0.motor.config.pole_pairs = pole_pairs
-        od1.axis1.motor.config.calibration_current = calibration_current
-        od1.axis1.motor.config.current_lim = current_lim
-        od1.axis1.motor.config.requested_current_range = requested_current_range
-        od1.axis1.motor.config.current_control_bandwidth = current_control_bandwidth
-        od1.axis1.motor.config.pole_pairs = pole_pairs
-        od1.axis0.encoder.config.cpr = cpr
-        od1.axis1.encoder.config.cpr = cpr
-        od2.axis0.encoder.config.cpr = cpr
-        # default
-        # pos_gain = 0.1
-        # vel_gain = 0.02
-        # vel_integrator_gain = 0.1
+        self.ax2.axis.motor.config.pole_pairs = ODRIVE_CONFIG_VARS["pole_pairs"]
+        self.ax1.axis.motor.config.pole_pairs = ODRIVE_CONFIG_VARS["pole_pairs"]
+        self.ax0.axis.motor.config.pole_pairs = ODRIVE_CONFIG_VARS["pole_pairs"]
 
-        self.ax2.axis.controller.config.vel_integrator_gain = vel_integrator_gain
-        self.ax1.axis.controller.config.vel_integrator_gain = vel_integrator_gain
-        self.ax0.axis.controller.config.vel_integrator_gain = vel_integrator_gain
-        self.ax2.axis.controller.config.vel_gain = vel_gain
-        self.ax1.axis.controller.config.vel_gain = vel_gain
-        self.ax0.axis.controller.config.vel_gain = vel_gain
-        self.ax2.axis.controller.config.pos_gain = pos_gain
-        self.ax1.axis.controller.config.pos_gain = pos_gain
-        self.ax0.axis.controller.config.pos_gain = pos_gain
-        
-        print("configured values")
-        print("pos_gain")
-        print("ax0", self.ax0.axis.controller.config.pos_gain)
-        print("ax1", self.ax1.axis.controller.config.pos_gain)
-        print("ax2", self.ax2.axis.controller.config.pos_gain)
-        print("vel_gain")
-        print("ax0", self.ax0.axis.controller.config.vel_gain)
-        print("ax1", self.ax1.axis.controller.config.vel_gain)
-        print("ax2", self.ax2.axis.controller.config.vel_gain)
-        print("vel_integrator_gain")
-        print("ax0", self.ax0.axis.controller.config.vel_integrator_gain)
-        print("ax1", self.ax1.axis.controller.config.vel_integrator_gain)
-        print("ax2", self.ax2.axis.controller.config.vel_integrator_gain)
+        self.ax2.axis.motor.config.requested_current_range = ODRIVE_CONFIG_VARS["requested_current_range"]
+        self.ax1.axis.motor.config.requested_current_range = ODRIVE_CONFIG_VARS["requested_current_range"]
+        self.ax0.axis.motor.config.requested_current_range = ODRIVE_CONFIG_VARS["requested_current_range"]
+
+        self.ax2.axis.motor.config.current_control_bandwidth = ODRIVE_CONFIG_VARS["current_control_bandwidth"]
+        self.ax1.axis.motor.config.current_control_bandwidth = ODRIVE_CONFIG_VARS["current_control_bandwidth"]
+        self.ax0.axis.motor.config.current_control_bandwidth = ODRIVE_CONFIG_VARS["current_control_bandwidth"]
+
+        self.ax2.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
+        self.ax1.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
+        self.ax0.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
+
+        self.ax2.axis.motor.config.calibration_current = ODRIVE_CONFIG_VARS["calibration_current"]
+        self.ax1.axis.motor.config.calibration_current = ODRIVE_CONFIG_VARS["calibration_current"]
+        self.ax0.axis.motor.config.calibration_current = ODRIVE_CONFIG_VARS["calibration_current"]
+
+        self.ax2.axis.controller.config.vel_integrator_gain = ODRIVE_CONFIG_VARS["vel_integrator_gain"]
+        self.ax1.axis.controller.config.vel_integrator_gain = ODRIVE_CONFIG_VARS["vel_integrator_gain"]
+        self.ax0.axis.controller.config.vel_integrator_gain = ODRIVE_CONFIG_VARS["vel_integrator_gain"]
+
+        self.ax2.axis.controller.config.vel_gain = ODRIVE_CONFIG_VARS["vel_gain"]
+        self.ax1.axis.controller.config.vel_gain = ODRIVE_CONFIG_VARS["vel_gain"]
+        self.ax0.axis.controller.config.vel_gain = ODRIVE_CONFIG_VARS["vel_gain"]
+
+        self.ax2.axis.controller.config.pos_gain = ODRIVE_CONFIG_VARS["pos_gain"]
+        self.ax1.axis.controller.config.pos_gain = ODRIVE_CONFIG_VARS["pos_gain"]
+        self.ax0.axis.controller.config.pos_gain = ODRIVE_CONFIG_VARS["pos_gain"]
         
         return True
 
@@ -335,6 +299,8 @@ class DeltaArm():
         return True
 
     def initialize(self):
+        # returns true is successful, false if not
+
         print("Initialize I2C bus")
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.TCA9548a = adafruit_tca9548a.TCA9548A(i2c)
@@ -344,7 +310,6 @@ class DeltaArm():
         print("Initialized I2C objects")
         self.i2c_initialized = True
 
-        # returns true is successful, false if not
         # setup limit switches and solenoid
         self.spi = spidev.SpiDev()
         cyprus.initialize()

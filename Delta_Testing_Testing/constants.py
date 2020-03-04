@@ -41,3 +41,20 @@ TOF_VERTICAL_OFFSET = 45
 
 
 ######## ODrive Motor Configuration ########
+
+# default
+# pos_gain = 0.1
+# vel_gain = 0.02
+# vel_integrator_gain = 0.1
+
+ODRIVE_CONFIG_VARS =    {
+                        "pos_gain": 4.0,
+                        "vel_gain": 0.01,
+                        "vel_integrator_gain": 0.1,
+                        "calibration_current": 15.0,
+                        "current_limit": 40.0,
+                        "current_control_bandwidth": 100.0,
+                        "requested_current_range": 60.0,
+                        "pole_pairs": 15,
+                        "encoder_cpr": ENCODER_CPR
+                        }
