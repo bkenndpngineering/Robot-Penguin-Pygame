@@ -4,6 +4,7 @@ import time
 arm = DeltaArm()
 arm.initialize()
 print("Successfully initialized! Moving arm now")
+arm.powerSolenoid(False)
 arm.moveToCoordinates(0, 0, -100)
 print("Moving Again")
 arm.moveToCoordinates(100, 100, -100)
