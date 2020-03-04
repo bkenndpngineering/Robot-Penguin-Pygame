@@ -358,8 +358,6 @@ class DeltaArm():
                     print("Actual:")
                     print(current_x, current_y, current_z)
                     break
-                else:
-                    print(current_x, current_y, current_z)
 
             return
 
