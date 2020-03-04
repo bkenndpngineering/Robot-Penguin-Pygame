@@ -15,7 +15,7 @@ from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, ODRIVE_CONFIG
 import time
 
 """
-DeltaArm API V.3 (Dec 2, 2019) by Braedan Kennedy (bkenndpngineering)
+DeltaArm API V.4 (March 4, 2020) by Braedan Kennedy (bkenndpngineering)
 Supplemental development by Joseph Pearman and Philip Nordblad
 for use with the DPEA Robot Penguin project
 modules can be used for any Delta Arm project
@@ -69,6 +69,7 @@ class DeltaArm():
             if state == True:
                 cyprus.set_servo_position(1, 1)
             elif state == False:
+                # simple demagnitization routine
                 cv = 1
                 while cv != .5:
                     cyprus.set_servo_position(1, cv)
@@ -80,10 +81,8 @@ class DeltaArm():
                         break
                     time.sleep(.01)
                     cv = 1 - cv
-                print("demag finished")
                 cyprus.set_servo_position(1, .5)
             else:
-                print("no valid input")
                 return
 
     def getTOF1(self):
@@ -356,19 +355,7 @@ class DeltaArm():
         if self.initialized:
        
             current_x, current_y, current_z = self.getCoordinates()
-            """ if desired_x > current_x:
-                desired_x += tolerance*2
-            else:
-                desired_x -= tolerance*2
-            if desired_y < current_y:
-                desired_y += tolerance*2
-            else:
-                desired_y -= tolerance*2
-            if desired_z > current_z:
-                desired_z += tolerance
-            else:
-                desired_z -= tolerance
-            """
+
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
             pos2 = angle2 * ABS_DEG_TO_CPR
