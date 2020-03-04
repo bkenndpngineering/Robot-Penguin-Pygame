@@ -4,14 +4,14 @@ from pidev.stepper import stepper
 from pidev.Cyprus_Commands import Cyprus_Commands_RPi as cyprus
 from Slush.Devices import L6470Registers
 import odrive
-from .RPi_ODrive import ODrive_Ease_Lib
+from RPi_ODrive import ODrive_Ease_Lib
 import RPi.GPIO as GPIO
-from .kinematicFunctions import *
+from kinematicFunctions import *
 import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, ODRIVE_CONFIG_VARS
+from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, ODRIVE_CONFIG_VARS
 import time
 
 """
@@ -183,9 +183,9 @@ class DeltaArm():
         self.ax1.axis.motor.config.current_control_bandwidth = ODRIVE_CONFIG_VARS["current_control_bandwidth"]
         self.ax0.axis.motor.config.current_control_bandwidth = ODRIVE_CONFIG_VARS["current_control_bandwidth"]
 
-        self.ax2.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
-        self.ax1.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
-        self.ax0.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_lim"]
+        self.ax2.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_limit"]
+        self.ax1.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_limit"]
+        self.ax0.axis.motor.config.current_lim = ODRIVE_CONFIG_VARS["current_limit"]
 
         self.ax2.axis.motor.config.calibration_current = ODRIVE_CONFIG_VARS["calibration_current"]
         self.ax1.axis.motor.config.calibration_current = ODRIVE_CONFIG_VARS["calibration_current"]
@@ -207,51 +207,48 @@ class DeltaArm():
 
     def homeMotors(self):
         # move the motors to index position. Requirement for position control
-        if self.ax2.is_calibrated():
-            print("self.ax1.is_calibrated()")
-            self.ax2.index_and_hold(-1, 1)
-            print('self.ax2.index_and_hold(-1, 1)')
-            time.sleep(1)
-            self.ax0.index_and_hold(-1, 1)
-            print('self.ax0.index_and_hold(-1, 1)')
-            time.sleep(1)
-            self.ax1.index_and_hold(-1, 1)
-            print('self.ax1.index_and_hold(-1, 1)')
-            time.sleep(1)
-        else:
-            print("ax1 not calibrated")
+
+        print("moving ax2 to index")
+        self.ax2.index_and_hold(-1, 1)
+        time.sleep(1)
+        print("moving ax0 to index")
+        self.ax0.index_and_hold(-1, 1)
+        time.sleep(1)
+        print("moving ax1 to index")
+        self.ax1.index_and_hold(-1, 1)
+        time.sleep(1)
 
         # home motor 3
-        self.ax2.set_vel(-20)
         print("set ax2 vel")
+        self.ax2.set_vel(-20)
+        print("getLim3")
         while (not self.getLim3()):
             continue
-        print("getLim3")
         self.ax2.set_vel(0)
         self.ax2.set_home()
         print("set ax2 home")
         time.sleep(1)
 
         # home motor 1
-        self.ax0.set_vel(-20)
         print("set ax0 vel")
+        self.ax0.set_vel(-20)
+        print("getLim1")
         while (not self.getLim1()):
             continue
-        print("getLim1")
         self.ax0.set_vel(0)
         self.ax0.set_home()
-        print("set ax2 home")
+        print("set ax0 home")
         time.sleep(1)
 
         # home motor 2
-        self.ax1.set_vel(-20)
         print("set ax1 vel")
+        self.ax1.set_vel(-20)
+        print("getLim2")
         while (not self.getLim2()):
             continue
-        print("getLim2")
         self.ax1.set_vel(0)
         self.ax1.set_home()
-        print("set ax2 home")
+        print("set ax1 home")
         time.sleep(1)
 
         # if anything is wrong with ODrive, the homing sequence will be registered as a failure
@@ -262,12 +259,6 @@ class DeltaArm():
             print("ax2.axis.encoder failure" + str(self.ax2.axis.encoder.error))
             print("ax2.axis.controller failure" + str(self.ax2.axis.controller.error))
             return False
-        if self.ax2.axis.motor.error != 0:
-            return False
-        if self.ax2.axis.encoder.error != 0:
-            return False
-        if self.ax2.axis.controller.error != 0:
-            return False
 
         if self.ax0.axis.error != 0:
             print("ax0.axis failure" + str(self.ax0.axis.error))
@@ -275,24 +266,12 @@ class DeltaArm():
             print("ax0.axis.encoder failure" + str(self.ax0.axis.encoder.error))
             print("ax0.axis.controller failure" + str(self.ax0.axis.controller.error))
             return False
-        if self.ax0.axis.motor.error != 0:
-            return False
-        if self.ax0.axis.encoder.error != 0:
-            return False
-        if self.ax0.axis.controller.error != 0:
-            return False
 
         if self.ax1.axis.error != 0:
             print("ax1.axis failure" + str(self.ax1.axis.error))
             print("ax1.axis.motor failure" + str(self.ax1.axis.motor.error))
             print("ax1.axis.encoder failure" + str(self.ax1.axis.encoder.error))
             print("ax1.axis.controller failure" + str(self.ax1.axis.controller.error))
-            return False
-        if self.ax1.axis.motor.error != 0:
-            return False
-        if self.ax1.axis.encoder.error != 0:
-            return False
-        if self.ax1.axis.controller.error != 0:
             return False
 
         return True
@@ -302,7 +281,7 @@ class DeltaArm():
 
         print("Initialize I2C bus")
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.TCA9548a = adafruit_tca9548a.TCA9548A(i2c)
+        self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c)
         self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
         self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
         #self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
@@ -323,7 +302,6 @@ class DeltaArm():
             # if GPIO and ODrive are setup properly, attempt to home
             print('HomedMotors = self.homeMotors()')
             HomedMotors = self.homeMotors()
-            print(HomedMotors)
             if (HomedMotors == True):
                 self.initialized = True
                 print("initialized")
@@ -358,7 +336,7 @@ class DeltaArm():
 
             (angle1, angle2, angle3) = compute_triple_inverse_kinematics(self.homedCoordinates[0] + desired_x, self.homedCoordinates[1] + desired_y, self.homedCoordinates[2] + desired_z)
             pos1 = angle1 * DEG_TO_CPR
-            pos2 = angle2 * ABS_DEG_TO_CPR
+            pos2 = angle2 * DEG_TO_CPR
             pos3 = angle3 * DEG_TO_CPR
             self.ax0.set_pos(pos1)
             self.ax1.set_pos(pos2)
@@ -408,7 +386,7 @@ class DeltaArm():
             angle1 = pos1 * CPR_TO_DEG
 
             pos2 = self.ax1.get_pos()
-            angle2 = pos2 * ABS_CPR_TO_DEG
+            angle2 = pos2 * CPR_TO_DEG
 
 
             pos3 = self.ax2.get_pos()
