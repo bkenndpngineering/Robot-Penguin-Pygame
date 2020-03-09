@@ -15,8 +15,9 @@ i2c = busio.I2C(board.SCL, board.SDA)
 tca = adafruit_tca9548a.TCA9548A(i2c)
 
 # Create sensor instance.
-sensor_1 = adafruit_vl6180x.VL6180X(tca[6])
+sensor_1 = adafruit_vl6180x.VL6180X(tca[6]) # 6, 4, 2
 sensor_2 = adafruit_vl6180x.VL6180X(tca[4])
+sensor_3 = adafruit_vl6180x.VL6180X(tca[2])
 
 def get_angle(sensor):
     # get range from sensor
@@ -78,5 +79,5 @@ while True:
 
     angle_1 = print("sensor 1:", get_angle(sensor_1))
     angle_2 = print("sensor 2:", get_angle(sensor_2))
-    #angle_3 = get_angle(sensor_3)
+    angle_3 = print("sensor 3:", get_angle(sensor_3))
     print()
