@@ -284,7 +284,7 @@ class DeltaArm():
         self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c)
         self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
         self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
-        #self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
+        self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[2])
         print("Initialized I2C objects")
         self.i2c_initialized = True
 
