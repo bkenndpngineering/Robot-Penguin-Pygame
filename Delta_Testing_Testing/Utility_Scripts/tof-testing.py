@@ -27,7 +27,7 @@ def get_angle(sensor):
     # horizontal distance from sensor to motor axle in millimeters
     offset = 60
     # distance from top of arm to sensor when the arm is horizontal in millimeters
-    horizontal_offset = 45
+    horizontal_offset = 33
 
     A_rad = math.atan((range_mm-horizontal_offset)/offset)
     A_deg = math.degrees(A_rad)

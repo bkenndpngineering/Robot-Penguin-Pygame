@@ -16,7 +16,7 @@ import time
 
 """
 DeltaArm API V.4 (March 4, 2020) by Braedan Kennedy (bkenndpngineering)
-Supplemental development by Joseph Pearman and Philip Nordblad
+Supplemental development by JPZ and Philip Nordblad
 for use with the DPEA Robot Penguin project
 modules can be used for any Delta Arm project
 """
