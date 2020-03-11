@@ -12,7 +12,7 @@ import math
 i2c = busio.I2C(board.SCL, board.SDA)
 
 # create TCA9548a object and give it the bus
-tca = adafruit_tca9548a.TCA9548A(i2c, 0x73) # 0x70 default address
+tca = adafruit_tca9548a.TCA9548A(i2c, 0x71) # 0x70 default address
 
 # Create sensor instance.
 
@@ -29,6 +29,33 @@ sensor_3 = adafruit_vl6180x.VL6180X(tca[2])
 # dont use EWMA in deltaArm.py --> it would require a thread for constant polling??
 #####
 
+class SMA:
+    def __init__(self, n=10):
+        self.n = n
+        
+        total = 0
+        for i in range(n):
+            total += i+1
+        self.base_weight = 1/total
+
+        self.array = []
+
+    def update(self, current_value):
+        self.array.append(current_value)
+        if len(self.array) < self.n+1:
+            return None
+        else:
+            del self.array[0]
+            
+            # JPZ Theoretical Linear Simple Weighted Mean Average Program Impimentation
+            # AKA the JTESWMAPI
+
+            total = 0
+            for i in range(self.n):
+                total += self.array[i]*self.base_weight*(i+1)
+
+            return total
+
 # experimental EWMA (exponentially weighted average)
 class EWMA:
     def __init__(self, a=0.20, initial_value=0):
@@ -42,9 +69,11 @@ class EWMA:
 
 # initialize EWMA filters
 
-sensor_1_ewma = EWMA()
+sensor_1_ewma = SMA(n=15)
 sensor_2_ewma = EWMA()
 sensor_3_ewma = EWMA()
+
+sensor_poll_rate = 20 #HZ/times per second # 20hz for all three sensors
 
 def get_angle(sensor):
     # get range from sensor
@@ -104,12 +133,14 @@ while True:
     #A_deg = math.degrees(A_rad)
     #print('Angle: {}deg'.format(A_deg))
 
+    start_time = time.time()
+
     angle_1 = get_angle(sensor_1)
     angle_1_filtered = sensor_1_ewma.update(angle_1)
     print("sensor 1:", angle_1)
     print("sensor 1 EWMA:", angle_1_filtered)
-    print()
-    """angle_2 = get_angle(sensor_2)
+    """print()
+    angle_2 = get_angle(sensor_2)
     angle_2_filtered = sensor_2_ewma.update(angle_2)
     print("sensor 2:", angle_2)
     print("sensor 2 EWMA:", angle_2_filtered)
@@ -118,8 +149,12 @@ while True:
     angle_3_filtered = sensor_3_ewma.update(angle_3)
     print("sensor 3:", angle_3)
     print("sensor 3 EWMA:", angle_3_filtered)
-    print()
+    print()"""
     print()
 
-    time.sleep(.25)"""
+    end_time = time.time()
+    remaining_time = (1/sensor_poll_rate)-(end_time-start_time)
+    time.sleep(remaining_time)
+
+    print("time:", time.time()-start_time)
 
