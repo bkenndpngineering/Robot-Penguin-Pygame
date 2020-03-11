@@ -109,7 +109,7 @@ while True:
     print("sensor 1:", angle_1)
     print("sensor 1 EWMA:", angle_1_filtered)
     print()
-    angle_2 = get_angle(sensor_2)
+    """angle_2 = get_angle(sensor_2)
     angle_2_filtered = sensor_2_ewma.update(angle_2)
     print("sensor 2:", angle_2)
     print("sensor 2 EWMA:", angle_2_filtered)
@@ -121,5 +121,5 @@ while True:
     print()
     print()
 
-    time.sleep(.25)
+    time.sleep(.25)"""
 
