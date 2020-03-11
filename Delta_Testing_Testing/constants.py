@@ -35,10 +35,13 @@ phi_vals = [radians(210), radians(90), radians(330)]
 ######## TOF sensor constants ########
 
 # horizontal distance from sensor to motor axle in millimeters
-TOF_HORIZONTAL_OFFSET = 60
-# distance from top of arm to sensor when the arm is horizontal in millimeters - distanc
-TOF_VERTICAL_OFFSET = 45
-
+TOF_HORIZONTAL_OFFSET = 80
+# distance from top of arm to sensor when the arm is horizontal in millimeters - distance
+TOF_VERTICAL_OFFSET = 33
+# in Hertz, loops per second
+TOF_POLL_RATE = 20
+# Weighted Moving Average filter array length, how many sensor readings are stored
+WMA_ARRAY_LENGTH = 10
 
 ######## ODrive Motor Configuration ########
 

@@ -12,7 +12,7 @@ import math
 i2c = busio.I2C(board.SCL, board.SDA)
 
 # create TCA9548a object and give it the bus
-tca = adafruit_tca9548a.TCA9548A(i2c, 0x71) # 0x70 default address
+tca = adafruit_tca9548a.TCA9548A(i2c, 0x70) # 0x70 default address
 
 # Create sensor instance.
 
@@ -70,7 +70,7 @@ class EWMA:
 # initialize EWMA filters
 
 sensor_1_ewma = SMA(n=15)
-sensor_2_ewma = EWMA()
+sensor_2_ewma = SMA(n=15)
 sensor_3_ewma = EWMA()
 
 sensor_poll_rate = 20 #HZ/times per second # 20hz for all three sensors
