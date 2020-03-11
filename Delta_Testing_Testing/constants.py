@@ -38,8 +38,6 @@ phi_vals = [radians(210), radians(90), radians(330)]
 TOF_HORIZONTAL_OFFSET = 80
 # distance from top of arm to sensor when the arm is horizontal in millimeters - distance
 TOF_VERTICAL_OFFSET = 33
-# in Hertz, loops per second
-TOF_POLL_RATE = 15
 # Weighted Moving Average filter array length, how many sensor readings are stored
 WMA_ARRAY_LENGTH = 10
 

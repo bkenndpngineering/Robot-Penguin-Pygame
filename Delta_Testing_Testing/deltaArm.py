@@ -11,7 +11,7 @@ import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, TOF_POLL_RATE, WMA_ARRAY_LENGTH, ODRIVE_CONFIG_VARS
+from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, ODRIVE_CONFIG_VARS
 import time
 from weightedMovingAverage import WMA
 from threading import Thread
@@ -134,23 +134,13 @@ class DeltaArm():
         return self.TOF_angle_3
 
     def update_TOF(self):
-        # TOF sensor polling loop
+        # TOF sensor polling loop, poll as fast as possible
         # check constants.py for parameters
         while self.TOF_update_thread_status == True:
-            start_time = time.time()
-            
             # update variables
             self.TOF_angle_1 = self.VL6180X_1_filter.update(self.getTOF1())
             self.TOF_angle_2 = self.VL6180X_2_filter.update(self.getTOF2())
             self.TOF_angle_3 = self.VL6180X_3_filter.update(self.getTOF3())
-
-            # poll at constant rate
-            end_time = time.time()
-            remaining_time = (1 / TOF_POLL_RATE) - (end_time - start_time)
-            if remaining_time < 0:
-                print("[INFO] TOF polling loop is falling behind")
-                continue # prevent sleeping negative time
-            time.sleep(remaining_time)
 
     def getProx(self):
         if (cyprus.read_gpio() & 0b1000):
@@ -334,8 +324,9 @@ class DeltaArm():
         cyprus.initialize()
         version = cyprus.read_firmware_version()
         self.cyprus_initialized = True 
-        self.powerSolenoid(False)
         print("Found CyPrus, Firmware version: ", version)
+        print("Disabling solenoid")
+        self.powerSolenoid(False)
 
         # connect to ODrives
         print('ODriveConnected = self.connectODrive()')
