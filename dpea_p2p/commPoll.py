@@ -1,6 +1,6 @@
 from threading import Thread
 import enum
-from .common import *
+from common import *
 import socket
 
 class PacketType(enum.Enum):
@@ -11,14 +11,18 @@ class PacketType(enum.Enum):
 class Server():
 
     def __init__(self):
+
         self.stopped = False
         self.instructions_list = []
         self.client_ready = False
         self.restart = False
+        self.server = None
+        self.connection = None
+        self.packet_enum = PacketType
 
     def open_server(self):
         self.server = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
-        self.server.bind((127.0.0.1, 5001))
+        self.server.bind(("127.0.0.1", 5001))
         self.server.listen(1)
 
     def wait_for_connection(self):
@@ -26,7 +30,7 @@ class Server():
             raise RuntimeError("A connection has already been established; use reconnect() to reconnect.")
         self.reconnect()
 
-    def reconect(self):
+    def reconnect(self):
         if self.connection is not None:
             try:
                 self.close_connection()
@@ -56,7 +60,8 @@ class Server():
 
     def stop(self):
         self.stopped = True
-    
+        print("stopped = True")
+
     def update(self):
         self.open_server()
         print("SERVER: waiting for connection")
@@ -68,21 +73,21 @@ class Server():
                 if len(self.instructions_list) != 0:
                     for instruction in self.instructions_list:
                         if instruction == "rotateLeft":
-                            self.server.send_packet(PacketType.COMMAND2, b"rotateLeft")
+                            self.send_packet(PacketType.COMMAND2, b"rotateLeft")
                         elif instruction == "rotateRight":
-                            self.server.send_packet(PacketType.COMMAND2, b"rotateRight")
+                            self.send_packet(PacketType.COMMAND2, b"rotateRight")
                         elif instruction == "forwards":
-                            self.server.send_packet(PacketType.COMMAND2, b"forwards")
+                            self.send_packet(PacketType.COMMAND2, b"forwards")
                         elif instruction == "backwards":
-                            self.server.send_packet(PacketType.COMMAND2, b"backwards")
+                            self.send_packet(PacketType.COMMAND2, b"backwards")
                         elif instruction == "1":
-                            self.server.send_packet(PacketType.COMMAND2, b"1")
+                            self.send_packet(PacketType.COMMAND2, b"1")
                         elif instruction == "2":
-                            self.server.send_packet(PacketType.COMMAND2, b"2")
+                            self.send_packet(PacketType.COMMAND2, b"2")
                         elif instruction == "3":
-                            self.server.send_packet(PacketType.COMMAND2, b"3")
+                            self.send_packet(PacketType.COMMAND2, b"3")
                         elif instruction == "newGame":
-                            self.server.send_packet(PacketType.COMMAND2, b"newGame")
+                            self.send_packet(PacketType.COMMAND2, b"newGame")
                     self.send_packet(PacketType.COMMAND2, b"end")
                     self.instructions_list = []
                     self.client_ready = False
@@ -108,6 +113,8 @@ class Client():
         self.instructions = []
         self.instructions_ready = False
         self.restart = False
+        self.connection = None
+        self.packet_enum = PacketType
 
     def connect(self):
         if self.connection is not None:
@@ -121,7 +128,7 @@ class Client():
             except OSError:
                 pass
         self.connection = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
-        self.connection.connect((127.0.0.1, 5001))
+        self.connection.connect(("127.0.0.1", 5001))
 
     def close_connection(self):
         self.connection.close()
