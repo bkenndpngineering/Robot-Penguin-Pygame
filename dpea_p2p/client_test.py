@@ -1,4 +1,4 @@
-from commPoll import PacketType, Client
+from commPoll import Client
 import time
 
 c = Client()

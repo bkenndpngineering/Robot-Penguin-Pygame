@@ -1,4 +1,4 @@
-from commPoll import PacketType, Server
+from commPoll import Server
 import time
 s = Server()
 s.run()
