@@ -1,8 +1,8 @@
 from commPoll import PacketType, Client
+import time
 
 c = Client()
 c.run()
-while not c.instructions:
-    pass
-print("CLIENT: received " + str(c.instructions))
-c.makeReady()
+while not c.stopped:
+    c.makeReady()
+    time.sleep(.5)

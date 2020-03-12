@@ -153,7 +153,6 @@ class Client():
         self.instructions = []
         self.instructions_ready = False
         self.change_ready = True
-        print("made ready: no instructions")
 
     def stop(self):
         self.stopped = True
