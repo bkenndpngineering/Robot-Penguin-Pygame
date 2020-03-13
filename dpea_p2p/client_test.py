@@ -3,6 +3,7 @@ import time
 
 c = Client()
 c.run()
-while not c.stopped:
+for d in range(0,4):
     c.makeReady()
     time.sleep(.5)
+c.stop()
