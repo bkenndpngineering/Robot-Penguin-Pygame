@@ -40,6 +40,25 @@ TOF_HORIZONTAL_OFFSET = 80
 TOF_VERTICAL_OFFSET = 33
 # Weighted Moving Average filter array length, how many sensor readings are stored
 WMA_ARRAY_LENGTH = 10
+# I2C Multiplexer address - TCA9548A - default 0x70, could be any from 0x70 to 0x77
+import smbus
+__bus = smbus.SMBus(1)
+__addresses = []
+for device in range(128):
+    try:
+        __bus.read_byte(device)
+        print(hex(device))
+       __ addresses.append(hex(device))
+    except:
+        pass
+if (len(__addresses) != 0):
+    __last_address = __addresses[len(__addresses)-1]
+    if (__last_address > 0x69):
+        TCA9548A_ADDRESS = __last_address
+    else:
+        TCA9548A_ADDRESS = None
+TCA9548A_ADDRESS = None
+del __bus
 
 ######## ODrive Motor Configuration ########
 
@@ -59,3 +78,4 @@ ODRIVE_CONFIG_VARS =    {
                         "pole_pairs": 15,
                         "encoder_cpr": ENCODER_CPR
                         }
+

@@ -11,7 +11,7 @@ import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, ODRIVE_CONFIG_VARS
+from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, TCA9548A_ADDRESS, ODRIVE_CONFIG_VARS
 import time
 from weightedMovingAverage import WMA
 from threading import Thread
@@ -308,16 +308,21 @@ class DeltaArm():
 
         print("Initialize I2C bus")
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c)
-        self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
-        self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
-        self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[2])
-        print("Initialized I2C objects")
-        self.i2c_initialized = True
+        if TCA9548A_ADDRESS != None:
+            self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c, TCA9548A_ADDRESS)
+            self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
+            self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
+            self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[2])
+            print("Initialized I2C objects")
+            self.i2c_initialized = True
+        else:
+            print("Failed to find I2C address")
+            self.i2c_initialized = False
 
-        print("Starting TOF poll thread")
-        self.TOF_update_thread_status = True
-        self.TOF_update_thread.start() 
+        if self.i2c_initialized == True:
+            print("Starting TOF poll thread")
+            self.TOF_update_thread_status = True
+            self.TOF_update_thread.start() 
 
         # setup limit switches and solenoid
         self.spi = spidev.SpiDev()
@@ -329,18 +334,21 @@ class DeltaArm():
         self.powerSolenoid(False)
 
         # connect to ODrives
-        print('ODriveConnected = self.connectODrive()')
+        print('Connecting to ODrive(s)')
         ODriveConnected = self.connectODrive()
 
-        if (ODriveConnected == True):
-            # if GPIO and ODrive are setup properly, attempt to home
+        if (ODriveConnected == True) and (self.cyprus_initialized == True) and (self.i2c_initialized == True):
+            # if GPIO and ODrive are setup properly, attempt to home delta arm
             print('HomedMotors = self.homeMotors()')
             HomedMotors = self.homeMotors()
             if (HomedMotors == True):
                 self.initialized = True
                 print("initialized")
             else:
+                self.initialized = False
                 print("Home Failure")
+        else:
+            print("initialiation failure")
 
         if self.initialized:
             # calculate homed coordinates
