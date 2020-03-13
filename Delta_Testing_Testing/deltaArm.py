@@ -138,9 +138,23 @@ class DeltaArm():
         # check constants.py for parameters
         while self.TOF_update_thread_status == True:
             # update variables
-            self.TOF_angle_1 = self.VL6180X_1_filter.update(self.getTOF1())
-            self.TOF_angle_2 = self.VL6180X_2_filter.update(self.getTOF2())
-            self.TOF_angle_3 = self.VL6180X_3_filter.update(self.getTOF3())
+            try:
+                self.TOF_angle_1 = self.VL6180X_1_filter.update(self.getTOF1())
+            except:
+                print("Error updating TOF 1 sensor data, trying again in 1 second")
+                time.sleep(1)
+
+            try:
+                self.TOF_angle_2 = self.VL6180X_2_filter.update(self.getTOF2())
+            except:
+                print("Error updating TOF 2 sensor data, trying again in 1 second")
+                time.sleep(1)
+                    
+            try:
+                self.TOF_angle_3 = self.VL6180X_3_filter.update(self.getTOF3())
+            except:
+                print("Error updating TOF 3 sensor data, trying again in 1 second")
+                time.sleep(1)
 
     def getProx(self):
         if (cyprus.read_gpio() & 0b1000):
