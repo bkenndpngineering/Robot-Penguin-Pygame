@@ -44,20 +44,18 @@ WMA_ARRAY_LENGTH = 10
 import smbus
 __bus = smbus.SMBus(1)
 __addresses = []
+TCA9548A_ADDRESS = None     # The actual address
 for device in range(128):
     try:
         __bus.read_byte(device)
-        print(hex(device))
-       __ addresses.append(hex(device))
+        print("Found I2C device:", hex(device))
+        __addresses.append(device)
     except:
         pass
 if (len(__addresses) != 0):
     __last_address = __addresses[len(__addresses)-1]
-    if (__last_address > 0x69):
+    if (__last_address > int("0x69", 16)):
         TCA9548A_ADDRESS = __last_address
-    else:
-        TCA9548A_ADDRESS = None
-TCA9548A_ADDRESS = None
 del __bus
 
 ######## ODrive Motor Configuration ########
