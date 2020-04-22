@@ -8,3 +8,4 @@ while not c.stopped:
     c.makeReady()
     time.sleep(.5)
 #c.stop()
+

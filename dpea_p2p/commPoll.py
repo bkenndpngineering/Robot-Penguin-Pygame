@@ -70,7 +70,7 @@ class Server():
 
     def stop(self):
         self.stopped = True
-        print("SERVER: stopped = True")
+        print("stopped = True")
 
     def update(self):
         self.open_server()
@@ -114,11 +114,8 @@ class Server():
                 elif packet == (PacketType.COMMAND1, b"restart"):
                     self.restart = True
                     self.client_ready = True
-                elif packet == (PacketType.COMMAND1, b"clientBeat"):
-                    self.retry = 4
-                    self.send_packet(PacketType.COMMAND2, b"serverBeat")
-                    print("SERVER: mainframe processed clientBeat")
 
+        self.send_packet(PacketType.COMMAND2, b"shutdown")
         self.close_connection()
         print("SERVER: connection closed")
         self.close_server()
@@ -160,11 +157,6 @@ class Client():
         self.restart = False
         self.connection = None
         self.packet_enum = PacketType
-        self.dead = False
-        self.deadbeat = .5
-        self.sendBeat = False
-        self.retry = 4
-        self.storedPacket = None
 
     def connect(self):
         if self.connection is not None:
@@ -211,7 +203,6 @@ class Client():
 
     def stop(self):
         self.stopped = True
-        print("CLIENT: stopped = True")
 
     def update(self):
         print("CLIENT: waiting for a connection")
@@ -243,6 +234,8 @@ class Client():
                 elif packet == (PacketType.COMMAND2, b"end"):
                     self.ready = False
                     self.instructions_ready = True
+                elif packet == (PacketType.COMMAND2, b"shutdown"):
+                    self.stopped = True
                 elif packet == (PacketType.COMMAND2, b"1"):
                     self.instructions.append("1")
                 elif packet == (PacketType.COMMAND2, b"2"):
