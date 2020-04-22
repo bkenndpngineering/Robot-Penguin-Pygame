@@ -23,7 +23,7 @@ class Server():
         self.dead = False
         self.deadbeat = .5
         self.retry = 4
-        self.storedPacket = None
+        #self.storedPacket = []
 
     def open_server(self):
         self.server = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
@@ -102,12 +102,14 @@ class Server():
                     self.instructions_list = []
                     self.client_ready = False
             else:
+                '''
                 if self.storedPacket:
                     print("SERVER: accessing stored packet")
-                    packet = self.storedPacket
-                    self.storedPacket = None
+                    packet = self.storedPacket[0]
+                    self.storedPacket.remove(packet)
                 else:
-                    packet = self.recv_packet()
+                '''
+                packet = self.recv_packet()
                 print("SERVER: received packet: " + str(packet))
                 if packet == (PacketType.COMMAND1, b"ready"):
                     self.client_ready = True
@@ -136,7 +138,7 @@ class Server():
                     self.send_packet(PacketType.COMMAND2, b"serverBeat")
                 else:
                     print("SERVER: stored packet:" + str(packet))
-                    self.storedPacket = packet
+                    #self.storedPacket.append(packet)
             else:
                 self.retry -= 1
                 print("SERVER: retry at " + str(self.retry))
@@ -157,6 +159,11 @@ class Client():
         self.restart = False
         self.connection = None
         self.packet_enum = PacketType
+        self.deadbeat = .5
+        self.dead = False
+        self.retry = 4
+        self.heartbeat1 = time.time()
+        self.heartbeat2 = time.time()
 
     def connect(self):
         if self.connection is not None:
@@ -184,7 +191,7 @@ class Client():
 
     def run(self):
         Thread(target=self.update, args=()).start()
-        Thread(target=self.clientBeat, args=()).start()
+        #Thread(target=self.clientBeat, args=()).start()
         return self
 
     def getInstructions(self):
@@ -216,12 +223,7 @@ class Client():
         while not self.stopped:
             # receive commands from server
             if self.ready:
-                if self.storedPacket:
-                    print("CLIENT: accessing stored packet: " + str(self.storedPacket))
-                    packet = self.storedPacket
-                    self.storedPacket = None
-                else:
-                    packet = self.recv_packet()
+                packet = self.recv_packet()
                 print("CLIENT: received " + str(packet))
                 if packet == (PacketType.COMMAND2, b"rotateLeft"):
                     self.instructions.append("rotateLeft")
@@ -248,7 +250,6 @@ class Client():
                 elif packet == (PacketType.COMMAND2, b"serverBeat"):
                     self.retry = 4
                     self.send_packet(PacketType.COMMAND1, b"clientBeat")
-                    print("CLIENT: mainframe processed serverBeat")
 
             else:
                 if self.change_ready:
@@ -261,30 +262,15 @@ class Client():
                         self.send_packet(PacketType.COMMAND1, b"ready")
                         self.ready = True
                         self.change_ready = False
-
+            self.heartbeat2 = time.time()
+            elapsed = self.heartbeat2 - self.heartbeat1
+            print("CLIENT: time elapsed: " + str(elapsed))
+            if self.retry == 0:
+                self.stopped = True
+                print("CLIENT: retry at 0")
+            elif elapsed >= .5:
+                self.retry -= 1
+                self.heartbeat1 = self.heartbeat2
+            print("CLIENT: retry at: " + str(self.retry))
         self.close_connection()
         self.dead = True
-
-    def clientBeat(self):
-        print("CLIENT: starting clientBeat")
-        while self.connection is None:
-            pass
-        print("CLIENT: clientBeat receiving")
-        while not self.stopped:
-            packet = self.recv_packet()
-            if packet:
-                if packet == (PacketType.COMMAND2, b"serverBeat"):
-                    print("CLIENT: received " + str(packet))
-                    self.retry = 4
-                    self.send_packet(PacketType.COMMAND1, b"clientBeat")
-                else:
-                    print("CLIENT: stored " + str(packet))
-                    self.storedPacket = packet
-            else:
-                self.retry -= 1
-                print("CLIENT: retry at " + str(self.retry))
-                if self.retry == 0:
-                    self.stopped = True
-            time.sleep(self.deadbeat)
-            print("CLIENT: testing clientBeat, retry at " + str(self.retry))
-        print("CLIENT: shutting down clientBeat")
