@@ -2,6 +2,7 @@ from threading import Thread
 import enum
 from common import *
 import socket
+import time
 
 class PacketType(enum.Enum):
     NULL = 0
@@ -19,6 +20,10 @@ class Server():
         self.server = None
         self.connection = None
         self.packet_enum = PacketType
+        self.dead = False
+        self.deadbeat = .5
+        self.retry = 4
+        self.storedPacket = None
 
     def open_server(self):
         self.server = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
@@ -47,15 +52,20 @@ class Server():
 
     def send_packet(self, packet_type, payload):
         send_packet(self.connection, packet_type, payload)
+        #print("SERVER: sent " + str(payload))
 
     def recv_packet(self):
         return recv_packet(self.connection, self.packet_enum)
     
+    def checkAlive(self):
+        return self.dead
+
     def send(self, instructions_list):
         self.instructions_list = instructions_list
 
     def run(self):
         Thread(target=self.update, args=()).start()
+        Thread(target=self.serverBeat, args=()).start()
         return self
 
     def stop(self):
@@ -92,20 +102,52 @@ class Server():
                     self.instructions_list = []
                     self.client_ready = False
             else:
-                packet = self.recv_packet()
-                print(packet)
+                if self.storedPacket:
+                    print("SERVER: accessing stored packet")
+                    packet = self.storedPacket
+                    self.storedPacket = None
+                else:
+                    packet = self.recv_packet()
+                print("SERVER: received packet: " + str(packet))
                 if packet == (PacketType.COMMAND1, b"ready"):
                     self.client_ready = True
                 elif packet == (PacketType.COMMAND1, b"restart"):
                     self.restart = True
                     self.client_ready = True
-                elif packet == (PacketType.COMMAND1, b"shutdown"):
-                    self.stopped = True
+                elif packet == (PacketType.COMMAND1, b"clientBeat"):
+                    self.retry = 4
+                    self.send_packet(PacketType.COMMAND2, b"serverBeat")
+                    print("SERVER: mainframe processed clientBeat")
 
-        if self.client_ready:
-            self.send_packet(PacketType.COMMAND2, b"shutdown")
         self.close_connection()
+        print("SERVER: connection closed")
         self.close_server()
+        print("SERVER: server closed")
+        self.dead = True
+
+    def serverBeat(self):
+        print("SERVER: starting serverBeat")
+        while self.connection is None:
+            pass
+        self.send_packet(PacketType.COMMAND2, b"serverBeat")
+        while not self.stopped:
+            packet = self.recv_packet()
+            if packet:
+                if packet == (PacketType.COMMAND1, b"clientBeat"):
+                    print("SERVER: serverBeat received " + str(packet))
+                    self.retry = 4
+                    self.send_packet(PacketType.COMMAND2, b"serverBeat")
+                else:
+                    print("SERVER: stored packet:" + str(packet))
+                    self.storedPacket = packet
+            else:
+                self.retry -= 1
+                print("SERVER: retry at " + str(self.retry))
+                if self.retry == 0:
+                    self.stopped = True
+            time.sleep(self.deadbeat)
+            print("SERVER: testing serverBeat, retry at " + str(self.retry))
+        print("SERVER: shutting down serverBeat")
 
 class Client():
      
@@ -118,7 +160,12 @@ class Client():
         self.restart = False
         self.connection = None
         self.packet_enum = PacketType
-        self.sShutdown = False
+        self.dead = False
+        self.deadbeat = .5
+        self.sendBeat = False
+        self.retry = 4
+        self.storedPacket = None
+
     def connect(self):
         if self.connection is not None:
             raise RuntimeError("A connection has already been established; use reconnect() to reconnect.")
@@ -138,12 +185,14 @@ class Client():
 
     def send_packet(self, packet_type, payload):
         send_packet(self.connection, packet_type, payload)
+        #print("CLIENT: sent " + str(payload))
 
     def recv_packet(self):
         return recv_packet(self.connection, self.packet_enum)
 
     def run(self):
         Thread(target=self.update, args=()).start()
+        Thread(target=self.clientBeat, args=()).start()
         return self
 
     def getInstructions(self):
@@ -151,7 +200,10 @@ class Client():
             return self.instructions
         else:
             return False
-
+   
+    def checkAlive(self):
+        return self.dead
+   
     def makeReady(self):
         self.instructions = []
         self.instructions_ready = False
@@ -173,8 +225,13 @@ class Client():
         while not self.stopped:
             # receive commands from server
             if self.ready:
-                packet = self.recv_packet()
-                print(packet)
+                if self.storedPacket:
+                    print("CLIENT: accessing stored packet: " + str(self.storedPacket))
+                    packet = self.storedPacket
+                    self.storedPacket = None
+                else:
+                    packet = self.recv_packet()
+                print("CLIENT: received " + str(packet))
                 if packet == (PacketType.COMMAND2, b"rotateLeft"):
                     self.instructions.append("rotateLeft")
                 elif packet == (PacketType.COMMAND2, b"rotateRight"):
@@ -186,9 +243,6 @@ class Client():
                 elif packet == (PacketType.COMMAND2, b"end"):
                     self.ready = False
                     self.instructions_ready = True
-                elif packet == (PacketType.COMMAND2, b"shutdown"):
-                    self.stopped = True
-                    self.sShutdown = True
                 elif packet == (PacketType.COMMAND2, b"1"):
                     self.instructions.append("1")
                 elif packet == (PacketType.COMMAND2, b"2"):
@@ -198,7 +252,10 @@ class Client():
                 elif packet == (PacketType.COMMAND2, b"newGame"):
                     print("received newGame command")
                     self.instructions.append("newGame")
-
+                elif packet == (PacketType.COMMAND2, b"serverBeat"):
+                    self.retry = 4
+                    self.send_packet(PacketType.COMMAND1, b"clientBeat")
+                    print("CLIENT: mainframe processed serverBeat")
 
             else:
                 if self.change_ready:
@@ -211,7 +268,30 @@ class Client():
                         self.send_packet(PacketType.COMMAND1, b"ready")
                         self.ready = True
                         self.change_ready = False
-        if not self.sShutdown:
-            self.send_packet(PacketType.COMMAND1, b"shutdown")
-        self.close_connection()
 
+        self.close_connection()
+        self.dead = True
+
+    def clientBeat(self):
+        print("CLIENT: starting clientBeat")
+        while self.connection is None:
+            pass
+        print("CLIENT: clientBeat receiving")
+        while not self.stopped:
+            packet = self.recv_packet()
+            if packet:
+                if packet == (PacketType.COMMAND2, b"serverBeat"):
+                    print("CLIENT: received " + str(packet))
+                    self.retry = 4
+                    self.send_packet(PacketType.COMMAND1, b"clientBeat")
+                else:
+                    print("CLIENT: stored " + str(packet))
+                    self.storedPacket = packet
+            else:
+                self.retry -= 1
+                print("CLIENT: retry at " + str(self.retry))
+                if self.retry == 0:
+                    self.stopped = True
+            time.sleep(self.deadbeat)
+            print("CLIENT: testing clientBeat, retry at " + str(self.retry))
+        print("CLIENT: shutting down clientBeat")
