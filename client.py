@@ -3,7 +3,7 @@ from textures import *
 from grid import Grid
 import math
 import random
-from clientPoll import gameClient
+from commPoll import Client
 from button import Button
 import time
 from Delta_Testing_Testing.deltaArm import DeltaArm
@@ -15,7 +15,7 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME CLIENT')
 clock = pygame.time.Clock()
 
-client = gameClient().run()
+client = Client().run()
 
 def end_effect(image, delay_time=35):
     image_height = 100

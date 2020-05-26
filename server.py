@@ -1,7 +1,7 @@
 import pygame
 from textures import *
 from button import Button
-from clientPoll import gameServer
+from commPoll import Server
 
 pygame.init()
 SCREEN_WIDTH = 1920
@@ -10,7 +10,7 @@ display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCRE
 pygame.display.set_caption('PENGUIN GAME SERVER')
 clock = pygame.time.Clock()
 
-server = gameServer().run()
+server = Server().run()
 
 def text_objects(text, font):
     white = (255,255,255)
