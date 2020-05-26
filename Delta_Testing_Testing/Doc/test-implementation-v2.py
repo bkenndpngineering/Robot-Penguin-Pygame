@@ -66,11 +66,12 @@ print("prox: ", arm.getProx())
 
 # TOF sensor polling test
 print("TOF sensor test")
-print("tof1: ", arm.getTOF1(), " deg")
-print("tof2: ", arm.getTOF2(), " deg")
-#print("tof3: ", arm.getTOF3(), " deg")
+print("tof1: ", arm.getFilteredTOF1(), " deg")
+print("tof2: ", arm.getFilteredTOF2(), " deg")
+print("tof3: ", arm.getFilteredTOF3(), " deg")
 
 print("shutoff in 5 seconds")
 time.sleep(5)
 arm.shutdown()
 exit()
+

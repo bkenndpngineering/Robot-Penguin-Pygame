@@ -11,8 +11,10 @@ import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, ODRIVE_CONFIG_VARS
+from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, TCA9548A_ADDRESS, ODRIVE_CONFIG_VARS
 import time
+from weightedMovingAverage import WMA
+from threading import Thread
 
 """
 DeltaArm API V.4 (March 4, 2020) by Braedan Kennedy (bkenndpngineering)
@@ -25,6 +27,7 @@ class DeltaArm():
     def __init__(self):
         self.initialized = False    # if the arm is not initialized no motor related commands will work. represents the ODrive harware
         self.i2c_initialized = False                # if the i2c bus was not initialized, prevent access to i2c devices
+        self.cyprus_initialized = False             # if the cyprus is not initialized, prevent access to cyprus devices
 
         self.i2c = None
         self.spi = None             # spidev
@@ -45,6 +48,16 @@ class DeltaArm():
         self.VL6180X_2 = None       # TOF sensor for Motor 2
         self.VL6180X_3 = None       # TOF sensor for Motor 3
 
+        self.VL6180X_1_filter = WMA(n=WMA_ARRAY_LENGTH) # Weighted Moving Average Filter for TOF sensors
+        self.VL6180X_2_filter = WMA(n=WMA_ARRAY_LENGTH)
+        self.VL6180X_3_filter = WMA(n=WMA_ARRAY_LENGTH)
+
+        self.TOF_update_thread = Thread(target=self.update_TOF, args=())   # Thread for updating TOF sensor data
+        self.TOF_update_thread_status = False   # status boolean for update thread
+        self.TOF_angle_1 = None         # Angle of Motor 1
+        self.TOF_angle_2 = None         # Angle of Motor 2
+        self.TOF_angle_3 = None         # Angle of Motor 3
+
         self.homedCoordinates = None  # coordinates of the home position, use for relative movement
     
     def rotateStepper(self, degree):
@@ -64,7 +77,7 @@ class DeltaArm():
     def powerSolenoid(self, state):
         # Written by Joseph Pearlman and Philip Nordblad
         # toggle solenoid on and off
-        if self.initialized:
+        if self.cyprus_initialized:
             cyprus.setup_servo(1)
             if state == True:
                 cyprus.set_servo_position(1, 1)
@@ -85,35 +98,63 @@ class DeltaArm():
             else:
                 return
 
-    def getTOF1(self):
+    def getTOF(self, sensor):
+        # returns raw angle (in degrees) calculated by TOF distance measurement
         if self.i2c_initialized:
             # get range from sensor
-            range_mm = self.VL6180X_1.range
+            range_mm = sensor.range
 
-            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
-            A_deg = math.degrees(A_rad)
+            # calculate angle
+            angle = math.degrees(math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET))
 
-            return A_deg
+            return angle
+
+    def getTOF1(self):
+        # motor 1 TOF sensor raw angle
+        return self.getTOF(self.VL6180X_1)
 
     def getTOF2(self):
-        if self.i2c_initialized:
-            # get range from sensor
-            range_mm = self.VL6180X_2.range
-
-            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
-            A_deg = math.degrees(A_rad)
-
-            return A_deg
+        # motor 2 TOF sensor raw angle
+        return self.getTOF(self.VL6180X_2)
 
     def getTOF3(self):
-        if self.i2c_initialized:
-            # get range from sensor
-            range_mm = self.VL6180X_3.range
+        # motor 3 TOF sensor raw angle
+        return self.getTOF(self.VL6180X_3)
 
-            A_rad = math.atan((range_mm - TOF_VERTICAL_OFFSET) / TOF_HORIZONTAL_OFFSET)
-            A_deg = math.degrees(A_rad)
+    def getFilteredTOF1(self):
+        # return filtered TOF angle
+        return self.TOF_angle_1
+    
+    def getFilteredTOF2(self):
+        # return filtered TOF angle
+        return self.TOF_angle_2
+    
+    def getFilteredTOF3(self):
+        # return filtered TOF angle
+        return self.TOF_angle_3
 
-            return A_deg
+    def update_TOF(self):
+        # TOF sensor polling loop, poll as fast as possible
+        # check constants.py for parameters
+        while self.TOF_update_thread_status == True:
+            # update variables
+            try:
+                self.TOF_angle_1 = self.VL6180X_1_filter.update(self.getTOF1())
+            except:
+                print("Error updating TOF 1 sensor data, trying again in 1 second")
+                time.sleep(1)
+
+            try:
+                self.TOF_angle_2 = self.VL6180X_2_filter.update(self.getTOF2())
+            except:
+                print("Error updating TOF 2 sensor data, trying again in 1 second")
+                time.sleep(1)
+                    
+            try:
+                self.TOF_angle_3 = self.VL6180X_3_filter.update(self.getTOF3())
+            except:
+                print("Error updating TOF 3 sensor data, trying again in 1 second")
+                time.sleep(1)
 
     def getProx(self):
         if (cyprus.read_gpio() & 0b1000):
@@ -281,32 +322,47 @@ class DeltaArm():
 
         print("Initialize I2C bus")
         self.i2c = busio.I2C(board.SCL, board.SDA)
-        self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c)
-        self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
-        self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
-        self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[2])
-        print("Initialized I2C objects")
-        self.i2c_initialized = True
+        if TCA9548A_ADDRESS != None:
+            self.TCA9548a = adafruit_tca9548a.TCA9548A(self.i2c, TCA9548A_ADDRESS)
+            self.VL6180X_1 = adafruit_vl6180x.VL6180X(self.TCA9548a[6])
+            self.VL6180X_2 = adafruit_vl6180x.VL6180X(self.TCA9548a[4])
+            self.VL6180X_3 = adafruit_vl6180x.VL6180X(self.TCA9548a[2])
+            print("Initialized I2C objects")
+            self.i2c_initialized = True
+        else:
+            print("Failed to find I2C address")
+            self.i2c_initialized = False
+
+        if self.i2c_initialized == True:
+            print("Starting TOF poll thread")
+            self.TOF_update_thread_status = True
+            self.TOF_update_thread.start() 
 
         # setup limit switches and solenoid
         self.spi = spidev.SpiDev()
         cyprus.initialize()
         version = cyprus.read_firmware_version()
+        self.cyprus_initialized = True 
         print("Found CyPrus, Firmware version: ", version)
+        print("Disabling solenoid")
+        self.powerSolenoid(False)
 
         # connect to ODrives
-        print('ODriveConnected = self.connectODrive()')
+        print('Connecting to ODrive(s)')
         ODriveConnected = self.connectODrive()
 
-        if (ODriveConnected == True):
-            # if GPIO and ODrive are setup properly, attempt to home
+        if (ODriveConnected == True) and (self.cyprus_initialized == True) and (self.i2c_initialized == True):
+            # if GPIO and ODrive are setup properly, attempt to home delta arm
             print('HomedMotors = self.homeMotors()')
             HomedMotors = self.homeMotors()
             if (HomedMotors == True):
                 self.initialized = True
                 print("initialized")
             else:
+                self.initialized = False
                 print("Home Failure")
+        else:
+            print("initialiation failure")
 
         if self.initialized:
             # calculate homed coordinates
@@ -407,6 +463,10 @@ class DeltaArm():
             except:
                 pass
 
+            # shutoff TOF poll thread
+            self.TOF_update_thread_status = False
+            self.TOF_update_thread.join() 
+            
             # close out of Cyprus and Slush Engine and RPi GPIO
             self.stepper.free_all()
             self.spi.close()

@@ -35,10 +35,28 @@ phi_vals = [radians(210), radians(90), radians(330)]
 ######## TOF sensor constants ########
 
 # horizontal distance from sensor to motor axle in millimeters
-TOF_HORIZONTAL_OFFSET = 60
-# distance from top of arm to sensor when the arm is horizontal in millimeters - distanc
-TOF_VERTICAL_OFFSET = 45
-
+TOF_HORIZONTAL_OFFSET = 80
+# distance from top of arm to sensor when the arm is horizontal in millimeters - distance
+TOF_VERTICAL_OFFSET = 33
+# Weighted Moving Average filter array length, how many sensor readings are stored
+WMA_ARRAY_LENGTH = 10
+# I2C Multiplexer address - TCA9548A - default 0x70, could be any from 0x70 to 0x77
+import smbus
+__bus = smbus.SMBus(1)
+__addresses = []
+TCA9548A_ADDRESS = None     # The actual address
+for device in range(128):
+    try:
+        __bus.read_byte(device)
+        print("Found I2C device:", hex(device))
+        __addresses.append(device)
+    except:
+        pass
+if (len(__addresses) != 0):
+    __last_address = __addresses[len(__addresses)-1]
+    if (__last_address > int("0x69", 16)):
+        TCA9548A_ADDRESS = __last_address
+del __bus
 
 ######## ODrive Motor Configuration ########
 
@@ -58,3 +76,4 @@ ODRIVE_CONFIG_VARS =    {
                         "pole_pairs": 15,
                         "encoder_cpr": ENCODER_CPR
                         }
+
