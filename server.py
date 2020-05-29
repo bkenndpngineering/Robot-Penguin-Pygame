@@ -64,6 +64,7 @@ def start_screen():
                 prog_terminate = True
             else:
                 print("Simple: client not ready")
+                button_diff_easy.reset()
 
         elif button_diff_med.isPressed():
             if server.client_ready:
@@ -73,6 +74,7 @@ def start_screen():
                 prog_terminate = True
             else:
                 print("Medium: client not ready")
+                button_diff_med.reset()
 
         elif button_diff_hard.isPressed():
             if server.client_ready:
@@ -82,6 +84,7 @@ def start_screen():
                 prog_terminate = True
             else:
                 print("Hard: client not ready")
+                button_diff_hard.reset()
 
         elif button_hidden.isPressed():
             print("hidden button. exit")
