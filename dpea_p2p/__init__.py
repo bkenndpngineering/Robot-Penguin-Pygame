@@ -25,5 +25,5 @@ The packet structure looks like this:
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 """
-from .server import *
-from .client import *
+#from server import *
+#from client import *

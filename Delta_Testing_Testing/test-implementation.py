@@ -34,8 +34,8 @@ print("moving to (0, 0, -50)")
 arm.moveToCoordinates(0, 0, -50)
 print("get coordinates test:", arm.getHomedCoordinates())
 time.sleep(1)
-print("moving to (0, 0, -150)")
-arm.moveToCoordinates(0, 0, -150)
+print("moving to (0, 0, -125)")
+arm.moveToCoordinates(0, 0, -125)
 print("get coordinates test:", arm.getHomedCoordinates())
 time.sleep(1)
 
@@ -43,10 +43,10 @@ time.sleep(1)
 print("relative movement test")
 arm.moveToRelativeCoordinates(0, 0, 50) # move up
 time.sleep(1)
-arm.moveToRelativeCoordinates(0, 0, 50) # move up
+arm.moveToRelativeCoordinates(0, 0, 75) # move up
 time.sleep(1)
-arm.moveToRelativeCoordinates(0, 0, 50) # move up
-time.sleep(1)
+#arm.moveToRelativeCoordinates(0, 0, 50) # move up
+#time.sleep(1)
 
 # rapid sequential movement test
 print("sequential movement test, no delay")
