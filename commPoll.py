@@ -191,7 +191,7 @@ class Client():
 
     def run(self):
         Thread(target=self.update, args=()).start()
-        #Thread(target=self.clientBeat, args=()).start()
+        Thread(target=self.clientBeat, args=()).start()
         return self
 
     def getInstructions(self):
