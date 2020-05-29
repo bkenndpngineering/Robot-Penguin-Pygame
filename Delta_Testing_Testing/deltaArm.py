@@ -383,7 +383,7 @@ class DeltaArm():
         # move to coordinate position, relative to homed position
         # coordinates are in millimeters
         # is a blocking function, returns when position is reached
-        tolerance = 3    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
+        tolerance = 5    # how close the arm must be to the desired coordinates to be considered "there" AKA the window
         while not self.ready:
             pass
         if self.initialized:
