@@ -4,16 +4,16 @@ from pidev.stepper import stepper
 from pidev.Cyprus_Commands import Cyprus_Commands_RPi as cyprus
 from Slush.Devices import L6470Registers
 import odrive 
-import ODrive_Ease_Lib
+from .RPi_ODrive import ODrive_Ease_Lib
 import RPi.GPIO as GPIO
-from kinematicFunctions import *
+from .kinematicFunctions import *
 import board
 import busio
 import adafruit_vl6180x
 import adafruit_tca9548a
-from constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, TCA9548A_ADDRESS, ODRIVE_CONFIG_VARS
+from .constants import TOF_HORIZONTAL_OFFSET, TOF_VERTICAL_OFFSET, WMA_ARRAY_LENGTH, TCA9548A_ADDRESS, ODRIVE_CONFIG_VARS
 import time
-from weightedMovingAverage import WMA
+from .weightedMovingAverage import WMA
 from threading import Thread
 
 """

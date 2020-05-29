@@ -1,5 +1,5 @@
 import math
-from constants import *
+from .constants import *
 
 def rotate_point_to_yz_plane(x0, y0, z0, phi):
     # do rotation matrix
