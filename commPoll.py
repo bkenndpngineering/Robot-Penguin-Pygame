@@ -130,11 +130,11 @@ class Server():
                         self.client_ready = True
             else:
                 self.retry -= 1
-                print("SERVER: retry at " + str(self.retry))
+                #print("SERVER: retry at " + str(self.retry))
                 if self.retry == 0:
                     self.stopped = True
             time.sleep(self.deadbeat)
-            print("SERVER: testing serverBeat, retry at " + str(self.retry))
+            #print("SERVER: testing serverBeat, retry at " + str(self.retry))
         print("SERVER: shutting down serverBeat")
 
 class Client():
@@ -180,7 +180,6 @@ class Client():
 
     def run(self):
         Thread(target=self.update, args=()).start()
-        Thread(target=self.clientBeat, args=()).start()
         return self
 
     def getInstructions(self):
@@ -253,13 +252,13 @@ class Client():
                         self.change_ready = False
             self.heartbeat2 = time.time()
             elapsed = self.heartbeat2 - self.heartbeat1
-            print("CLIENT: time elapsed: " + str(elapsed))
+            #print("CLIENT: time elapsed: " + str(elapsed))
             if self.retry == 0:
                 self.stopped = True
                 print("CLIENT: retry at 0")
             elif elapsed >= .5:
                 self.retry -= 1
                 self.heartbeat1 = self.heartbeat2
-            print("CLIENT: retry at: " + str(self.retry))
+            #print("CLIENT: retry at: " + str(self.retry))
         self.close_connection()
         self.dead = True
