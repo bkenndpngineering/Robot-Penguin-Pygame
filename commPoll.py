@@ -101,21 +101,6 @@ class Server():
                     self.send_packet(PacketType.COMMAND2, b"end")
                     self.instructions_list = []
                     self.client_ready = False
-            else:
-                '''
-                if self.storedPacket:
-                    print("SERVER: accessing stored packet")
-                    packet = self.storedPacket[0]
-                    self.storedPacket.remove(packet)
-                else:
-                '''
-                packet = self.recv_packet()
-                print("SERVER: received packet: " + str(packet))
-                if packet == (PacketType.COMMAND1, b"ready"):
-                    self.client_ready = True
-                elif packet == (PacketType.COMMAND1, b"restart"):
-                    self.restart = True
-                    self.client_ready = True
 
         self.send_packet(PacketType.COMMAND2, b"shutdown")
         self.close_connection()
@@ -137,8 +122,12 @@ class Server():
                     self.retry = 4
                     self.send_packet(PacketType.COMMAND2, b"serverBeat")
                 else:
-                    print("SERVER: stored packet:" + str(packet))
-                    #self.storedPacket.append(packet)
+                    print("SERVER: received packet:" + str(packet))
+                    if packet == (PacketType.COMMAND1, b"ready"):
+                        self.client_ready = True
+                    elif packet == (PacketType.COMMAND1, b"restart"):
+                        self.restart = True
+                        self.client_ready = True
             else:
                 self.retry -= 1
                 print("SERVER: retry at " + str(self.retry))
