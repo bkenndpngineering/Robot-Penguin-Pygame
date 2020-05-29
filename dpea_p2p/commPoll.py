@@ -27,7 +27,7 @@ class Server():
 
     def open_server(self):
         self.server = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
-        self.server.bind(("172.17.21.1", 5001))
+        self.server.bind(("127.0.0.1", 5001))
         self.server.listen(1)
 
     def wait_for_connection(self):
@@ -177,7 +177,7 @@ class Client():
             except OSError:
                 pass
         self.connection = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
-        self.connection.connect(("172.17.21.1", 5001))
+        self.connection.connect(("127.0.0.1", 5001))
 
     def close_connection(self):
         self.connection.close()
