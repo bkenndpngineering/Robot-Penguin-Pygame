@@ -57,22 +57,31 @@ def start_screen():
         instruction_list = []
 
         if button_diff_easy.isPressed():
-            print("difficulty 1")
-            difficulty = 1
-            instruction_list.append("1")
-            prog_terminate = True
+            if server.client_ready:
+                print("difficulty 1")
+                difficulty = 1
+                instruction_list.append("1")
+                prog_terminate = True
+            else:
+                print("Simple: client not ready")
 
         elif button_diff_med.isPressed():
-            print("difficulty 2")
-            difficulty = 2
-            instruction_list.append("2")
-            prog_terminate = True
+            if server.client_ready:
+                print("difficulty 2")
+                difficulty = 2
+                instruction_list.append("2")
+                prog_terminate = True
+            else:
+                print("Medium: client not ready")
 
         elif button_diff_hard.isPressed():
-            print("difficulty 3")
-            difficulty = 3
-            instruction_list.append("3")
-            prog_terminate = True
+            if server.client_ready:
+                print("difficulty 3")
+                difficulty = 3
+                instruction_list.append("3")
+                prog_terminate = True
+            else:
+                print("Hard: client not ready")
 
         elif button_hidden.isPressed():
             print("hidden button. exit")

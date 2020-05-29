@@ -301,6 +301,7 @@ if __name__ == '__main__':
     X, Y = grid_to_arm_coord(0,0)
     arm.moveToCoordinates(X, Y, -100)
     arm.powerSolenoid(False)
+    print("CLIENT: ready for game start")
 
     while 1:
         instructions = []
