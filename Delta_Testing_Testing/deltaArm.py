@@ -4,7 +4,7 @@ from pidev.stepper import stepper
 from pidev.Cyprus_Commands import Cyprus_Commands_RPi as cyprus
 from Slush.Devices import L6470Registers
 import odrive
-from RPi_ODrive import ODrive_Ease_Lib
+from RPi_ODrive.ODrive_Ease_Lib import *
 import RPi.GPIO as GPIO
 from kinematicFunctions import *
 import board
