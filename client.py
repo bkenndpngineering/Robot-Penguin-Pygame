@@ -72,7 +72,7 @@ def run_game(difficulty=1):
 
     X, Y = grid_to_arm_coord(0,0)
     height = -100
-    for i in range(0,9):
+    for i in range(0,6):
         arm.rotateStepper(90)
         arm.moveToCoordinates(X, Y, height)
         height -= 5
@@ -111,8 +111,8 @@ def run_game(difficulty=1):
         # character movement, networked
         if instructions != False:
             for instruction in instructions:
-                surface = -140
-                loft = -100
+                surface = -120
+                loft = -90
                 height = loft - surface
                 if instruction == "rotateLeft":
                     grid.player.rotateLeft()
